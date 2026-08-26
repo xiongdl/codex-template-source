@@ -26,6 +26,12 @@
 
 ## Reproducibility Impact
 
+## Preliminary Version Impact
+
+`NONE / PATCH / MINOR / MAJOR / UNKNOWN`
+
+Reason:
+
 ## Implementation Guidance
 
 ## Verification

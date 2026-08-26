@@ -15,6 +15,16 @@ Changes should move the project toward:
 7. Maintainable
 8. AI-operable
 
+## Task Readiness
+
+Before substantive repository work, apply `.ai/TASK_READINESS.md` using the Codex profile.
+
+- `PASS` normally remains silent.
+- `WARNING` reports the risk and continues only when no material user decision is required.
+- `BLOCKED` stops substantive implementation and requests the minimum information or decision required to proceed.
+
+Do not bypass the readiness gate by silently resolving architectural ambiguity, missing evidence, unverified repository state, or unauthorized breaking changes.
+
 ## Core Workflow
 
 Understand

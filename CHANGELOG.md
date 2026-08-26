@@ -1,5 +1,30 @@
 # Changelog
 
+## 1.7.1
+
+- Made `codex-template` itself dogfood the AI engineering workflow defined for instantiated projects.
+- Added root `CHATGPT.md` as the explicit ChatGPT bootstrap entry point.
+- Added root `AGENTS.md` as the Codex maintainer entry point.
+- Added root `.ai/WORKFLOW.md` and `.ai/TASK_READINESS.md`.
+- Added a codex-template Maintainer Readiness Profile covering project-agnostic checks, governance/payload boundaries, reference governance, ADR/architecture impact, compatibility, validation, and version impact.
+- Formalized ChatGPT/Codex preferred executor routing for template maintenance.
+- Added `tests/validate_repository_governance.py`.
+- Extended `./scripts/check` to validate root project governance in addition to template and reference validation.
+
+
+## 1.7.0
+
+- Added explicit ChatGPT project bootstrap through `template/CHATGPT.md`.
+- Added shared `AI Task Readiness Protocol` with `PASS`, `WARNING`, and `BLOCKED`.
+- Added ChatGPT and Codex readiness profiles.
+- Added instantiated-project versioning and default project version `0.1.0`.
+- Added `template/VERSION`, `template/CHANGELOG.md`, and `template/docs/VERSIONING.md`.
+- Added Preliminary/Final Version Impact flow using `NONE`, `PATCH`, `MINOR`, `MAJOR`, and `UNKNOWN`.
+- Added version discovery and version-source conflict handling to project initialization.
+- Added `docs/VERSIONING.md` for `codex-template` itself.
+- Extended template validation to enforce bootstrap, readiness, and versioning invariants.
+
+
 ## 1.6.0
 
 - Formalized Reference Governance responsibilities across Human, ChatGPT, and Codex.

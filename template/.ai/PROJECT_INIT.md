@@ -102,3 +102,36 @@ Record commands, pass/fail status, skipped checks, and constraints.
 Report structure, components, dependencies, integration boundaries, engineering entry points, verification coverage, reproducibility status, documentation gaps, risks, and the recommended first engineering task.
 
 Update `docs/PROJECT_STATUS.md`.
+
+
+## Phase 12 — Establish Versioning
+
+Inspect whether the project already has an authoritative versioning scheme.
+
+Check, as applicable:
+
+- existing `VERSION`,
+- Git tags,
+- package metadata,
+- release metadata,
+- existing `CHANGELOG.md`.
+
+For a new project with no prior versioning, initialize:
+
+```text
+VERSION = 0.1.0
+```
+
+and establish `CHANGELOG.md` plus `docs/VERSIONING.md`.
+
+For an existing project, preserve the existing authoritative versioning scheme.
+
+Do not reset an existing project to `0.1.0`.
+
+If version sources conflict materially, report:
+
+```text
+BLOCKED — Version Source Conflict
+```
+
+and request the minimum decision needed to identify the authoritative version source.

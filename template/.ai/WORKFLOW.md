@@ -63,3 +63,40 @@ Implementation
 → Verification
 → Documentation
 → Status Update
+
+
+## Task Intake and Version Lifecycle
+
+```text
+Human Request
+      ↓
+AI Task Readiness
+      ↓
+PASS / WARNING / BLOCKED
+      ↓
+Research / Understand
+      ↓
+Design
+      ↓
+Decision
+      ↓
+Preliminary Version Impact
+      ↓
+Plan
+      ↓
+Implementation
+      ↓
+Verification
+      ↓
+Final Version Impact
+      ↓
+Documentation / Record
+      ↓
+Release when appropriate
+```
+
+`Task Completion` is not the same as `Release`.
+
+ChatGPT normally provides preliminary version impact during design/task definition.
+
+Codex verifies version impact against the repository before implementation and reports final version impact after verification.

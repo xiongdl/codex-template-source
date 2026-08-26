@@ -90,3 +90,42 @@ Strict naming and metadata validation is enforced by:
 ```bash
 ./scripts/check
 ```
+
+
+## Reference Governance
+
+```text
+Human   → curate primary snapshots and approve material decisions
+ChatGPT → analyze evidence, perform commit-pinned Gap Analysis, draft notes
+Codex   → apply repository changes, maintain consistency, run validation
+```
+
+Formal notes use `references/openai/notes/NOTE_TEMPLATE.md`.
+Every review ends in `No Change`, `Monitor`, or `Change Proposed`.
+Only an approved `Change Proposed` outcome can proceed toward a template modification.
+
+
+## v1.7 Project Governance Additions
+
+The distributable template establishes:
+
+- explicit ChatGPT bootstrap via `template/CHATGPT.md`,
+- shared AI Task Readiness via `template/.ai/TASK_READINESS.md`,
+- instantiated-project versioning via `template/VERSION`, `template/CHANGELOG.md`, and `template/docs/VERSIONING.md`,
+- preliminary and final Version Impact workflow.
+
+See `docs/VERSIONING.md` for `codex-template`'s own release policy.
+
+## codex-template Project Entry Points
+
+`codex-template` itself uses the same AI-engineering discipline it promotes:
+
+```text
+README.md   → Human entry point
+CHATGPT.md  → ChatGPT explicit bootstrap entry point
+AGENTS.md   → Codex entry point
+```
+
+Shared project-maintenance policy lives under `.ai/`.
+
+The root project maintains/evolves `codex-template`; `template/` bootstraps instantiated engineering projects.

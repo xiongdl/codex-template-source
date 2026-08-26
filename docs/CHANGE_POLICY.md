@@ -94,3 +94,26 @@ When a proposed template change originates from upstream evidence:
 
 `No Change` and `Monitor` are valid engineering outcomes.
 A new snapshot never automatically authorizes a change to `template/`.
+
+
+## Version Impact
+
+Before release, classify material template changes as:
+
+```text
+NONE / PATCH / MINOR / MAJOR / UNKNOWN
+```
+
+Use `docs/VERSIONING.md`.
+
+`UNKNOWN` must be resolved before release.
+
+A breaking change to the distributable template or instantiated-project contract is `MAJOR`.
+A backward-compatible new template capability is normally `MINOR`.
+A backward-compatible fix or governance refinement is normally `PATCH`.
+
+## Maintainer Task Gate
+
+Substantive changes to `codex-template` must pass the root `.ai/TASK_READINESS.md`.
+
+Changes to `template/` must be checked for project-agnostic compatibility, governance/payload ownership, evidence requirements, architecture/ADR implications, compatibility, validation feasibility, and Version Impact.

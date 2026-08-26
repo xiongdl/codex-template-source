@@ -114,3 +114,9 @@ This is primary evidence.
 They are not the human-maintained source of truth.
 
 Snapshot format is enforced by repository validation.
+
+## Dogfooding Architecture
+
+`codex-template` itself is governed as an AI-assisted engineering project through root `CHATGPT.md`, `AGENTS.md`, `.ai/WORKFLOW.md`, and `.ai/TASK_READINESS.md`.
+
+The root project and distributable `template/` share role separation, readiness semantics, version-impact concepts, and verification discipline, but their policy contents differ because their responsibilities differ.

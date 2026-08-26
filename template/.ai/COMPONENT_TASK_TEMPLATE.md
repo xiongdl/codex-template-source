@@ -18,6 +18,12 @@
 
 ## Relevant Files
 
+## Preliminary Version Impact
+
+`NONE / PATCH / MINOR / MAJOR / UNKNOWN`
+
+Reason:
+
 ## Implementation Guidance
 
 ## Local Verification

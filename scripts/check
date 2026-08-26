@@ -5,3 +5,4 @@ ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
 
 python "$ROOT/tests/validate_template.py"
 python "$ROOT/tests/validate_references.py"
+python "$ROOT/tests/validate_repository_governance.py"

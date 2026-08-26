@@ -53,3 +53,38 @@ tests/
 ```
 
 A test should live at the narrowest level that fully validates the intended behavior.
+
+
+## Project Entry Points
+
+```text
+README.md   → Human entry point
+CHATGPT.md  → ChatGPT explicit bootstrap entry point
+AGENTS.md   → Codex entry point
+```
+
+Shared AI policy lives under `.ai/`.
+
+## Project Versioning
+
+Instantiated projects include:
+
+```text
+VERSION
+CHANGELOG.md
+docs/VERSIONING.md
+```
+
+The default version for a new project is `0.1.0`.
+
+Existing projects must preserve and reconcile their existing authoritative versioning rather than being reset.
+
+## AI Task Readiness
+
+Before substantive work, AI agents apply `.ai/TASK_READINESS.md`.
+
+```text
+PASS     → continue silently
+WARNING  → report risk and continue
+BLOCKED  → stop substantive work
+```
