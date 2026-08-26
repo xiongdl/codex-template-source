@@ -20,6 +20,10 @@ APPROVED_DOMAINS = (
     "cdn.openai.com",
 )
 
+IGNORE_NAMES = {".DS_Store", "README.md"}
+def should_ignore(path: Path) -> bool:
+    return path.name in IGNORE_NAMES
+
 def parse_simple_yaml(path: Path) -> dict[str, str]:
     """
     Minimal parser for the flat metadata.yaml schema used here.
@@ -55,7 +59,7 @@ def main() -> int:
         seen_ids: set[str] = set()
 
         for entry in sorted(SNAPSHOTS.iterdir()):
-            if entry.name == "README.md":
+            if should_ignore(entry):
                 continue
 
             if not entry.is_dir():
