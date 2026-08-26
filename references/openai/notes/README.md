@@ -1,32 +1,18 @@
 # OpenAI Reference Notes
 
-Store local analysis here.
+Reference notes are derived analysis; primary evidence lives under `../snapshots/`.
 
-Recommended filename:
+## Ownership
 
-```text
-YYYY-MM-DD-<source-or-topic>.md
-```
+- Human maintains snapshots and approves material decisions.
+- ChatGPT analyzes snapshots and drafts note content.
+- Codex applies notes to the repository, maintains consistency, and verifies the repository.
 
-Recommended structure:
+## Required Format
 
-```markdown
-# Topic
+Use `NOTE_TEMPLATE.md`.
 
-## Source
+Every formal Gap Analysis must record the primary snapshot and exact template baseline commit/version.
+The final decision must be exactly one of `No Change`, `Monitor`, or `Change Proposed`.
 
-## What Changed / What Matters
-
-## Template-Relevant Insights
-
-## Existing Template Coverage
-
-## Gap
-
-## Recommendation
-
-## Decision
-No change / Monitor / Propose change / ADR required
-```
-
-Do not copy large portions of upstream documents. Keep notes focused on implications for `codex-template`.
+Do not copy large portions of upstream material. Focus on implications for `codex-template`.

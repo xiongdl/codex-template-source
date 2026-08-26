@@ -1,54 +1,82 @@
 # OpenAI References
 
 This directory contains curated upstream evidence used to evaluate and evolve `codex-template`.
-
 It is not part of the distributable `template/`.
 
-## Responsibility Split
+## Responsibility Model
 
 ### Human
 
-Maintain only authoritative snapshot inputs:
+- Select authoritative OpenAI material worth preserving.
+- Add/update primary evidence under `snapshots/`.
+- Approve material template design changes when required.
+
+### ChatGPT
+
+- Read and analyze the primary snapshot.
+- Extract durable engineering practices.
+- Distinguish durable guidance from product/model-specific behavior.
+- Compare evidence against an exact `codex-template` baseline.
+- Perform practice-by-practice Gap Analysis.
+- Draft/update the formal reference note.
+- Recommend exactly one outcome: `No Change`, `Monitor`, or `Change Proposed`.
+- Identify whether an ADR is warranted.
+
+Every Gap Analysis must pin the exact repository commit and template version.
+A new snapshot does not imply that the template should change.
+
+### Codex
+
+- Inspect the actual repository before applying an approved note.
+- Add/update notes under `notes/`.
+- Maintain `SOURCES.md` and related derived artifacts consistently.
+- Implement approved template changes only when explicitly justified.
+- Update governance/versioning artifacts when required.
+- Run `./scripts/check`.
+- Report changed files and verification results.
+
+Codex must not infer that a new snapshot automatically requires a template change.
+
+## Reference Review Workflow
 
 ```text
-references/openai/snapshots/
+Human
+  │ curate authoritative evidence
+  ▼
+snapshots/                  Primary Evidence
+  │
+  ▼
+ChatGPT
+  ├── analyze
+  ├── extract durable practices
+  ├── pin template baseline
+  ├── Gap Analysis
+  └── recommend decision
+          │
+          ▼
+      reference note
+          │ approval when material
+          ▼
+        Codex
+          ├── inspect actual repository
+          ├── apply note
+          ├── maintain derived artifacts
+          ├── implement approved changes
+          └── ./scripts/check
+                  │
+                  ▼
+                 Git
 ```
 
-### ChatGPT / Codex
-
-May maintain derived material:
+## Evidence Model
 
 ```text
-SOURCES.md
-notes/
-docs/decisions/
-template/
-CHANGELOG.md
-VERSION
+snapshots/        = Primary Evidence
+SOURCES.md        = Derived Index
+notes/            = Derived Analysis
+docs/decisions/   = Durable Engineering Decisions
+template/         = Implemented Project Template
 ```
 
-based on reviewed snapshot evidence and project feedback.
-
-## Evidence Flow
-
-```text
-Human updates snapshots/
-        ↓
-./scripts/check
-        ↓
-Derived source/index maintenance
-        ↓
-ChatGPT / Codex analysis
-        ↓
-No impact / Note / ADR
-        ↓
-Template change when justified
-        ↓
-Validation
-        ↓
-Versioned release
-```
-
-A snapshot update never automatically implies a template change.
-
-See `snapshots/README.md` for strict naming and metadata rules.
+See `snapshots/README.md` for snapshot rules.
+See `notes/NOTE_TEMPLATE.md` for the formal review-note format.

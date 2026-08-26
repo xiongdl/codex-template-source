@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.6.0
+
+- Formalized Reference Governance responsibilities across Human, ChatGPT, and Codex.
+- Defined Human-maintained snapshots as primary evidence and notes/indexes as derived artifacts.
+- Added `references/openai/notes/NOTE_TEMPLATE.md` for reproducible reference reviews.
+- Required every Gap Analysis to pin an exact repository commit and template version.
+- Standardized decisions as `No Change`, `Monitor`, or `Change Proposed`.
+- Required approved `Change Proposed` outcomes before upstream evidence may drive template changes.
+- Extended reference validation to enforce governance artifacts and note-template structure.
+
+
 ## 1.5.0
 
 - Changed OpenAI reference maintenance to human-curated snapshots only.

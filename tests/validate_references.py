@@ -9,6 +9,32 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 SNAPSHOTS = ROOT / "references" / "openai" / "snapshots"
+OPENAI_REFS = ROOT / "references" / "openai"
+NOTES = OPENAI_REFS / "notes"
+NOTE_TEMPLATE = NOTES / "NOTE_TEMPLATE.md"
+
+REQUIRED_REFERENCE_PATHS = (
+    OPENAI_REFS / "README.md",
+    OPENAI_REFS / "SOURCES.md",
+    SNAPSHOTS / "README.md",
+    NOTES / "README.md",
+    NOTE_TEMPLATE,
+)
+
+REQUIRED_NOTE_SECTIONS = (
+    "## Status",
+    "## Evidence",
+    "### Primary Snapshot",
+    "### Template Baseline",
+    "## Executive Summary",
+    "## Relevant Practices",
+    "## Gap Analysis",
+    "## Recommendations",
+    "## Decision",
+    "## ADR Requirement",
+    "## Follow-Up",
+    "## Review History",
+)
 
 DIR_RE = re.compile(r"^(OAI-\d{3})-([a-z0-9]+(?:-[a-z0-9]+)*)$")
 FILE_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})\.(pdf|html|md)$")
@@ -19,10 +45,6 @@ APPROVED_DOMAINS = (
     "developers.openai.com",
     "cdn.openai.com",
 )
-
-IGNORE_NAMES = {".DS_Store", "README.md"}
-def should_ignore(path: Path) -> bool:
-    return path.name in IGNORE_NAMES
 
 def parse_simple_yaml(path: Path) -> dict[str, str]:
     """
@@ -53,13 +75,32 @@ def valid_openai_url(url: str) -> bool:
 def main() -> int:
     errors: list[str] = []
 
+    for required in REQUIRED_REFERENCE_PATHS:
+        if not required.exists():
+            errors.append(
+                f"missing required reference-governance path: {required.relative_to(ROOT)}"
+            )
+
+    if NOTE_TEMPLATE.is_file():
+        note_text = NOTE_TEMPLATE.read_text(encoding="utf-8")
+        for section in REQUIRED_NOTE_SECTIONS:
+            if section not in note_text:
+                errors.append(
+                    f"notes/NOTE_TEMPLATE.md: missing required section '{section}'"
+                )
+        for decision in ("No Change", "Monitor", "Change Proposed"):
+            if decision not in note_text:
+                errors.append(
+                    f"notes/NOTE_TEMPLATE.md: missing decision classification '{decision}'"
+                )
+
     if not SNAPSHOTS.is_dir():
         errors.append("missing references/openai/snapshots/")
     else:
         seen_ids: set[str] = set()
 
         for entry in sorted(SNAPSHOTS.iterdir()):
-            if should_ignore(entry):
+            if entry.name == "README.md":
                 continue
 
             if not entry.is_dir():

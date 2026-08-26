@@ -78,3 +78,19 @@ YYYY-MM-DD.(pdf|html|md)
 Run `./scripts/check` before commit.
 
 Invalid snapshot naming, metadata, or structure is a repository validation failure.
+
+
+## Reference-Governed Template Changes
+
+When a proposed template change originates from upstream evidence:
+
+1. Human maintains the authoritative snapshot.
+2. ChatGPT analyzes the snapshot against an exact repository commit and drafts the reference note.
+3. The note classifies the result as `No Change`, `Monitor`, or `Change Proposed`.
+4. Only `Change Proposed` proceeds to template-change evaluation.
+5. Material changes require Human approval.
+6. Codex applies approved repository changes and runs `./scripts/check`.
+7. ADRs, `CHANGELOG.md`, and `VERSION` are updated according to normal change classification.
+
+`No Change` and `Monitor` are valid engineering outcomes.
+A new snapshot never automatically authorizes a change to `template/`.
