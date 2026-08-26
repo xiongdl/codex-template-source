@@ -1,0 +1,104 @@
+# Project Initialization
+
+Use this process when applying the template to a new or existing project.
+
+The goal is to discover the real project and establish a maintainable engineering baseline.
+
+Do not implement new product features during initialization unless explicitly requested.
+
+## Phase 1 — Inspect
+
+Inspect repository structure, source layout, build systems, tests, configuration, environment requirements, dependencies, generated artifacts, scripts/tools, documentation, CI, and major subsystems.
+
+## Phase 2 — Establish Boundaries
+
+Determine whether the project is naturally single-component or multi-component.
+
+A component may be justified by several of:
+
+- distinct responsibility,
+- meaningful public interface,
+- independent implementation,
+- independent build/test behavior,
+- distinct dependencies,
+- independent evolution.
+
+Do not create components only for visual neatness.
+
+## Phase 3 — Identify Dependencies and Integration Boundaries
+
+Map important dependencies and cross-component contracts.
+
+Document stable shared contracts under `docs/integration/`.
+
+## Phase 4 — Establish Project Documentation
+
+Create or update:
+
+- `README.md`
+- `docs/ARCHITECTURE.md`
+- `docs/PROJECT_STATUS.md`
+- `docs/REPRODUCIBILITY.md`
+
+## Phase 5 — Discover Existing Workflows
+
+Determine how the project performs setup, dependency installation, build, test, verification, cleanup, and diagnostics/status.
+
+Prefer preserving working tools rather than replacing them without reason.
+
+## Phase 6 — Establish Automation Entry Points
+
+Where practical, provide:
+
+```bash
+./scripts/project setup
+./scripts/project build
+./scripts/project test
+./scripts/project verify
+./scripts/project clean
+./scripts/project status
+```
+
+## Phase 7 — Establish Verification Levels
+
+```text
+components/<component>/tests/
+        └── Component-local tests
+
+integration/tests/
+        └── Cross-component tests
+
+tests/
+        └── Project-level / End-to-End tests
+```
+
+Use the narrowest level that fully proves the intended behavior.
+
+## Phase 8 — Establish Reproducibility
+
+Ensure the repository can answer:
+
+1. What environment is supported?
+2. What dependencies are required?
+3. Which versions matter?
+4. How is setup performed?
+5. How is the project built?
+6. How are tests run?
+7. How are important artifacts/results reproduced?
+8. Which state is generated versus source-controlled?
+
+## Phase 9 — Establish Traceability
+
+Create ADRs only for decisions whose rationale should survive.
+
+## Phase 10 — Verify Baseline
+
+Run relevant build/test/verify commands where practical.
+
+Record commands, pass/fail status, skipped checks, and constraints.
+
+## Phase 11 — Summarize
+
+Report structure, components, dependencies, integration boundaries, engineering entry points, verification coverage, reproducibility status, documentation gaps, risks, and the recommended first engineering task.
+
+Update `docs/PROJECT_STATUS.md`.
