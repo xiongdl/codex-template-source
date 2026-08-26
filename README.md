@@ -65,7 +65,7 @@ Feedback
 ## Validate
 
 ```bash
-python tests/validate_template.py
+./scripts/check
 ```
 
 ## Upstream Reference Workflow
@@ -79,3 +79,14 @@ python scripts/check_openai_references.py
 ```
 
 Detected changes are reviewed before any modification to `template/`.
+
+## Snapshot Maintenance
+
+OpenAI upstream evidence is intentionally human-curated.
+
+Only `references/openai/snapshots/` is manually maintained as primary evidence.
+Strict naming and metadata validation is enforced by:
+
+```bash
+./scripts/check
+```

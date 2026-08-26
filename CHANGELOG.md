@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.5.0
+
+- Changed OpenAI reference maintenance to human-curated snapshots only.
+- Removed automated OpenAI web fetching/change detection.
+- Added strict snapshot source-directory, metadata, filename, date, extension, and URL validation.
+- Added `tests/validate_references.py`.
+- Added canonical repository validation entry point `./scripts/check`.
+- Formalized snapshot evidence as primary input and SOURCES/notes as derived maintenance artifacts.
+
+
 ## 1.4.0
 
 - Added `references/openai/` as a curated upstream-evidence layer.

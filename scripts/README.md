@@ -1,29 +1,43 @@
 # codex-template Maintenance Scripts
 
-These scripts maintain the **template repository itself**.
+These scripts maintain the `codex-template` repository itself.
 
 They are not copied into instantiated projects.
 
-## `check_openai_references.py`
+## `./scripts/check`
 
-Checks the official OpenAI sources registered in:
+Canonical repository validation entry point.
+
+It runs:
 
 ```text
-references/openai/SOURCES.md
+tests/validate_template.py
+tests/validate_references.py
 ```
 
-Run:
+Use:
 
 ```bash
-python scripts/check_openai_references.py
+./scripts/check
 ```
 
-After manually reviewing the current upstream state, establish/update the baseline with:
+Human contributors, Codex, and CI should use this same entry point.
 
-```bash
-python scripts/check_openai_references.py --update-state
+## Reference Maintenance
+
+OpenAI web pages are not fetched automatically.
+
+Human responsibility:
+
+```text
+update references/openai/snapshots/
 ```
 
-A changed source is only a review signal.
+Repository validation checks:
 
-The script must never automatically modify `template/`.
+- source directory naming,
+- metadata presence and consistency,
+- approved OpenAI URLs,
+- snapshot filename/date/extension rules.
+
+Derived indexes, notes, decisions, and template changes are handled separately.

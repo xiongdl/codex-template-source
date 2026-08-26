@@ -99,3 +99,18 @@ Upstream Source
 → Validation
 → Versioned Release
 ```
+
+## Snapshot Evidence Boundary
+
+Human-curated upstream evidence is stored under:
+
+```text
+references/openai/snapshots/
+```
+
+This is primary evidence.
+
+`SOURCES.md` and `notes/` are derived reference-maintenance artifacts.
+They are not the human-maintained source of truth.
+
+Snapshot format is enforced by repository validation.

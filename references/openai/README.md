@@ -2,75 +2,53 @@
 
 This directory contains curated upstream evidence used to evaluate and evolve `codex-template`.
 
-It is **not** part of the distributable project template.
+It is not part of the distributable `template/`.
 
-## Purpose
+## Responsibility Split
 
-The reference workflow is:
+### Human
 
-```text
-Official OpenAI Source
-        ↓
-Track / Review
-        ↓
-Extract Template-Relevant Insight
-        ↓
-Evaluate Generality
-        ↓
-ADR / Design Decision when needed
-        ↓
-Modify template/
-        ↓
-Validate
-        ↓
-CHANGELOG + VERSION
-```
-
-## Directory Structure
+Maintain only authoritative snapshot inputs:
 
 ```text
-references/openai/
-├── README.md
-├── SOURCES.md
-├── notes/
-└── snapshots/
+references/openai/snapshots/
 ```
 
-### `SOURCES.md`
+### ChatGPT / Codex
 
-Registry of upstream sources worth monitoring.
+May maintain derived material:
 
-### `notes/`
+```text
+SOURCES.md
+notes/
+docs/decisions/
+template/
+CHANGELOG.md
+VERSION
+```
 
-Local analysis and distilled implications for `codex-template`.
+based on reviewed snapshot evidence and project feedback.
 
-Notes should summarize rather than reproduce source documents.
+## Evidence Flow
 
-### `snapshots/`
+```text
+Human updates snapshots/
+        ↓
+./scripts/check
+        ↓
+Derived source/index maintenance
+        ↓
+ChatGPT / Codex analysis
+        ↓
+No impact / Note / ADR
+        ↓
+Template change when justified
+        ↓
+Validation
+        ↓
+Versioned release
+```
 
-Optional immutable copies of source artifacts when there is a strong reason to preserve a specific upstream version.
+A snapshot update never automatically implies a template change.
 
-Do not mirror the OpenAI website here by default.
-
-## Source Policy
-
-Prefer first-party OpenAI sources.
-
-Suggested priority:
-
-1. Official Codex documentation / specifications
-2. OpenAI engineering articles describing Codex or agent engineering
-3. Official Codex release notes / product documentation
-4. Other official OpenAI materials with direct template relevance
-
-Every source entry should record:
-
-- source title,
-- official URL,
-- source category,
-- relevance,
-- last reviewed date,
-- current status,
-- template implications.
-
-A source change is evidence for review, not an automatic instruction to change the template.
+See `snapshots/README.md` for strict naming and metadata rules.

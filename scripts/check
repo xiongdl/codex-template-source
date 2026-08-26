@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+set -eu
+
+ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
+
+python "$ROOT/tests/validate_template.py"
+python "$ROOT/tests/validate_references.py"

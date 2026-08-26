@@ -50,3 +50,31 @@ When a template change is motivated by OpenAI documentation or product evolution
 7. update version and changelog.
 
 Upstream changes must never directly auto-edit the distributable template.
+
+## Snapshot Evidence Policy
+
+Human-maintained OpenAI evidence lives only under:
+
+```text
+references/openai/snapshots/
+```
+
+Snapshot structure is mechanically validated.
+
+A source directory must follow:
+
+```text
+OAI-NNN-<slug>/
+```
+
+and contain `metadata.yaml`.
+
+Snapshot filenames must follow:
+
+```text
+YYYY-MM-DD.(pdf|html|md)
+```
+
+Run `./scripts/check` before commit.
+
+Invalid snapshot naming, metadata, or structure is a repository validation failure.
