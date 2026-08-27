@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.2
+
+- Made the repository Default Base Branch configurable while retaining `main` as the template and `codex-template` default.
+- Required each `CHANGE` Task to resolve one immutable Base Branch and use it as both Task Branch creation source and final ff-only merge target.
+- Extended Task, review, result, initialization, architecture, and validation artifacts with Base Branch semantics while preserving committed-state review and exact-approved-commit integration.
+
 ## 1.8.1
 
 - Required Independent Review to run in a Codex session distinct from the Implementation Owner session, while retaining self-review as implementation verification only.

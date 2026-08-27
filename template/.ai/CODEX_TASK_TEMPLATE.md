@@ -5,6 +5,7 @@
 - Task ID:
 - Revision:
 - Task Type: `READ_ONLY | CHANGE`
+- Base Branch: `NOT_APPLICABLE | <branch> | INHERIT_DEFAULT`
 
 ## Goal
 

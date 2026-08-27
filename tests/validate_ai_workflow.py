@@ -51,8 +51,11 @@ HANDOFF_TOKENS = (
 )
 
 GIT_TOKENS = (
-    "main",
+    "Default Base Branch",
+    "Base Branch",
+    "Base Commit",
     "task/*",
+    "Task Branch creation source == final merge target == Base Branch",
     "committed Review Target",
     "Base Commit..Review Commit",
     "git merge --ff-only",
@@ -64,6 +67,7 @@ TASK_SECTIONS = (
     "Task ID",
     "Revision",
     "Task Type: `READ_ONLY | CHANGE`",
+    "Base Branch: `NOT_APPLICABLE | <branch> | INHERIT_DEFAULT`",
     "## Goal",
     "## Context",
     "## In Scope",
@@ -82,6 +86,7 @@ REVIEW_PROMPT_TOKENS = (
     "Previous Review",
     "Review Objective",
     "Original Task",
+    "Base Branch",
     "Base Commit",
     "Review Commit",
     "Authoritative References",
@@ -117,6 +122,7 @@ RESULT_TOKENS = (
     "COMPLETED | BLOCKED",
     "Result Summary",
     "Repository State",
+    "Base Branch",
     "Verification",
     "Independent Review",
     "Acceptance",
@@ -175,6 +181,19 @@ def main():
             ai_dir / "ENGINEERING_RESULT_TEMPLATE.md",
             RESULT_TOKENS,
         )
+
+    require_tokens(
+        errors,
+        "root",
+        LAYERS["root"] / "GIT_WORKFLOW.md",
+        ("For `codex-template`, the Default Base Branch is `main`.",),
+    )
+    require_tokens(
+        errors,
+        "template",
+        LAYERS["template"] / "GIT_WORKFLOW.md",
+        ("The template default is `main`", "may configure another"),
+    )
 
     if errors:
         for error in errors:

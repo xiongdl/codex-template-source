@@ -2,22 +2,35 @@
 
 ## Branch Model
 
-The single long-lived integration and release branch is `main`.
+Every repository defines one `Default Base Branch`. For `codex-template`, the Default Base Branch is `main`.
+
+Each `CHANGE` Task resolves exactly one `Base Branch` for its complete lifecycle:
+
+1. use the explicit Task Contract `Base Branch`, when provided;
+2. otherwise use the repository `Default Base Branch`.
+
+The Base Branch is the logical branch identity. The Base Commit is the exact commit of that branch used for a specific review or integration state. A Task's Base Branch is immutable: it is both the source from which the Task Branch is created and the final merge target.
 
 Every `CHANGE` task uses exactly one short-lived branch:
 
 The branch namespace is `task/*`.
 
 ```text
-main
+Base Branch
 └── task/<task-id>-<short-name>
 ```
 
-Create the task branch from current `main`, not from another task branch. Do not require `dev`, `develop`, `feature/*`, `bugfix/*`, or `hotfix/*` taxonomies. `READ_ONLY` tasks require no task branch.
+Create the Task Branch from the current Base Branch, not from another task branch. Do not require a framework-wide `main`, `dev`, `develop`, `feature/*`, `bugfix/*`, or `hotfix/*` taxonomy. `READ_ONLY` tasks require no task branch.
+
+The invariant is:
+
+```text
+Task Branch creation source == final merge target == Base Branch
+```
 
 ## Task History and Review Target
 
-Multiple coherent commits are allowed. Before Review Attempt 1, local history may be cleaned up. After Review Attempt 1 begins, reviewed history should not normally be rewritten; review fixes are appended as commits. A rebase onto updated `main` is allowed but invalidates prior approval.
+Multiple coherent commits are allowed. Before Review Attempt 1, local history may be cleaned up. After Review Attempt 1 begins, reviewed history should not normally be rewritten; review fixes are appended as commits. A rebase onto the updated Base Branch is allowed but invalidates prior approval.
 
 Formal Independent Review requires a committed Review Target:
 
@@ -37,7 +50,7 @@ Codex A owns local integration. Integrate a `CHANGE` task only when:
 - Independent Review is `APPROVED`;
 - task `HEAD` equals the Approved Commit;
 - the tracked working tree is clean;
-- the task branch is based on current `main`;
+- the Task Branch is based on the current Base Branch;
 - required verification passes.
 
 Integration must use:
@@ -52,11 +65,11 @@ Do not squash the reviewed commits by default. The target invariant is:
 Reviewed Commit == Approved Commit == Integrated Commit
 ```
 
-If `main` advances before integration, rebase the task branch onto current `main`, re-verify, identify the new Base and Review Commits, obtain a new Independent Review, and retry. Main advancement alone is not a blocked condition.
+If the Base Branch advances before integration, rebase the Task Branch onto the current Base Branch, re-verify, identify the new Base and Review Commits, obtain a new Independent Review, and retry. Base Branch advancement alone is not a blocked condition.
 
 ## Permissions
 
-A `CHANGE` Task Contract authorizes Codex A to inspect Git state, create its task branch, explicitly stage task-related paths, commit, locally rebase onto `main`, perform ff-only local integration after the gate, and delete the normally merged local task branch.
+A `CHANGE` Task Contract authorizes Codex A to inspect Git state, create its Task Branch from the resolved Base Branch, explicitly stage task-related paths, commit, locally rebase onto that Base Branch, perform ff-only local integration back into that same Base Branch after the gate, and delete the normally merged local Task Branch.
 
 Codex A MUST NOT absorb unrelated pre-existing working-tree changes. Prefer explicit-path staging.
 

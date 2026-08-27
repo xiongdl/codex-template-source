@@ -13,6 +13,8 @@ Every Task Contract has an immutable Task ID and Task Type plus a Revision. Task
 - `READ_ONLY`: repository modification is not authorized, no task branch is required, and Independent Review is `NOT_APPLICABLE`.
 - `CHANGE`: modification is authorized within scope, exactly one dedicated `task/*` branch is required, and Independent Review is mandatory before completion.
 
+Every `CHANGE` Task resolves one immutable Base Branch: the explicit Task Contract Base Branch when provided, otherwise the repository Default Base Branch. The same Base Branch is the Task Branch creation source and final merge target. Each `CHANGE` Task retains exactly one Base Branch and one Task Branch throughout its lifecycle.
+
 Task Type is immutable. A `READ_ONLY` task that discovers required changes returns to the Design Owner for a new `CHANGE` Task Contract. Revisions may clarify the same Task but do not reset Review Attempt count.
 
 Engineering Task decomposition belongs exclusively to ChatGPT / Design Owner. Codex A may organize internal steps but MUST NOT create child Engineering Tasks, delegate implementation ownership to another Codex, or create independent implementation subtasks for other Codex sessions. When Design Owner decomposition is required, return `BLOCKED` with `DECISION_REQUIRED`.

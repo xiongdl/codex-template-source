@@ -99,7 +99,7 @@ Record commands, pass/fail status, skipped checks, and constraints.
 
 ## Phase 10A — Establish AI Task Git Workflow
 
-Confirm `main` as the single long-lived integration/release mainline or record the project's explicitly chosen equivalent. Ensure `CHANGE` tasks can use short-lived `task/*` branches, committed Review Targets, read-only Independent Review, and ff-only integration as defined by `.ai/GIT_WORKFLOW.md`.
+Define the repository `Default Base Branch`. Use `main` as the template default, while preserving an instantiated project's explicitly chosen project-defined long-lived branch when appropriate. Ensure each `CHANGE` Task resolves one immutable Base Branch, creates exactly one short-lived `task/*` Task Branch from it, and integrates the approved commit back into that same Base Branch using ff-only integration as defined by `.ai/GIT_WORKFLOW.md`.
 
 Do not invent additional branch taxonomies during initialization.
 

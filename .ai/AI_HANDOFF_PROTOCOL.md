@@ -14,6 +14,8 @@ This protocol makes cross-role engineering work reproducible from repository sta
 
 Every Codex Task Prompt declares an immutable Task ID and Task Type plus a Revision.
 
+Every `CHANGE` Task resolves one immutable Base Branch: the explicit Task Contract Base Branch when provided, otherwise the repository Default Base Branch. The same Base Branch is the Task Branch creation source and final merge target. Each `CHANGE` Task retains exactly one Base Branch and one Task Branch throughout its lifecycle.
+
 Task Type is limited to:
 
 - `READ_ONLY`: repository modification is not authorized, no task branch is required, and Independent Review is `NOT_APPLICABLE`.

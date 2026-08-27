@@ -2,22 +2,35 @@
 
 ## Branch Model
 
-`main` is the single long-lived integration and release mainline. Every `CHANGE` task uses exactly one short-lived branch created from current `main`:
+Every repository defines one `Default Base Branch`. The template default is `main`; an instantiated project may configure another project-defined long-lived branch.
+
+Each `CHANGE` Task resolves exactly one `Base Branch` for its complete lifecycle:
+
+1. use the explicit Task Contract `Base Branch`, when provided;
+2. otherwise use the repository `Default Base Branch`.
+
+The Base Branch is the logical branch identity. The Base Commit is the exact commit of that branch used for a specific review or integration state. A Task's Base Branch is immutable: it is both the source from which the Task Branch is created and the final merge target.
+
+Every `CHANGE` Task uses exactly one short-lived Task Branch:
 
 The branch namespace is `task/*`.
 
 ```text
-main
+Base Branch
 └── task/<task-id>-<short-name>
 ```
 
-Do not normally branch from another task branch. Do not require `dev`, `develop`, `feature/*`, `bugfix/*`, or `hotfix/*`. `READ_ONLY` tasks need no branch.
+Do not branch from another Task Branch. Do not impose a framework-wide `main`, `dev`, `develop`, `feature/*`, `bugfix/*`, or `hotfix/*` taxonomy. `READ_ONLY` tasks need no branch.
+
+```text
+Task Branch creation source == final merge target == Base Branch
+```
 
 ## Committed Review Target
 
 Formal review requires a committed Review Target.
 
-Multiple coherent task commits are allowed. Before Review Attempt 1, local history may be cleaned up. After it begins, reviewed history should not normally be rewritten and review fixes should be appended. Rebasing onto updated `main` is allowed but invalidates prior approval.
+Multiple coherent task commits are allowed. Before Review Attempt 1, local history may be cleaned up. After it begins, reviewed history should not normally be rewritten and review fixes should be appended. Rebasing onto the updated Base Branch is allowed but invalidates prior approval.
 
 Before Independent Review, Codex A must implement, verify, commit, and identify Base Commit and Review Commit. The Review Commit must be task branch `HEAD`. Review covers the complete `Base Commit..Review Commit` Task change set and repository at Review Commit, not only the final commit.
 
@@ -25,7 +38,7 @@ After `CHANGES_REQUESTED`, a new Review Commit is required only when Finding res
 
 ## Integration Gate
 
-Codex A integrates locally only when Independent Review is `APPROVED`, task `HEAD` equals Approved Commit, the tracked working tree is clean, the task branch is based on current `main`, and required verification passes.
+Codex A integrates locally only when Independent Review is `APPROVED`, task `HEAD` equals Approved Commit, the tracked working tree is clean, the Task Branch is based on the current Base Branch, and required verification passes.
 
 Integration must use:
 
@@ -39,10 +52,10 @@ Do not squash reviewed commits by default. The target is:
 Reviewed Commit == Approved Commit == Integrated Commit
 ```
 
-If `main` advances, rebase onto current `main`, re-verify, identify new Base and Review Commits, obtain a new Independent Review, and retry. Main advancement alone is not `BLOCKED`.
+If the Base Branch advances, rebase the Task Branch onto the current Base Branch, re-verify, identify new Base and Review Commits, obtain a new Independent Review, and retry. Base Branch advancement alone is not `BLOCKED`.
 
 ## Permissions
 
-A `CHANGE` Task Contract authorizes normal local task lifecycle operations: Git inspection, task branch creation, explicit-path staging, local commits, local rebase onto `main`, ff-only integration after the gate, and normal deletion of a merged local task branch. Codex A MUST NOT absorb unrelated pre-existing changes.
+A `CHANGE` Task Contract authorizes normal local task lifecycle operations: Git inspection, Task Branch creation from the resolved Base Branch, explicit-path staging, local commits, local rebase onto that Base Branch, ff-only integration back into that same Base Branch after the gate, and normal deletion of a merged local Task Branch. Codex A MUST NOT absorb unrelated pre-existing changes.
 
 Remote push or branch writes, force push, release or Git tag publication, destructive cleanup, forced branch deletion, and shared-history rewriting require explicit authority or persistent project policy.

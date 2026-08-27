@@ -17,6 +17,7 @@
 
 - Repository Changes: `YES | NO`
 - Task Branch: `NOT_APPLICABLE | task/...`
+- Base Branch: `NOT_APPLICABLE | <branch>`
 - Base Commit: `NOT_APPLICABLE | <commit>`
 - Reviewed Commit: `NOT_APPLICABLE | <commit>`
 - Approved Commit: `NOT_APPLICABLE | <commit>`

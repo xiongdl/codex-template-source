@@ -18,6 +18,7 @@ Reference the Codex Task Prompt:
 
 ## Git Review Target
 
+- Base Branch:
 - Base Commit:
 - Review Commit:
 

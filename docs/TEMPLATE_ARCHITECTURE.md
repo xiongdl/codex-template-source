@@ -130,7 +130,9 @@ Both layers use the same core model:
 - Codex B as read-only Review Owner;
 - immutable `READ_ONLY` / `CHANGE` Task Types;
 - committed-state Independent Review for `CHANGE`;
-- `main` plus one short-lived `task/*` branch;
+- one repository Default Base Branch, with `main` as the template default;
+- one immutable Base Branch and one short-lived `task/*` Task Branch per `CHANGE` Task;
+- Task Branch creation and final integration against the same Base Branch;
 - ff-only integration of the exact approved commit;
 - four standardized cross-role artifacts.
 
