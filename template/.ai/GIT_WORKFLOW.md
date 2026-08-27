@@ -21,6 +21,8 @@ Multiple coherent task commits are allowed. Before Review Attempt 1, local histo
 
 Before Independent Review, Codex A must implement, verify, commit, and identify Base Commit and Review Commit. The Review Commit must be task branch `HEAD`. Review covers the complete `Base Commit..Review Commit` Task change set and repository at Review Commit, not only the final commit.
 
+After `CHANGES_REQUESTED`, a new Review Commit is required only when Finding resolution changes tracked repository state. Repository changes must be verified and committed, and the new task-branch `HEAD` becomes the next Review Commit. If resolution is solely through Task Contract revision, Design Owner decision, required external input, or requirement clarification and tracked state is unchanged, do not create an artificial or empty commit; the next Review Attempt may use the same Review Commit.
+
 ## Integration Gate
 
 Codex A integrates locally only when Independent Review is `APPROVED`, task `HEAD` equals Approved Commit, the tracked working tree is clean, the task branch is based on current `main`, and required verification passes.

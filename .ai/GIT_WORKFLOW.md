@@ -28,6 +28,8 @@ Formal Independent Review requires a committed Review Target:
 
 The Review Commit must be task branch `HEAD`. Review covers the complete `Base Commit..Review Commit` Task diff and the repository in the Review Commit state, not only the final commit.
 
+After `CHANGES_REQUESTED`, a new Review Commit is required only when Finding resolution changes tracked repository state. Repository changes must be verified and committed, and the new task-branch `HEAD` becomes the next Review Commit. If resolution is solely through Task Contract revision, Design Owner decision, required external input, or requirement clarification and tracked state is unchanged, do not create an artificial or empty commit; the next Review Attempt may use the same Review Commit.
+
 ## Integration Gate
 
 Codex A owns local integration. Integrate a `CHANGE` task only when:

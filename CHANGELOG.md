@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.8.1
+
+- Required Independent Review to run in a Codex session distinct from the Implementation Owner session, while retaining self-review as implementation verification only.
+- Clarified that every `CHANGES_REQUESTED` result requires re-review, but a new Review Commit is required only when Finding resolution changes tracked repository state.
+- Allowed contract- or decision-only Finding resolution to reuse the unchanged Review Commit without an artificial commit, with explicit review-continuity references and anti-abuse safeguards.
+- Extended static workflow validation for the new policy language without claiming to prove runtime session separation.
+
 ## 1.8.0
 
 - Formalized ChatGPT as Design Owner, Codex A as Implementation Owner, and Codex B as read-only Review Owner across root governance and the distributable template.

@@ -43,6 +43,9 @@ HANDOFF_TOKENS = (
     "Maximum Review Attempts = 3",
     "Base Commit..Review Commit",
     "mandatory re-review",
+    "Codex session distinct from the Implementation Owner session",
+    "same Review Commit",
+    "artificial or empty commit",
     "Engineering Task decomposition",
     "ChatGPT / Design Owner",
 )
@@ -88,6 +91,8 @@ REVIEW_PROMPT_TOKENS = (
     "Verification",
     "CODEX_REVIEW_REPORT_TEMPLATE.md",
     "read-only",
+    "MUST be executed in a Codex session distinct from the Implementation Owner session",
+    "Review Commit may remain unchanged",
 )
 
 REVIEW_REPORT_TOKENS = (
@@ -124,6 +129,7 @@ RESULT_TOKENS = (
     "Independent Review = `NOT_APPLICABLE`",
     "Independent Review = `APPROVED`",
     "Reviewed Commit == Approved Commit == Integrated Commit",
+    "Performed by distinct Codex session: `NOT_APPLICABLE | YES`",
 )
 
 

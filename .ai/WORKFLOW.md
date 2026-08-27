@@ -21,16 +21,16 @@ ChatGPT / Design Owner
     ↓ requirements, decisions, Task Contract
 Codex A / Implementation Owner
     ↓ readiness, task branch, implementation, verification, commit
-Codex B / Review Owner
+Codex B / Review Owner in a distinct Codex session
     ↓ read-only Independent Review
 APPROVED ──────────────── CHANGES_REQUESTED
-    ↓                         ↓ fix, verify, commit, re-review
+    ↓                         ↓ resolve, commit if tracked state changed, re-review
 ff-only local integration ←───┘
     ↓
 Engineering Result Report to ChatGPT
 ```
 
-Task Type is immutable and limited to `READ_ONLY` and `CHANGE`. A `CHANGE` requires committed-state Independent Review and approval before completion. Engineering terminal status is limited to `COMPLETED` and `BLOCKED`.
+Task Type is immutable and limited to `READ_ONLY` and `CHANGE`. A `CHANGE` requires committed-state Independent Review performed in a Codex session distinct from the Implementation Owner session and approval before completion. Every `CHANGES_REQUESTED` requires re-review; a new Review Commit is required only when Finding resolution changes tracked repository state. Engineering terminal status is limited to `COMPLETED` and `BLOCKED`.
 
 ## Maintainer Responsibilities
 

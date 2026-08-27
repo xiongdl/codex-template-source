@@ -32,7 +32,9 @@ Codex A1 → Codex A2 continuation of the same Implementation Owner role needs n
 
 ## Independent Review
 
-For every `CHANGE`, Codex A implements, verifies, commits, and identifies Base Commit and Review Commit. Formal review targets committed repository state: the Review Commit must be task branch `HEAD`, and working-tree-only review is invalid.
+For every `CHANGE`, Independent Review MUST be performed in a Codex session distinct from the Implementation Owner session. Codex A switching roles, executing its own Codex Review Prompt, or performing another self-review in the implementation session does not satisfy this gate. Self-review may support verification but is not Independent Review.
+
+Codex A implements, verifies, commits, and identifies Base Commit and Review Commit. Formal review targets committed repository state: the Review Commit must be task branch `HEAD`, and working-tree-only review is invalid. Once the Codex Review Prompt is ready, Codex A stops review execution in the current session. A distinct Codex session acting as Codex B executes it.
 
 Codex B reviews the full `Base Commit..Review Commit` diff and repository at the Review Commit. Codex A's implementation narrative is not evidence of correctness. Review Result is limited to:
 
@@ -41,7 +43,13 @@ Codex B reviews the full `Base Commit..Review Commit` diff and repository at the
 
 Every Finding contains Finding ID, Issue, Evidence, and Required Change. Non-blocking observations belong in Notes. Findings have no severity, priority, or blocking flag. Codex B does not return Task-level `BLOCKED`.
 
-After `CHANGES_REQUESTED`, Codex A addresses all Findings, verifies, creates a new commit, and obtains mandatory re-review. Codex A may challenge a Finding with repository, design, or test evidence, but only Codex B may withdraw it. Re-review covers the complete Base Commit through current Review Commit; the previous reviewed commit may focus Finding resolution.
+Every `CHANGES_REQUESTED` result requires mandatory re-review by the same Review Owner. Codex A may challenge a Finding with repository, design, or test evidence, but may not close it unilaterally; only Codex B may withdraw it. Review Attempt increments normally and does not reset.
+
+If resolving Findings changes any tracked repository artifact, Codex A resolves and verifies the changes, creates a new local commit as the next Review Commit, and generates the next Codex Review Prompt. Re-review covers the complete Base Commit through the current Review Commit; the previous reviewed commit may focus Finding resolution.
+
+If resolution is solely a Task Contract revision, Design Owner decision, required external input, or requirement clarification and tracked repository state does not change, no artificial or empty commit is required. The next Review Attempt may target the same Review Commit. Its Review Prompt must reference the updated Task Contract revision, the Previous Review Report, and the unchanged Review Commit.
+
+Task Contract revision must not hide or waive a genuine implementation defect. Incorrect behavior, missing required implementation, missing verification, or another repository defect requires normal repository resolution unless the Design Owner legitimately changes the Task Contract. A contract change that materially redefines Task identity, core scope, or acceptance intent requires a new Engineering Task.
 
 Maximum Review Attempts = 3 per Task ID. The count survives Task Contract revisions and session continuation. A third `CHANGES_REQUESTED` produces Engineering Status `BLOCKED` and Blocked Reason `REVIEW_LIMIT_REACHED`.
 

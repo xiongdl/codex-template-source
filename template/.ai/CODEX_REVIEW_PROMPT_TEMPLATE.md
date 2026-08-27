@@ -8,6 +8,8 @@
 
 ## Review Objective
 
+This prompt MUST be executed in a Codex session distinct from the Implementation Owner session.
+
 Independently review the complete Task change set and repository state. This is read-only: Codex B MUST NOT modify repository artifacts or the implementation under review.
 
 ## Original Task
@@ -20,6 +22,8 @@ Reference the Codex Task Prompt:
 - Review Commit:
 
 The Review Commit must be task branch `HEAD`. Review `Base Commit..Review Commit`, not only the last commit.
+
+For re-review after contract- or decision-only resolution with unchanged tracked repository state, reference the updated Task Contract revision and Previous Review Report above; the Review Commit may remain unchanged.
 
 ## Authoritative References
 
