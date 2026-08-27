@@ -12,6 +12,8 @@
 
 Detailed task, handoff, review, and status contracts are in `.ai/AI_HANDOFF_PROTOCOL.md`. Reproducible branch, review-target, and integration rules are in `.ai/GIT_WORKFLOW.md`.
 
+Codex A owns preparation of the Independent Review handoff. The human user owns creation of the new Codex B session and manual transfer of the formal review artifacts.
+
 ## Standard Flow
 
 ```text

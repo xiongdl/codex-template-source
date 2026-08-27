@@ -8,7 +8,7 @@
 - Repository = durable engineering memory
 - CI / Automation = repeatable verification
 
-ChatGPT owns requirements, architecture, material decisions, Task Contracts, and Engineering Task decomposition. Codex A owns implementation, verification, local Git lifecycle, Engineering Task status, and review orchestration. Codex B performs read-only Independent Review and owns Findings and the review conclusion.
+ChatGPT owns requirements, architecture, material decisions, Task Contracts, and Engineering Task decomposition. Codex A owns implementation, verification, local Git lifecycle, Engineering Task status, and preparation of the Independent Review handoff. The human user owns creation of the new Codex B session and manual transfer of the formal review artifacts. Codex B performs read-only Independent Review and owns Findings and the review conclusion.
 
 Detailed contracts are in `.ai/AI_HANDOFF_PROTOCOL.md`; Git and integration rules are in `.ai/GIT_WORKFLOW.md`.
 

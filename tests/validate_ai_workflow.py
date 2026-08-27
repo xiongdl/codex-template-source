@@ -68,6 +68,17 @@ GIT_TOKENS = (
     "invalidates prior approval",
 )
 
+WORKFLOW_TOKENS = (
+    "preparation of the Independent Review handoff",
+    "human user owns creation of the new Codex B session",
+    "manual transfer of the formal review artifacts",
+    "HARD STOP",
+)
+
+WORKFLOW_FORBIDDEN_TOKENS = (
+    "review orchestration",
+)
+
 TASK_SECTIONS = (
     "Task ID",
     "Revision",
@@ -163,6 +174,17 @@ def require_tokens(errors, label, path, tokens):
             )
 
 
+def reject_tokens(errors, label, path, tokens):
+    if not path.is_file():
+        return
+    text = path.read_text(encoding="utf-8")
+    for token in tokens:
+        if token in text:
+            errors.append(
+                f"{label}: {path.relative_to(ROOT)} contains forbidden literal '{token}'"
+            )
+
+
 def main():
     errors = []
 
@@ -174,6 +196,13 @@ def main():
 
         require_tokens(errors, label, ai_dir / "AI_HANDOFF_PROTOCOL.md", HANDOFF_TOKENS)
         require_tokens(errors, label, ai_dir / "GIT_WORKFLOW.md", GIT_TOKENS)
+        require_tokens(errors, label, ai_dir / "WORKFLOW.md", WORKFLOW_TOKENS)
+        reject_tokens(
+            errors,
+            label,
+            ai_dir / "WORKFLOW.md",
+            WORKFLOW_FORBIDDEN_TOKENS,
+        )
         require_tokens(errors, label, ai_dir / "CODEX_TASK_TEMPLATE.md", TASK_SECTIONS)
         require_tokens(
             errors,
