@@ -120,6 +120,6 @@ Changes to `template/` must be checked for project-agnostic compatibility, gover
 
 ## Engineering Task Lifecycle
 
-Maintainer Engineering Tasks follow root `.ai/AI_HANDOFF_PROTOCOL.md` and `.ai/GIT_WORKFLOW.md`. `CHANGE` tasks require one immutable Base Branch, a dedicated `task/*` Task Branch created from it, a committed Review Target, read-only Independent Review by Codex B, and approval of the exact commit before ff-only integration back into that same Base Branch. The `codex-template` Default Base Branch is `main`.
+Maintainer Engineering Tasks follow root `.ai/AI_HANDOFF_PROTOCOL.md` and `.ai/GIT_WORKFLOW.md`. `CHANGE` tasks require one immutable Base Branch, a dedicated `task/*` Task Branch created from it, a committed Review Target, read-only Independent Review by Codex B in a new Codex session explicitly created by the human user, and approval of the exact commit before ff-only integration back into that same Base Branch. Internal, delegated, sub-agent, hidden, automatically spawned, same-session, and self-review mechanisms cannot satisfy the gate. The `codex-template` Default Base Branch is `main`.
 
 Local implementation and integration do not authorize remote writes, tags, or releases.

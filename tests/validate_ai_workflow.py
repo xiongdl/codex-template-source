@@ -43,7 +43,12 @@ HANDOFF_TOKENS = (
     "Maximum Review Attempts = 3",
     "Base Commit..Review Commit",
     "mandatory re-review",
-    "Codex session distinct from the Implementation Owner session",
+    "new Codex session explicitly created by the human user",
+    "human user manually supplies",
+    "MUST stop review execution",
+    "sub-agent or delegated reviewers",
+    "do not consume Review Attempt count",
+    "cannot produce a qualifying `APPROVED`",
     "same Review Commit",
     "artificial or empty commit",
     "Engineering Task decomposition",
@@ -96,7 +101,11 @@ REVIEW_PROMPT_TOKENS = (
     "Verification",
     "CODEX_REVIEW_REPORT_TEMPLATE.md",
     "read-only",
-    "MUST be executed in a Codex session distinct from the Implementation Owner session",
+    "MUST be executed by Codex B in a new Codex session explicitly created by the human user",
+    "human user must manually transfer this prompt",
+    "Codex A MUST stop after producing this prompt",
+    "do not consume Review Attempt count",
+    "Task Branch",
     "Review Commit may remain unchanged",
 )
 
@@ -105,6 +114,8 @@ REVIEW_REPORT_TOKENS = (
     "Review Attempt",
     "Base Commit",
     "Reviewed Commit",
+    "Human-created Codex B session: `YES`",
+    "Review Prompt supplied by human user: `YES`",
     "APPROVED | CHANGES_REQUESTED",
     "Findings",
     "Issue",
@@ -135,7 +146,8 @@ RESULT_TOKENS = (
     "Independent Review = `NOT_APPLICABLE`",
     "Independent Review = `APPROVED`",
     "Reviewed Commit == Approved Commit == Integrated Commit",
-    "Performed by distinct Codex session: `NOT_APPLICABLE | YES`",
+    "Performed in human-created Codex B session: `NOT_APPLICABLE | YES`",
+    "Review Prompt and Review Report manually transferred by human user: `NOT_APPLICABLE | YES`",
 )
 
 

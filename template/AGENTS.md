@@ -39,9 +39,11 @@ Understand
 
 ## Ownership and Task Contract
 
-Codex A is the Implementation Owner. Codex B is the read-only Review Owner and MUST NOT modify the implementation under review. ChatGPT / Design Owner owns requirements, architecture, material decisions, Task Contracts, and Engineering Task decomposition.
+Codex A is the Implementation Owner. Codex B is the read-only Review Owner and MUST NOT modify the implementation under review. A qualifying Codex B MUST run in a new Codex session explicitly created by the human user; internal or sub-agent reviewers are informational only. ChatGPT / Design Owner owns requirements, architecture, material decisions, Task Contracts, and Engineering Task decomposition.
 
 Before work, read `.ai/AI_HANDOFF_PROTOCOL.md` and `.ai/GIT_WORKFLOW.md`. Task Type is immutable and limited to `READ_ONLY` and `CHANGE`. Every `CHANGE` uses exactly one `task/*` branch and requires committed-state Independent Review, approval, and ff-only local integration before `COMPLETED`.
+
+At review-ready state, Codex A creates the Review Commit and formal Codex Review Prompt, then stops. The human user creates the new Codex B session, transfers the prompt, and returns the formal Codex Review Report to Codex A.
 
 Codex A may organize internal steps but must not delegate implementation ownership or create child Engineering Tasks.
 

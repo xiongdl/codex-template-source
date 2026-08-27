@@ -127,7 +127,7 @@ Both layers use the same core model:
 
 - ChatGPT as Design Owner;
 - Codex A as Implementation Owner;
-- Codex B as read-only Review Owner;
+- Codex B as read-only Review Owner in a new Codex session explicitly created by the human user;
 - immutable `READ_ONLY` / `CHANGE` Task Types;
 - committed-state Independent Review for `CHANGE`;
 - one repository Default Base Branch, with `main` as the template default;
@@ -135,5 +135,7 @@ Both layers use the same core model:
 - Task Branch creation and final integration against the same Base Branch;
 - ff-only integration of the exact approved commit;
 - four standardized cross-role artifacts.
+
+The human user is the explicit Independent Review handoff boundary: Codex A stops after producing the formal Review Prompt, the human creates Codex B's session and transfers the prompt, and the human returns Codex B's formal Review Report. Internal or sub-agent review is informational and cannot satisfy the gate.
 
 Root `.ai/` policies govern maintenance of `codex-template`. `template/.ai/` contains the project-agnostic contract copied to instantiated projects. The files intentionally have layer-specific surrounding guidance while preserving these invariants.

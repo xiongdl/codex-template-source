@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.8.3
+
+- Required qualifying Independent Review to run in a new Codex B session explicitly created by the human user.
+- Added the hard stop and manual Review Prompt/Review Report transfer boundary between Codex A and Codex B.
+- Classified internal, delegated, sub-agent, hidden, automatically spawned, same-session, and self-review mechanisms as informational checks that neither satisfy the gate nor consume Review Attempt count.
+- Updated root governance, distributable workflow artifacts, and static validation consistently while preserving `template/VERSION` at `0.1.0`.
+
 ## 1.8.2
 
 - Made the repository Default Base Branch configurable while retaining `main` as the template and `codex-template` default.

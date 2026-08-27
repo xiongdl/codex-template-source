@@ -6,6 +6,8 @@
 - Review Attempt: `N / 3`
 - Base Commit:
 - Reviewed Commit:
+- Human-created Codex B session: `YES`
+- Review Prompt supplied by human user: `YES`
 - Result: `APPROVED | CHANGES_REQUESTED`
 
 ## Findings

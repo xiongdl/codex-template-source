@@ -8,7 +8,9 @@
 
 ## Review Objective
 
-This prompt MUST be executed in a Codex session distinct from the Implementation Owner session.
+This prompt MUST be executed by Codex B in a new Codex session explicitly created by the human user. The human user must manually transfer this prompt to Codex B and return the resulting formal Codex Review Report to Codex A.
+
+Codex A MUST stop after producing this prompt. Self-review, same-session role switching, and internal, sub-agent, delegated, hidden, or automatically spawned reviewers are informational only: they do not satisfy the Independent Review Gate, do not consume Review Attempt count, and cannot produce a qualifying `APPROVED`.
 
 Independently review the complete Task change set and repository state. This is read-only: Codex B MUST NOT modify repository artifacts or the implementation under review.
 
@@ -20,6 +22,7 @@ Reference the Codex Task Prompt:
 
 - Base Branch:
 - Base Commit:
+- Task Branch:
 - Review Commit:
 
 The Review Commit must be task branch `HEAD`. Review `Base Commit..Review Commit`, not only the last commit.

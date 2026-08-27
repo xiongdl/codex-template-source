@@ -3,7 +3,7 @@
 ## Owners
 
 - **ChatGPT is the Design Owner** and owns requirements, architecture, material decisions, Task Contracts, and Engineering Task decomposition.
-- **Codex A is the Implementation Owner** and owns repository implementation, verification, the local Git task lifecycle, Engineering Task status, and Independent Review orchestration.
+- **Codex A is the Implementation Owner** and owns repository implementation, verification, the local Git task lifecycle, Engineering Task status, and preparation of the Independent Review handoff.
 - **Codex B is the Review Owner** and owns independent implementation review, Review Findings, and the review conclusion. Codex B is read-only and MUST NOT modify the implementation under review.
 
 ## Task Contracts
@@ -34,9 +34,11 @@ Codex A1 → Codex A2 continuation of the same Implementation Owner role needs n
 
 ## Independent Review
 
-For every `CHANGE`, Independent Review MUST be performed in a Codex session distinct from the Implementation Owner session. Codex A switching roles, executing its own Codex Review Prompt, or performing another self-review in the implementation session does not satisfy this gate. Self-review may support verification but is not Independent Review.
+For every `CHANGE`, Independent Review MUST be performed by Codex B in a new Codex session explicitly created by the human user. The human user manually supplies Codex A's formal Codex Review Prompt to that session and returns Codex B's formal Codex Review Report to Codex A.
 
-Codex A implements, verifies, commits, and identifies Base Commit and Review Commit. Formal review targets committed repository state: the Review Commit must be task branch `HEAD`, and working-tree-only review is invalid. Once the Codex Review Prompt is ready, Codex A stops review execution in the current session. A distinct Codex session acting as Codex B executes it.
+Codex A implements, verifies, commits, and identifies Base Branch, Base Commit, Task Branch, and Review Commit. Formal review targets committed repository state: the Review Commit must be task branch `HEAD`, and working-tree-only review is invalid. Once the Codex Review Prompt is ready, Codex A MUST stop review execution in the Implementation Owner session. The next workflow action belongs to the human user, who explicitly creates the new Codex B session and transfers the prompt.
+
+Codex A self-review, same-session role switching, internal reviewer contexts, sub-agent or delegated reviewers, hidden or automatically spawned reviewer contexts, and any reviewer context not explicitly created as a new Codex session by the human user do not satisfy the Independent Review Gate. They may be supplementary informational checks only: they do not count as formal Independent Review, do not consume Review Attempt count, cannot authorize integration, and cannot produce a qualifying `APPROVED`. Internal-agent isolation is not evaluated for eligibility.
 
 Codex B reviews the full `Base Commit..Review Commit` diff and repository at the Review Commit. Codex A's implementation narrative is not evidence of correctness. Review Result is limited to:
 
@@ -63,4 +65,4 @@ Terminal status is limited to `COMPLETED` and `BLOCKED`. Failures during executi
 
 ## Human Boundary
 
-Human authority is concentrated in `INPUT`, `DECISION`, `REMOTE`, and `RELEASE`. Normal implementation, review, and local integration need no step-by-step confirmation. Remote writes and release publication require explicit authority.
+Human authority is concentrated in `INPUT`, `DECISION`, `REVIEW_SESSION`, `REMOTE`, and `RELEASE`. Independent Review requires the human user to create the new Codex B session and manually transfer the formal review artifacts. Normal implementation and approved local integration need no step-by-step confirmation. Remote writes and release publication require explicit authority.

@@ -26,14 +26,15 @@
 
 For `READ_ONLY + COMPLETED`, Repository Changes = `NO` and Independent Review = `NOT_APPLICABLE`.
 
-For `CHANGE + COMPLETED`, Independent Review = `APPROVED` and was performed by a distinct Codex session, the approved repository state is integrated successfully, and Reviewed Commit == Approved Commit == Integrated Commit.
+For `CHANGE + COMPLETED`, Independent Review = `APPROVED` and was performed by Codex B in a new Codex session explicitly created by the human user, the approved repository state is integrated successfully, and Reviewed Commit == Approved Commit == Integrated Commit.
 
 ## Verification
 
 ## Independent Review
 
 - Status: `NOT_APPLICABLE | APPROVED | CHANGES_REQUESTED`
-- Performed by distinct Codex session: `NOT_APPLICABLE | YES`
+- Performed in human-created Codex B session: `NOT_APPLICABLE | YES`
+- Review Prompt and Review Report manually transferred by human user: `NOT_APPLICABLE | YES`
 - Review Attempts:
 - History:
 
