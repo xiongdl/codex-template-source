@@ -10,14 +10,34 @@ Project automation entry point.
 
 This template intentionally does not implement project-specific behavior.
 
-Recommended commands:
+Inspection / validation:
+  status    Report supported capability state without changing the project.
+  verify    Validate only the baseline and capabilities currently claimed.
+
+Executable lifecycle (enable incrementally when the project supports them):
   setup
   build
   test
-  verify
   clean
-  status
 EOF
+    ;;
+  status)
+    cat <<'EOF'
+Project capability status:
+  verify: NOT_CONFIGURED
+  setup:  NOT_IMPLEMENTED
+  build:  NOT_IMPLEMENTED
+  test:   NOT_IMPLEMENTED
+  clean:  NOT_IMPLEMENTED
+EOF
+    ;;
+  verify)
+    echo "verify: NOT_CONFIGURED — define the supported project baseline during Bootstrap." >&2
+    exit 2
+    ;;
+  setup|build|test|clean)
+    echo "$cmd: NOT_IMPLEMENTED" >&2
+    exit 2
     ;;
   *)
     echo "Command '$cmd' is not configured for this project yet." >&2

@@ -13,6 +13,10 @@
 
 ## In Scope
 
+## Repository Scope
+
+Identify the workspace and expected changed child repositories. For each expected modified repository, record its path and Base Branch when known. Use `WORKSPACE_ONLY` when applicable.
+
 ## Out of Scope
 
 ## Requirements

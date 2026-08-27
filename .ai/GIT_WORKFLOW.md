@@ -11,7 +11,7 @@ Each `CHANGE` Task resolves exactly one `Base Branch` for its complete lifecycle
 
 The Base Branch is the logical branch identity. The Base Commit is the exact commit of that branch used for a specific review or integration state. A Task's Base Branch is immutable: it is both the source from which the Task Branch is created and the final merge target.
 
-Every `CHANGE` task uses exactly one short-lived branch:
+Every `CHANGE` task uses exactly one short-lived workspace branch. Multi-repository child branches are governed separately below.
 
 The branch namespace is `task/*`.
 
@@ -67,9 +67,21 @@ Reviewed Commit == Approved Commit == Integrated Commit
 
 If the Base Branch advances before integration, rebase the Task Branch onto the current Base Branch, re-verify, identify the new Base and Review Commits, obtain a new Independent Review, and retry. Base Branch advancement alone is not a blocked condition.
 
+## Multi-Repository Tasks
+
+One coherent workspace Engineering Task may modify the workspace and managed child Git repositories. The workspace is the composition anchor and always has the Task Branch and top-level Review Commit. At Task start, record expected repository scope; for each modified repository record path, Base Branch, Base Commit, Task Branch, and Review Commit. Do not create branches in unchanged children or classify repositories as PRIMARY/DEPENDENCY. Scope expansion follows normal Task revision and design-decision rules.
+
+Create the workspace Task Branch first. Each changed child uses at most one Task Branch, normally with the workspace branch name, created from its own stable Base Branch. Child repositories retain native governance and layout; workspace artifacts are not injected into them.
+
+Prepare review child-first and workspace-last: commit each child Review Commit, record its exact gitlink or composition identity in the workspace, then create the workspace Review Commit. The single Review Prompt and Review Attempt cover the complete repository change set and cross-repository consistency. If a child Review Commit changes during re-review, update and recommit the workspace composition.
+
+After exact-commit approval, integrate changed children first and the workspace last using each repository's ff-only Base Branch. For every changed repository, `Reviewed Commit == Approved Commit == Integrated Commit`. An interrupted local sequence is resumed until the approved composition is consistent; database-style rollback is not required.
+
+Local completion does not require publication. With separate Human REMOTE authorization, publish changed child commits first, verify they are reachable from configured official remotes, and publish the referencing workspace last.
+
 ## Permissions
 
-A `CHANGE` Task Contract authorizes Codex A to inspect Git state, create its Task Branch from the resolved Base Branch, explicitly stage task-related paths, commit, locally rebase onto that Base Branch, perform ff-only local integration back into that same Base Branch after the gate, and delete the normally merged local Task Branch.
+A `CHANGE` Task Contract authorizes Codex A to perform these operations in the workspace and in-scope modified child repositories: inspect Git state; create the authorized Task Branches from their resolved Base Branches; explicitly stage task-related paths; commit; locally rebase onto the same Base Branch; perform ff-only local integration after the gate; and delete normally merged local Task Branches.
 
 Codex A MUST NOT absorb unrelated pre-existing working-tree changes. Prefer explicit-path staging.
 

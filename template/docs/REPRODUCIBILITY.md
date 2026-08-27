@@ -10,11 +10,15 @@
 ./scripts/project setup
 ```
 
+State `NOT_IMPLEMENTED` or `UNAVAILABLE` when setup is not yet a supported capability.
+
 ## Build
 
 ```bash
 ./scripts/project build
 ```
+
+State `NOT_IMPLEMENTED` or `UNAVAILABLE` when build is not yet supported.
 
 ## Test
 
@@ -22,11 +26,23 @@
 ./scripts/project test
 ```
 
+State `NOT_IMPLEMENTED` or `UNAVAILABLE` when test is not yet supported.
+
 ## Verify
 
 ```bash
 ./scripts/project verify
 ```
+
+Document exactly which currently claimed baseline and capabilities this validates. Do not imply unsupported capabilities were checked.
+
+## Status
+
+```bash
+./scripts/project status
+```
+
+This command is observational and reports supported, unavailable, and not-yet-implemented capabilities honestly.
 
 ## Configuration
 

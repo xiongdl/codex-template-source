@@ -21,38 +21,23 @@ Projects instantiated from this template should progressively become:
 
 > Understand → Design → Decide → Plan → Implement → Verify → Record → Review → Evolve
 
+## Workspace Model
+
+The template is a lean workspace for AI governance, project-level documentation, orchestration, and repository composition. Implementation may live in one or more native child Git repositories. `docs/`, `scripts/`, and `third_party/` are useful conventions; no generic implementation or test directory is prescribed.
+
+If there is no valid Git `HEAD`, `AGENTS.md` automatically routes Codex to `.ai/PROJECT_INIT.md` for Bootstrap and the Initial Commit. Users do not need to request a separate Project Definition task.
+
 ## Standard Engineering Entry Point
 
 Where practical:
 
-```bash
-./scripts/project setup
-./scripts/project build
-./scripts/project test
-./scripts/project verify
-./scripts/project clean
-./scripts/project status
-```
+`./scripts/project status` observes current capability without modification. `./scripts/project verify` validates the currently supported baseline. `setup`, `build`, `test`, and `clean` are enabled incrementally when the real project requires them.
 
 Human users, Codex, and CI should prefer the same project entry points.
 
-## Verification Hierarchy
+## Verification
 
-```text
-components/<component>/tests/
-        │
-        └── Component-local tests
-
-integration/tests/
-        │
-        └── Cross-component tests
-
-tests/
-        │
-        └── Project-level / End-to-End tests
-```
-
-A test should live at the narrowest level that fully validates the intended behavior.
+Preserve child repositories' native build and test structures. Verification should run at the narrowest project-appropriate level and must distinguish supported, unavailable, and not-yet-implemented capabilities.
 
 
 ## Project Entry Points

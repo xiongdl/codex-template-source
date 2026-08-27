@@ -8,9 +8,9 @@ Describe the system-level architecture and engineering boundaries.
 
 Replace this section with the real project architecture.
 
-## Components / Major Areas
+## Repository Composition and Major Areas
 
-| Component / Area | Responsibility | Location | Notes |
+| Repository / Area | Project Role | Location | Modification Boundary |
 |---|---|---|---|
 | TBD | TBD | TBD | TBD |
 
@@ -20,11 +20,11 @@ Replace this section with the real project architecture.
 |---|---|---|---|
 | TBD | TBD | TBD | TBD |
 
-## Integration Boundaries
+## Interfaces and Composition Boundaries
 
 | Contract / Interface | Participants | Documentation |
 |---|---|---|
-| TBD | TBD | `docs/integration/...` |
+| TBD | TBD | TBD |
 
 ## Architecture Invariants
 

@@ -2,6 +2,7 @@
 
 from pathlib import Path
 import re
+import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,9 +27,6 @@ REQUIRED = [
     "docs/PROJECT_STATUS.md",
     "docs/REPRODUCIBILITY.md",
     "docs/VERSIONING.md",
-    "components/README.md",
-    "integration/tests/README.md",
-    "tests/README.md",
     "scripts/README.md",
     "scripts/project",
 ]
@@ -50,6 +48,11 @@ def main():
     for rel in REQUIRED:
         if not (TEMPLATE / rel).exists():
             errors.append(f"missing required template path: {rel}")
+
+    for rel in ("components", "tests", "integration"):
+        path = TEMPLATE / rel
+        if path.exists() and any(item.is_file() for item in path.rglob("*")):
+            errors.append(f"template must not prescribe generic workspace directory: {rel}")
 
     # Governance files that must remain repository-level rather than template payload.
     governance_leaks = [
@@ -76,6 +79,11 @@ def main():
         for command in ["setup", "build", "test", "verify", "clean", "status"]:
             if command not in text:
                 errors.append(f"scripts/project does not document '{command}'")
+        status_result = subprocess.run(
+            [str(script), "status"], capture_output=True, text=True, check=False
+        )
+        if status_result.returncode != 0 or "NOT_IMPLEMENTED" not in status_result.stdout:
+            errors.append("scripts/project status must report capability state successfully")
 
     # Project VERSION and CHANGELOG consistency.
     version_path = TEMPLATE / "VERSION"
@@ -121,6 +129,20 @@ def main():
             errors.append(
                 "template/AGENTS.md does not reference .ai/TASK_READINESS.md"
             )
+        for token in ("git rev-parse --verify HEAD", ".ai/PROJECT_INIT.md", "not a third Task Type"):
+            if token not in agents:
+                errors.append(f"template/AGENTS.md missing Bootstrap routing concept '{token}'")
+
+    project_init_path = TEMPLATE / ".ai/PROJECT_INIT.md"
+    if project_init_path.is_file():
+        project_init = project_init_path.read_text(encoding="utf-8")
+        for token in (
+            "no valid Git `HEAD`", "Initial Commit", "not a third Engineering Task Type",
+            "status", "observational", "verify", "setup", "build", "test", "clean",
+            "NOT_IMPLEMENTED", "child repositories", "Do not restructure",
+        ):
+            if token not in project_init:
+                errors.append(f"PROJECT_INIT.md missing Bootstrap concept '{token}'")
 
     # Task readiness invariant vocabulary and behavior.
     readiness_path = TEMPLATE / ".ai/TASK_READINESS.md"

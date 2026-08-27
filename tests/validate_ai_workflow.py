@@ -53,6 +53,13 @@ HANDOFF_TOKENS = (
     "artificial or empty commit",
     "Engineering Task decomposition",
     "ChatGPT / Design Owner",
+    "Task Granularity",
+    "one coherent engineering objective",
+    "Understand → Inspect → Challenge → Verify",
+    "mechanically repeat Codex A's complete verification suite",
+    "concrete material problem",
+    "Re-review is incremental-first",
+    "more than noticing no obvious bug",
 )
 
 GIT_TOKENS = (
@@ -66,6 +73,10 @@ GIT_TOKENS = (
     "git merge --ff-only",
     "Reviewed Commit == Approved Commit == Integrated Commit",
     "invalidates prior approval",
+    "Multi-Repository Tasks",
+    "workspace is the composition anchor",
+    "child-first and workspace-last",
+    "publish changed child commits first",
 )
 
 WORKFLOW_TOKENS = (
@@ -87,6 +98,7 @@ TASK_SECTIONS = (
     "## Goal",
     "## Context",
     "## In Scope",
+    "## Repository Scope",
     "## Out of Scope",
     "## Requirements",
     "## Constraints",
@@ -118,6 +130,8 @@ REVIEW_PROMPT_TOKENS = (
     "do not consume Review Attempt count",
     "Task Branch",
     "Review Commit may remain unchanged",
+    "Changed Child Repository Review Targets",
+    "complete repository change set",
 )
 
 REVIEW_REPORT_TOKENS = (
@@ -134,6 +148,7 @@ REVIEW_REPORT_TOKENS = (
     "Required Change",
     "Verification",
     "Notes",
+    "Repository Change Set Reviewed",
 )
 
 RESULT_TOKENS = (
@@ -159,6 +174,7 @@ RESULT_TOKENS = (
     "Reviewed Commit == Approved Commit == Integrated Commit",
     "Performed in human-created Codex B session: `NOT_APPLICABLE | YES`",
     "Review Prompt and Review Report manually transferred by human user: `NOT_APPLICABLE | YES`",
+    "Remote Publication",
 )
 
 

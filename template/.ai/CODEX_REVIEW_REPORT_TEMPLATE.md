@@ -10,6 +10,10 @@
 - Review Prompt supplied by human user: `YES`
 - Result: `APPROVED | CHANGES_REQUESTED`
 
+## Repository Change Set Reviewed
+
+Record the workspace target and every changed child repository target. Confirm cross-repository consistency and exact child Review Commits. Use `WORKSPACE_ONLY` when applicable.
+
 ## Findings
 
 Repeat for every concrete problem required before approval. Use `None` for zero Findings.

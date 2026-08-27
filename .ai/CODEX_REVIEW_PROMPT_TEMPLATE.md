@@ -20,12 +20,26 @@ Reference the Codex Task Prompt:
 
 ## Git Review Target
 
+### Workspace
+
 - Base Branch:
 - Base Commit:
 - Task Branch:
 - Review Commit:
 
 The Review Commit must be the task branch `HEAD`. Review `Base Commit..Review Commit`, not only the last commit.
+
+### Changed Child Repository Review Targets
+
+Repeat for each changed child; use `NONE` for a workspace-only Task.
+
+- Repository Path:
+- Base Branch:
+- Base Commit:
+- Task Branch:
+- Review Commit:
+
+Confirm that the workspace Review Commit records each exact child Review Commit. One verdict covers the complete repository change set.
 
 For re-review after contract- or decision-only resolution with unchanged tracked repository state, reference the updated Task Contract revision and Previous Review Report above; the Review Commit may remain unchanged.
 

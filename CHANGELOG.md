@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.9.0
+
+- Added automatic no-valid-HEAD Bootstrap routing that produces one coherent Initial Commit without treating Bootstrap as a third Engineering Task Type.
+- Recast the distributable payload as a lean workspace and removed prescribed `components/`, `tests/`, and `integration/` directories while preserving native child-repository layouts.
+- Clarified honest incremental `status`/`verify` behavior, coherent Task granularity, portable Markdown handoffs, and risk-proportionate Codex A/B verification.
+- Extended the CHANGE workflow and handoff artifacts for one coherent workspace Task spanning multiple child repositories with exact composition, child-first review preparation/integration, and separately authorized remote publication.
+- Updated architecture, ADRs, examples, and static validation while retaining `template/VERSION` at `0.1.0`.
+
 ## 1.8.3
 
 - Required qualifying Independent Review to run in a new Codex B session explicitly created by the human user.

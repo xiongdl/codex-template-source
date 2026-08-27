@@ -15,9 +15,9 @@
 | Maintainability | TBD | |
 | AI Operability | TBD | |
 
-## Component / Area Status
+## Repository / Area Status
 
-| Component / Area | Status | Current Focus | Main Risk / Blocker |
+| Repository / Area | Project Role | Status | Main Risk / Blocker |
 |---|---|---|---|
 | TBD | TBD | TBD | TBD |
 
@@ -26,9 +26,8 @@
 | Verification | Status | Notes |
 |---|---|---|
 | Build | TBD | |
-| Component-local tests | TBD | |
-| Cross-component tests | TBD | |
-| Project-level / End-to-End | TBD | |
+| Tests | NOT_IMPLEMENTED | Replace with the project's actual native test boundary. |
+| Verify | TBD | Must cover only currently supported claims. |
 
 ## Completed
 

@@ -48,15 +48,7 @@ Where practical, Human, Codex, and CI should use the same repository-defined com
 
 ## 12. Verification Hierarchy
 
-Prefer:
-
-```text
-Component-local
-→ Cross-component
-→ Project-level / End-to-End
-```
-
-Tests should live at the narrowest level that fully validates the intended behavior.
+Tests should live at the narrowest project-appropriate level that fully validates the intended behavior. Preserve the native validation structure of managed child repositories rather than imposing workspace directories.
 
 ## 13. Real-Project Feedback Drives Evolution
 

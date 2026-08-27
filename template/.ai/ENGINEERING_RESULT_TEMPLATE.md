@@ -15,6 +15,8 @@
 
 ## Repository State
 
+For a multi-repository Task, repeat these identity fields for the workspace and every modified child. Local completion does not require remote publication.
+
 - Repository Changes: `YES | NO`
 - Task Branch: `NOT_APPLICABLE | task/...`
 - Base Branch: `NOT_APPLICABLE | <branch>`
@@ -23,6 +25,7 @@
 - Approved Commit: `NOT_APPLICABLE | <commit>`
 - Integrated Commit: `NOT_APPLICABLE | <commit>`
 - Working Tree:
+- Remote Publication: `NOT_AUTHORIZED | NOT_PUBLISHED | PUBLISHED`
 
 For `READ_ONLY + COMPLETED`, Repository Changes = `NO` and Independent Review = `NOT_APPLICABLE`.
 

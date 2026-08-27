@@ -33,9 +33,9 @@ The payload provides:
 
 - AI collaboration rules,
 - project initialization workflow,
-- architecture/status/reproducibility documentation bootstrap,
-- component and integration abstractions,
-- verification hierarchy,
+- automatic pre-Initial-Commit Bootstrap and project-specific documentation,
+- lean workspace and child-repository composition,
+- honest incremental lifecycle inspection and verification,
 - automation entry-point convention,
 - traceability guidance.
 
@@ -131,10 +131,12 @@ Both layers use the same core model:
 - immutable `READ_ONLY` / `CHANGE` Task Types;
 - committed-state Independent Review for `CHANGE`;
 - one repository Default Base Branch, with `main` as the template default;
-- one immutable Base Branch and one short-lived `task/*` Task Branch per `CHANGE` Task;
-- Task Branch creation and final integration against the same Base Branch;
+- one immutable workspace Base Branch and one short-lived workspace `task/*` Task Branch per `CHANGE` Task;
+- at most one associated Task Branch per modified child repository, with each repository's Task Branch creation and final integration against its own stable Base Branch;
 - ff-only integration of the exact approved commit;
 - four standardized cross-role artifacts.
+
+The distributable payload treats the workspace as the composition anchor for governance, project documentation, orchestration, and managed child repositories. It does not prescribe generic `components/`, `tests/`, or `integration/` directories and does not inject workspace governance into child repositories.
 
 The human user is the explicit Independent Review handoff boundary: Codex A stops after producing the formal Review Prompt, the human creates Codex B's session and transfers the prompt, and the human returns Codex B's formal Review Report. Internal or sub-agent review is informational and cannot satisfy the gate.
 

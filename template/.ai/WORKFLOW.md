@@ -38,14 +38,8 @@ Task Type is immutable and limited to `READ_ONLY` and `CHANGE`. `READ_ONLY` auth
 
 Engineering terminal status is limited to `COMPLETED` and `BLOCKED`. Task completion is not release authorization.
 
-## Verification Hierarchy
+Codex A uses the smallest inspection and verification that provides reasonable confidence for the actual Task risk while still implementing the objective completely and running repository-required checks. Worktrees, extra reviewers, sub-agents, exhaustive inspection, and a duplicate adversarial review are not required workflow mechanics.
 
-```text
-Component-local
-      ↓
-Cross-component Integration
-      ↓
-Project-level / End-to-End
-```
+## Verification Scope
 
-Use shared repository-defined commands where practical. Codex A reports verification actually performed and Final Version Impact.
+Use the narrowest project-appropriate verification that fully covers the intended behavior and preserve each child repository's native test structure. Use shared repository-defined commands where practical. Codex A reports verification actually performed and Final Version Impact.

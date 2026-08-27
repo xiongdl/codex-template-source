@@ -14,12 +14,12 @@ This protocol makes cross-role engineering work reproducible from repository sta
 
 Every Codex Task Prompt declares an immutable Task ID and Task Type plus a Revision.
 
-Every `CHANGE` Task resolves one immutable Base Branch: the explicit Task Contract Base Branch when provided, otherwise the repository Default Base Branch. The same Base Branch is the Task Branch creation source and final merge target. Each `CHANGE` Task retains exactly one Base Branch and one Task Branch throughout its lifecycle.
+Every `CHANGE` Task resolves one immutable workspace Base Branch: the explicit Task Contract Base Branch when provided, otherwise the repository Default Base Branch. The same Base Branch is the workspace Task Branch creation source and final merge target. A multi-repository Task additionally resolves one stable Base Branch and at most one Task Branch for each modified child repository.
 
 Task Type is limited to:
 
 - `READ_ONLY`: repository modification is not authorized, no task branch is required, and Independent Review is `NOT_APPLICABLE`.
-- `CHANGE`: repository modification is authorized only within scope, exactly one dedicated `task/*` branch is required, and Independent Review is mandatory before completion.
+- `CHANGE`: repository modification is authorized only within scope, exactly one dedicated workspace `task/*` branch is required, changed child repositories may each use at most one associated Task Branch, and Independent Review is mandatory before completion.
 
 Task Type is immutable within a Task Contract. Discovering required changes during a `READ_ONLY` task requires a new `CHANGE` Task Contract from the Design Owner. Task Contract revisions may clarify the same task but do not reset Review Attempt count.
 
@@ -36,6 +36,12 @@ Exactly four formal cross-role artifacts are used:
 
 Conversation is transient. Artifact plus repository state is the handoff contract.
 
+Each artifact is a standalone, easily copyable Markdown document. Keep it concise: include identity, objective or verdict, relevant commit identities, changed-area navigation, verification evidence, authoritative repository references, and the required next action. Refer to repository governance instead of duplicating it. Implementation narrative is context, not correctness evidence.
+
+## Task Granularity
+
+An Engineering Task SHOULD represent one coherent engineering objective, not one command, file, repository, or implementation step. Related activities may share a Task when they form a reviewable scope and meaningful acceptance boundary. Separate genuinely independent objectives when dependencies, risks, review context, acceptance boundaries, or failure independence materially differ. Governance should reduce engineering risk without unnecessary Task administration.
+
 Same-task Codex A1 → Codex A2 continuation is allowed without another formal artifact. It preserves Task ID, Task Type, Task Contract identity, task branch, and Review Attempt count. Repository state, commits, Task Contract, and Review Reports are the system of record. Checkpoint commits are allowed but are not Review Commits.
 
 ## Independent Review
@@ -47,6 +53,10 @@ Codex A must implement, verify, commit, and provide a Codex Review Prompt identi
 Codex A self-review, same-session role switching, internal reviewer contexts, sub-agent or delegated reviewers, hidden or automatically spawned reviewer contexts, and any reviewer context not explicitly created as a new Codex session by the human user do not satisfy the Independent Review Gate. They may be supplementary informational checks only: they do not count as formal Independent Review, do not consume Review Attempt count, cannot authorize integration, and cannot produce a qualifying `APPROVED`. Internal-agent isolation is not evaluated for eligibility.
 
 Codex B reviews the complete `Base Commit..Review Commit` change set and the repository at the Review Commit. Codex A's implementation narrative is not evidence of correctness.
+
+Codex B uses a lightweight but independent `Understand → Inspect → Challenge → Verify` review. It inspects the complete committed Task change set and relevant surrounding context, asks where the implementation could be materially wrong, and runs targeted additional checks when they increase confidence. It does not default to exhaustive repository scanning or mechanically repeat Codex A's complete verification suite.
+
+Before approval, Codex B determines that the Task appears correctly satisfied, no material correctness or regression issue remains, and verification provides reasonable confidence. `APPROVED` is not formal proof, but it must mean more than noticing no obvious bug.
 
 Review Result is limited to:
 
@@ -62,7 +72,11 @@ A Review Finding contains only:
 
 Non-blocking observations belong in Notes. Codex B does not return Task-level `BLOCKED`.
 
+A Finding is reserved for a concrete material problem that should block integration. Naming, style, optional refactoring, non-essential comments, and unrelated pre-existing issues belong in Notes, if mentioned at all.
+
 Every `CHANGES_REQUESTED` result requires mandatory re-review by the same Review Owner. Codex A may challenge a Finding with repository, design, or test evidence, but may not close it unilaterally; only Codex B may withdraw it. Review Attempt increments normally and does not reset.
+
+Re-review is incremental-first: inspect previous Findings and their resolution, check fix-related regressions, then confirm that the complete current change remains acceptable. Expand review when the new Review Commit materially changes broader behavior; do not mechanically repeat unaffected exploration.
 
 If resolving Findings changes any tracked repository artifact, Codex A must resolve and verify the changes, create a new local commit as the next Review Commit, and generate the next Codex Review Prompt. Re-review still covers the complete Base Commit through the current Review Commit; the previous reviewed commit may be used to focus Finding resolution.
 

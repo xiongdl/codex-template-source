@@ -7,6 +7,8 @@ At the beginning of a new project conversation, explicitly ask ChatGPT to load t
 
 ## Bootstrap
 
+First determine whether the project has a valid Git `HEAD`. If not, use `.ai/PROJECT_INIT.md`; Bootstrap is a pre-Initial-Commit lifecycle mode and not a normal Engineering Task Type.
+
 At the beginning of a new project conversation, read:
 
 1. `VERSION`
@@ -36,7 +38,7 @@ After receiving a task:
 2. identify the affected area,
 3. load only relevant context, such as:
    - `docs/ARCHITECTURE.md`,
-   - relevant component documentation,
+   - relevant repository or subsystem documentation,
    - relevant design documents,
    - relevant ADRs,
    - `docs/REPRODUCIBILITY.md`,

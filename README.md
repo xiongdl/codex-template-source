@@ -14,10 +14,7 @@ codex-template/
 │   ├── README.md
 │   ├── .ai/
 │   ├── docs/
-│   ├── components/
-│   ├── integration/
 │   ├── third_party/
-│   ├── tests/
 │   └── scripts/
 ├── docs/                      # codex-template design/governance
 │   ├── DESIGN_PRINCIPLES.md

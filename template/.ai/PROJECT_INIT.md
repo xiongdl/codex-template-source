@@ -1,143 +1,55 @@
-# Project Initialization
+# Project Bootstrap
 
-Use this process when applying the template to a new or existing project.
+Use this contract whenever the project has no valid Git `HEAD`: either the directory is not a Git repository or Git has no commit. A valid `HEAD` automatically ends Bootstrap and starts Normal Engineering. Do not add a persistent lifecycle flag.
 
-The goal is to discover the real project and establish a maintainable engineering baseline.
+Bootstrap is a repository lifecycle mode, not a third Engineering Task Type. Before the Initial Commit it does not require a Task ID, Task Branch, Base Commit, Review Commit, Independent Review, integration, or Engineering Result Report.
 
-Do not implement new product features during initialization unless explicitly requested.
+## Outcome
 
-## Phase 1 — Inspect
+Create one coherent, honest Initial Commit that makes the project ready for its next normal Engineering Task. Infer what can safely be learned from the user's request, repository metadata, template, and existing child repositories. Ask only for genuinely project-defining decisions that cannot be inferred.
 
-Inspect repository structure, source layout, build systems, tests, configuration, environment requirements, dependencies, generated artifacts, scripts/tools, documentation, CI, and major subsystems.
+Establish, as applicable:
 
-## Phase 2 — Establish Boundaries
+- project identity, purpose, goals, and useful non-goals;
+- repository composition and project-specific repository roles;
+- supplied branch or revision pins;
+- workspace versus child-repository responsibilities and modification boundaries;
+- the Default Base Branch used after Bootstrap;
+- project-level documentation and validation boundaries;
+- a minimal lifecycle inspection/verification interface;
+- honest initial capability and project status.
 
-Determine whether the project is naturally single-component or multi-component.
+Do not create a deliberately skeletal baseline and defer obvious initialization work into artificial Tasks. Do not implement genuine product or engineering capabilities merely to finish Bootstrap. Bootstrap establishes readiness for engineering; later Engineering Tasks establish capabilities.
 
-A component may be justified by several of:
+## Inspect and Preserve
 
-- distinct responsibility,
-- meaningful public interface,
-- independent implementation,
-- independent build/test behavior,
-- distinct dependencies,
-- independent evolution.
+Inspect the actual workspace and any existing child repositories before assuming structure. Preserve child repositories' native source layout, build systems, tests, documentation, and conventions. Do not restructure them to match the workspace, and do not inject workspace copies of `AGENTS.md`, `CHATGPT.md`, `.ai/`, `PROJECT_STATUS.md`, Task artifacts, or Review artifacts.
 
-Do not create components only for visual neatness.
+The workspace is primarily the composition anchor for AI governance, project-level documentation, orchestration, and repository composition. `docs/`, `scripts/`, and `third_party/` are useful conventions; implementation directories arise only from project design.
 
-## Phase 3 — Identify Dependencies and Integration Boundaries
+## Documentation and Versioning
 
-Map important dependencies and cross-component contracts.
+Create or update the project-level `README.md`, `docs/ARCHITECTURE.md`, `docs/PROJECT_STATUS.md`, and `docs/REPRODUCIBILITY.md` to describe the real project and its repository composition.
 
-Document stable shared contracts under `docs/integration/`.
+Inspect existing `VERSION`, tags, package/release metadata, and `CHANGELOG.md`. Preserve an existing authoritative versioning scheme. For a genuinely new project, initialize `VERSION` to `0.1.0` with `CHANGELOG.md` and `docs/VERSIONING.md`. If authoritative version sources conflict materially, stop with `BLOCKED — Version Source Conflict` and request the minimum decision needed.
 
-## Phase 4 — Establish Project Documentation
+## Lifecycle Interface
 
-Create or update:
-
-- `README.md`
-- `docs/ARCHITECTURE.md`
-- `docs/PROJECT_STATUS.md`
-- `docs/REPRODUCIBILITY.md`
-
-## Phase 5 — Discover Existing Workflows
-
-Determine how the project performs setup, dependency installation, build, test, verification, cleanup, and diagnostics/status.
-
-Prefer preserving working tools rather than replacing them without reason.
-
-## Phase 6 — Establish Automation Entry Points
-
-Where practical, provide:
-
-```bash
-./scripts/project setup
-./scripts/project build
-./scripts/project test
-./scripts/project verify
-./scripts/project clean
-./scripts/project status
-```
-
-## Phase 7 — Establish Verification Levels
+Treat commands in two groups:
 
 ```text
-components/<component>/tests/
-        └── Component-local tests
-
-integration/tests/
-        └── Cross-component tests
-
-tests/
-        └── Project-level / End-to-End tests
+Inspection / Validation: status, verify
+Executable Lifecycle:    setup, build, test, clean
 ```
 
-Use the narrowest level that fully proves the intended behavior.
+`status` is observational, low-cost, safe, and non-destructive. It reports current capability honestly, including `NOT_IMPLEMENTED` or `UNAVAILABLE` when appropriate.
 
-## Phase 8 — Establish Reproducibility
+`verify` checks only the baseline and capabilities currently claimed to be supported. Bootstrap verification may check workspace structure, identity/configuration, governance consistency, repository presence, requested pins, modification boundaries, and lifecycle configuration. It must not imply that unsupported build, test, simulation, toolchain, or hardware capability was verified.
 
-Ensure the repository can answer:
+Bootstrap does not require complete `setup`, `build`, `test`, or `clean` implementations. Later coherent Engineering Tasks may enable them incrementally.
 
-1. What environment is supported?
-2. What dependencies are required?
-3. Which versions matter?
-4. How is setup performed?
-5. How is the project built?
-6. How are tests run?
-7. How are important artifacts/results reproduced?
-8. Which state is generated versus source-controlled?
+## Initial Commit
 
-## Phase 9 — Establish Traceability
+Run the cheapest deterministic checks that provide reasonable confidence in the declared baseline. Record actual checks and limitations in project status. Then create the Initial Commit. Once `git rev-parse --verify HEAD` succeeds, route all further work through `.ai/WORKFLOW.md`, `.ai/AI_HANDOFF_PROTOCOL.md`, and `.ai/GIT_WORKFLOW.md`.
 
-Create ADRs only for decisions whose rationale should survive.
-
-## Phase 10 — Verify Baseline
-
-Run relevant build/test/verify commands where practical.
-
-Record commands, pass/fail status, skipped checks, and constraints.
-
-## Phase 10A — Establish AI Task Git Workflow
-
-Define the repository `Default Base Branch`. Use `main` as the template default, while preserving an instantiated project's explicitly chosen project-defined long-lived branch when appropriate. Ensure each `CHANGE` Task resolves one immutable Base Branch, creates exactly one short-lived `task/*` Task Branch from it, and integrates the approved commit back into that same Base Branch using ff-only integration as defined by `.ai/GIT_WORKFLOW.md`.
-
-Do not invent additional branch taxonomies during initialization.
-
-## Phase 11 — Summarize
-
-Report structure, components, dependencies, integration boundaries, engineering entry points, verification coverage, reproducibility status, documentation gaps, risks, and the recommended first engineering task.
-
-Update `docs/PROJECT_STATUS.md`.
-
-
-## Phase 12 — Establish Versioning
-
-Inspect whether the project already has an authoritative versioning scheme.
-
-Check, as applicable:
-
-- existing `VERSION`,
-- Git tags,
-- package metadata,
-- release metadata,
-- existing `CHANGELOG.md`.
-
-For a new project with no prior versioning, initialize:
-
-```text
-VERSION = 0.1.0
-```
-
-and establish `CHANGELOG.md` plus `docs/VERSIONING.md`.
-
-For an existing project, preserve the existing authoritative versioning scheme.
-
-Do not reset an existing project to `0.1.0`.
-
-If version sources conflict materially, report:
-
-```text
-BLOCKED — Version Source Conflict
-```
-
-and request the minimum decision needed to identify the authoritative version source.
+Summarize the initialized composition, supported capabilities, verification performed, limitations, and recommended first meaningful Engineering Task. Do not create a separate formal Bootstrap Result artifact.

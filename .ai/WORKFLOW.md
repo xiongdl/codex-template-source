@@ -38,6 +38,8 @@ Engineering Result Report to ChatGPT
 
 Task Type is immutable and limited to `READ_ONLY` and `CHANGE`. A `CHANGE` requires committed-state Independent Review by Codex B in a new Codex session explicitly created by the human user and approval before completion. Internal, delegated, sub-agent, hidden, automatically spawned, same-session, and self-review mechanisms are informational only and do not consume Review Attempt count. Every `CHANGES_REQUESTED` requires re-review; a new Review Commit is required only when Finding resolution changes tracked repository state. Engineering terminal status is limited to `COMPLETED` and `BLOCKED`.
 
+Codex A uses the smallest inspection and verification that provides reasonable confidence for the actual Task risk while still implementing the objective completely and running repository-required checks. Worktrees, extra reviewers, sub-agents, exhaustive inspection, and a duplicate adversarial review are not required workflow mechanics.
+
 ## Maintainer Responsibilities
 
 For changes to `codex-template`, Codex A also validates the governance/payload boundary, project-agnostic compatibility, relevant evidence and ADR constraints, repository consistency, Final Version Impact, changelog, and release preparation. Run `./scripts/check`.
