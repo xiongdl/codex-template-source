@@ -22,6 +22,16 @@ Stop substantive work when continuing requires missing critical input/evidence, 
 
 Request only the minimum information or decision required to proceed.
 
+For an Engineering Task, terminal Blocked Reason is limited to:
+
+- `INPUT_REQUIRED`
+- `DECISION_REQUIRED`
+- `REVIEW_LIMIT_REACHED`
+
+Complexity, test failure, debugging effort, refactoring needs, ordinary Git conflicts, or difficult Review Findings alone are intermediate engineering conditions, not Blocked Reasons.
+
+Task Type is immutable and limited to `READ_ONLY` and `CHANGE`. A readiness result does not convert one Task Type to the other.
+
 ## Common Checks
 
 - Goal clarity

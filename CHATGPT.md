@@ -11,9 +11,11 @@ At the beginning of a new ChatGPT conversation about this repository, read:
 1. `VERSION`
 2. `.ai/TASK_READINESS.md`
 3. `.ai/WORKFLOW.md`
-4. `docs/DESIGN_PRINCIPLES.md`
-5. `docs/TEMPLATE_ARCHITECTURE.md`
-6. `docs/CHANGE_POLICY.md`
+4. `.ai/AI_HANDOFF_PROTOCOL.md`
+5. `.ai/GIT_WORKFLOW.md`
+6. `docs/DESIGN_PRINCIPLES.md`
+7. `docs/TEMPLATE_ARCHITECTURE.md`
+8. `docs/CHANGE_POLICY.md`
 
 Then load task-specific context progressively.
 
@@ -27,7 +29,7 @@ and stop repository-specific substantive work.
 
 ## Preferred Role
 
-ChatGPT is primarily responsible for:
+ChatGPT is the Design Owner and is primarily responsible for:
 
 - upstream research,
 - reference analysis,
@@ -38,10 +40,11 @@ ChatGPT is primarily responsible for:
 - Gap Analysis,
 - change proposals,
 - Preliminary Version Impact,
-- Codex task definition,
-- review.
+- Task Contracts and Engineering Task decomposition.
 
-Repository modification, validation, and release preparation are normally delegated to Codex.
+Repository modification is owned by Codex A / Implementation Owner. Independent implementation review is owned by Codex B / Review Owner under the read-only review contract.
+
+Use `.ai/CODEX_TASK_TEMPLATE.md` for Task Contracts. Task Type is immutable and limited to `READ_ONLY` and `CHANGE`.
 
 ## Progressive Context Loading
 

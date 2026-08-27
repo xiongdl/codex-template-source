@@ -1,47 +1,38 @@
 # AI Engineering Workflow
 
-## Roles
+## Ownership
 
-### Human
-Owns goals, priorities, constraints, trade-offs, and final decisions.
+- ChatGPT = Design Owner
+- Codex A = Implementation Owner
+- Codex B = Review Owner
+- Repository = durable engineering memory
+- CI / Automation = repeatable verification
 
-### ChatGPT
-Best for research, architecture, design alternatives, trade-off analysis, task definition, and review.
+ChatGPT owns requirements, architecture, material decisions, Task Contracts, and Engineering Task decomposition. Codex A owns implementation, verification, local Git lifecycle, Engineering Task status, and review orchestration. Codex B performs read-only Independent Review and owns Findings and the review conclusion.
 
-### Codex
-Best for repository inspection, implementation planning, coding, testing, debugging, refactoring, automation, and documentation updates.
-
-### Repository
-The repository is long-term engineering memory.
-
-### CI / Automation
-Provides repeatable execution of build, test, verification, and quality checks.
+Detailed contracts are in `.ai/AI_HANDOFF_PROTOCOL.md`; Git and integration rules are in `.ai/GIT_WORKFLOW.md`.
 
 ## Standard Flow
 
 ```text
 Human Goal
-   ↓
-Understand Current Project
-   ↓
-ChatGPT Research / Design
-   ↓
-Design Decision
-   ↓
-Codex Task
-   ↓
-Codex Inspect / Plan
-   ↓
-Implementation
-   ↓
-Build / Test / Verify
-   ↓
-Documentation / Status Update
-   ↓
-ChatGPT Review
-   ↓
-Next Task
+    ↓
+ChatGPT / Design Owner
+    ↓ Codex Task Prompt
+Codex A / Implementation Owner
+    ↓ readiness, implementation, verification, committed Review Target
+Codex B / Review Owner
+    ↓ Codex Review Report
+APPROVED ──────────────── CHANGES_REQUESTED
+    ↓                         ↓ fix, verify, commit, mandatory re-review
+ff-only local integration ←───┘
+    ↓
+Engineering Result Report to ChatGPT
 ```
+
+Task Type is immutable and limited to `READ_ONLY` and `CHANGE`. `READ_ONLY` authorizes no repository modification. Every `CHANGE` uses one `task/*` branch and mandatory committed-state Independent Review.
+
+Engineering terminal status is limited to `COMPLETED` and `BLOCKED`. Task completion is not release authorization.
 
 ## Verification Hierarchy
 
@@ -53,50 +44,4 @@ Cross-component Integration
 Project-level / End-to-End
 ```
 
-## Shared Engineering Interface
-
-Where practical, Human, Codex, and CI should use the same repository-defined commands.
-
-## Completion Rule
-
-Implementation
-→ Verification
-→ Documentation
-→ Status Update
-
-
-## Task Intake and Version Lifecycle
-
-```text
-Human Request
-      ↓
-AI Task Readiness
-      ↓
-PASS / WARNING / BLOCKED
-      ↓
-Research / Understand
-      ↓
-Design
-      ↓
-Decision
-      ↓
-Preliminary Version Impact
-      ↓
-Plan
-      ↓
-Implementation
-      ↓
-Verification
-      ↓
-Final Version Impact
-      ↓
-Documentation / Record
-      ↓
-Release when appropriate
-```
-
-`Task Completion` is not the same as `Release`.
-
-ChatGPT normally provides preliminary version impact during design/task definition.
-
-Codex verifies version impact against the repository before implementation and reports final version impact after verification.
+Use shared repository-defined commands where practical. Codex A reports verification actually performed and Final Version Impact.

@@ -12,7 +12,9 @@ At the beginning of a new project conversation, read:
 1. `VERSION`
 2. `.ai/TASK_READINESS.md`
 3. `.ai/WORKFLOW.md`
-4. `docs/PROJECT_STATUS.md`
+4. `.ai/AI_HANDOFF_PROTOCOL.md`
+5. `.ai/GIT_WORKFLOW.md`
+6. `docs/PROJECT_STATUS.md`
 
 Do not assume that project policy has been loaded unless these files are accessible.
 
@@ -42,20 +44,20 @@ After receiving a task:
 
 ## Preferred Role
 
-ChatGPT is primarily used for:
+ChatGPT is the Design Owner and is responsible for:
 
 - research,
 - requirements,
 - architecture,
 - design,
 - trade-off analysis,
-- task definition,
+- Task Contracts and Engineering Task decomposition,
 - reference analysis,
-- review.
+- material decisions.
 
-Repository implementation, build, test, and verification are normally delegated to Codex.
+Repository implementation, build, test, verification, and local integration belong to Codex A / Implementation Owner. Independent implementation review belongs to Codex B / Review Owner, which is read-only.
 
-This is a preferred responsibility split, not an absolute prohibition.
+Use `.ai/CODEX_TASK_TEMPLATE.md`. Task Type is immutable and limited to `READ_ONLY` and `CHANGE`.
 
 ## Task Readiness
 

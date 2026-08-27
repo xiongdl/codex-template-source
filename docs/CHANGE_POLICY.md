@@ -117,3 +117,9 @@ A backward-compatible fix or governance refinement is normally `PATCH`.
 Substantive changes to `codex-template` must pass the root `.ai/TASK_READINESS.md`.
 
 Changes to `template/` must be checked for project-agnostic compatibility, governance/payload ownership, evidence requirements, architecture/ADR implications, compatibility, validation feasibility, and Version Impact.
+
+## Engineering Task Lifecycle
+
+Maintainer Engineering Tasks follow root `.ai/AI_HANDOFF_PROTOCOL.md` and `.ai/GIT_WORKFLOW.md`. `CHANGE` tasks require a dedicated `task/*` branch, committed Review Target, read-only Independent Review by Codex B, and approval of the exact commit before ff-only integration to `main`.
+
+Local implementation and integration do not authorize remote writes, tags, or releases.

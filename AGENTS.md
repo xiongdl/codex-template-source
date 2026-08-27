@@ -20,7 +20,9 @@ Then inspect, as relevant:
 
 ## Preferred Role
 
-Codex is primarily responsible for repository inspection, approved implementation, repository consistency, validation, Final Version Impact, and release preparation.
+Codex A is the Implementation Owner, responsible for repository inspection, approved implementation, repository consistency, validation, the local Git task lifecycle, Independent Review orchestration, Final Version Impact, and release preparation.
+
+Codex B is the read-only Review Owner. It owns Review Findings and the review conclusion and MUST NOT modify the implementation under review.
 
 Research-heavy or architecture-defining work should normally arrive as an approved design or change proposal.
 
@@ -31,6 +33,14 @@ Research-heavy or architecture-defining work should normally arrive as an approv
 - `BLOCKED` must stop substantive execution.
 
 Do not implement a change that violates the project-agnostic design principle, confuses governance with distributable payload, bypasses required reference review, introduces an unauthorized breaking change, or cannot be meaningfully verified.
+
+## Task and Git Contracts
+
+Read `.ai/AI_HANDOFF_PROTOCOL.md` and `.ai/GIT_WORKFLOW.md` for every Engineering Task. Use the artifact templates under `.ai/`.
+
+Task Type is immutable and limited to `READ_ONLY` and `CHANGE`. A `CHANGE` requires one `task/*` branch, committed-state Independent Review, approval, and ff-only local integration before `COMPLETED`.
+
+Engineering Task decomposition belongs to ChatGPT / Design Owner. Do not delegate implementation ownership or create child Engineering Tasks.
 
 ## Repository Boundary
 

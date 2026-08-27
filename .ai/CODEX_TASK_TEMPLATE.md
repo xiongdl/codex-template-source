@@ -24,8 +24,6 @@
 
 ## Verification
 
-Specify relevant component-local, cross-component, project-level/end-to-end, regression, or other project-defined checks.
-
 ## Preliminary Version Impact
 
 `NONE | PATCH | MINOR | MAJOR | UNKNOWN`

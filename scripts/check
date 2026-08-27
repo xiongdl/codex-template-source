@@ -3,6 +3,7 @@ set -eu
 
 ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
 
-python "$ROOT/tests/validate_template.py"
-python "$ROOT/tests/validate_references.py"
-python "$ROOT/tests/validate_repository_governance.py"
+python3 "$ROOT/tests/validate_template.py"
+python3 "$ROOT/tests/validate_references.py"
+python3 "$ROOT/tests/validate_repository_governance.py"
+python3 "$ROOT/tests/validate_ai_workflow.py"

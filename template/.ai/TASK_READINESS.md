@@ -45,6 +45,16 @@ Behavior:
 - explain the blocker,
 - request only the minimum information or decision required to continue.
 
+For an Engineering Task, terminal Blocked Reason is limited to:
+
+- `INPUT_REQUIRED`
+- `DECISION_REQUIRED`
+- `REVIEW_LIMIT_REACHED`
+
+Complexity, test failure, debugging effort, refactoring needs, ordinary Git conflicts, or difficult Review Findings alone are intermediate engineering conditions, not Blocked Reasons.
+
+Task Type is immutable and limited to `READ_ONLY` and `CHANGE`. Readiness does not convert between Task Types.
+
 ## Common Checks
 
 Evaluate as applicable:

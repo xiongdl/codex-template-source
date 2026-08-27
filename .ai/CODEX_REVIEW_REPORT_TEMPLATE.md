@@ -1,0 +1,25 @@
+# Codex Review Report
+
+## Review Identity
+
+- Task ID:
+- Review Attempt: `N / 3`
+- Base Commit:
+- Reviewed Commit:
+- Result: `APPROVED | CHANGES_REQUESTED`
+
+## Findings
+
+Repeat for every concrete problem that must be addressed before approval. Use `None` when there are zero Findings.
+
+### Finding `<ID>`
+
+- Issue:
+- Evidence:
+- Required Change:
+
+## Verification
+
+## Notes
+
+Non-blocking observations only. Codex B is read-only and MUST NOT modify repository artifacts.

@@ -17,6 +17,11 @@ REQUIRED = [
     ".ai/PROJECT_INIT.md",
     ".ai/TASK_READINESS.md",
     ".ai/CODEX_TASK_TEMPLATE.md",
+    ".ai/AI_HANDOFF_PROTOCOL.md",
+    ".ai/GIT_WORKFLOW.md",
+    ".ai/CODEX_REVIEW_PROMPT_TEMPLATE.md",
+    ".ai/CODEX_REVIEW_REPORT_TEMPLATE.md",
+    ".ai/ENGINEERING_RESULT_TEMPLATE.md",
     "docs/ARCHITECTURE.md",
     "docs/PROJECT_STATUS.md",
     "docs/REPRODUCIBILITY.md",
@@ -60,7 +65,7 @@ def main():
     for p in TEMPLATE.rglob("*.md"):
         text = p.read_text(encoding="utf-8", errors="ignore")
         for term in PROJECT_SPECIFIC_TERMS:
-            if term in text:
+            if re.search(rf"\b{re.escape(term)}\b", text):
                 errors.append(
                     f"project-specific term '{term}' found in {p.relative_to(TEMPLATE)}"
                 )
@@ -166,6 +171,15 @@ def main():
             errors.append(
                 "CODEX_TASK_TEMPLATE.md must not encode runtime Task Readiness"
             )
+
+    # Entry points navigate to the durable workflow contracts.
+    for rel in ("AGENTS.md", "CHATGPT.md", "README.md"):
+        path = TEMPLATE / rel
+        if path.is_file():
+            text = path.read_text(encoding="utf-8")
+            for ref in (".ai/AI_HANDOFF_PROTOCOL.md", ".ai/GIT_WORKFLOW.md"):
+                if ref not in text:
+                    errors.append(f"template/{rel} does not reference '{ref}'")
 
     if errors:
         for error in errors:

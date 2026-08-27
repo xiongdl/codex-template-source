@@ -28,7 +28,8 @@ codex-template/
 │   └── openai/
 ├── scripts/                   # maintenance/update tooling for codex-template
 ├── tests/                     # tests for the template itself
-│   └── validate_template.py
+│   ├── validate_template.py
+│   └── validate_ai_workflow.py
 ├── CHANGELOG.md
 ├── VERSION
 └── README.md
@@ -67,6 +68,20 @@ Feedback
 ```bash
 ./scripts/check
 ```
+
+## AI Engineering Workflow
+
+The root project dogfoods the complete workflow defined in `.ai/WORKFLOW.md`, `.ai/AI_HANDOFF_PROTOCOL.md`, and `.ai/GIT_WORKFLOW.md`:
+
+```text
+ChatGPT / Design Owner
+→ Codex A / Implementation Owner
+→ Codex B / read-only Review Owner
+→ Codex A / ff-only integration
+→ ChatGPT / Engineering Result
+```
+
+The four cross-role artifact templates live under root `.ai/`. Their project-agnostic counterparts are distributed under `template/.ai/`.
 
 ## Upstream Reference Workflow
 

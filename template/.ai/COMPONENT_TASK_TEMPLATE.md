@@ -1,5 +1,7 @@
 # Component Task Template
 
+This is a design aid inside a single Engineering Task, not a child Task Contract and not authorization for Codex-to-Codex implementation delegation. Engineering Task decomposition belongs to ChatGPT / Design Owner.
+
 ## Task
 
 ## Component

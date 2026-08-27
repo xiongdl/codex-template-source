@@ -120,3 +120,18 @@ Snapshot format is enforced by repository validation.
 `codex-template` itself is governed as an AI-assisted engineering project through root `CHATGPT.md`, `AGENTS.md`, `.ai/WORKFLOW.md`, and `.ai/TASK_READINESS.md`.
 
 The root project and distributable `template/` share role separation, readiness semantics, version-impact concepts, and verification discipline, but their policy contents differ because their responsibilities differ.
+
+## Shared AI Engineering Contract
+
+Both layers use the same core model:
+
+- ChatGPT as Design Owner;
+- Codex A as Implementation Owner;
+- Codex B as read-only Review Owner;
+- immutable `READ_ONLY` / `CHANGE` Task Types;
+- committed-state Independent Review for `CHANGE`;
+- `main` plus one short-lived `task/*` branch;
+- ff-only integration of the exact approved commit;
+- four standardized cross-role artifacts.
+
+Root `.ai/` policies govern maintenance of `codex-template`. `template/.ai/` contains the project-agnostic contract copied to instantiated projects. The files intentionally have layer-specific surrounding guidance while preserving these invariants.

@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.8.0
+
+- Formalized ChatGPT as Design Owner, Codex A as Implementation Owner, and Codex B as read-only Review Owner across root governance and the distributable template.
+- Added immutable `READ_ONLY` and `CHANGE` Task Contracts with constrained terminal status and Blocked Reasons.
+- Added mandatory committed-state Independent Review for `CHANGE` tasks, deterministic Finding/re-review rules, a three-attempt limit, and exact-commit approval semantics.
+- Established `main` plus short-lived `task/*` branches and ff-only integration of the reviewed commit.
+- Added four standardized cross-role handoff artifact templates and same-task session-continuation rules.
+- Added machine-checkable workflow validation through `tests/validate_ai_workflow.py` and integrated it into `./scripts/check`.
+- Preserved `template/VERSION` at `0.1.0`, independent from the `codex-template` product release.
+
 ## 1.7.1
 
 - Made `codex-template` itself dogfood the AI engineering workflow defined for instantiated projects.

@@ -65,6 +65,8 @@ AGENTS.md   → Codex entry point
 
 Shared AI policy lives under `.ai/`.
 
+The workflow uses ChatGPT as Design Owner, Codex A as Implementation Owner, and Codex B as read-only Review Owner. See `.ai/AI_HANDOFF_PROTOCOL.md` and `.ai/GIT_WORKFLOW.md`; use the four artifact templates for Task, Review Prompt, Review Report, and Engineering Result handoffs.
+
 ## Project Versioning
 
 Instantiated projects include:
