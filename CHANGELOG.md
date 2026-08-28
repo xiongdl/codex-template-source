@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.11.0
+
+- Established verbatim Authoritative Task Core transfer from Task Prompt to Independent Review, with Codex A-produced interpretation and evidence kept separately identifiable.
+- Refined Review Prompt ownership boundaries while retaining fresh-session operability and repository-governed review and Git safety rules.
+- Recast the Engineering Result Report as a self-contained execution-to-design evidence handoff for ChatGPT / Design Owner, including outcome, acceptance, verification, Independent Review, identity-consistency, deviation, and residual-risk evidence.
+
 ## 1.10.0
 
 - Added progressive context acquisition, proportionate verification/reporting, and explicit boundaries for deterministic automation opportunities and ownership.

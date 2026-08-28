@@ -8,15 +8,26 @@
 
 ## Review Objective
 
-This prompt MUST be executed by Codex B in a new Codex session explicitly created by the human user. The human user must manually transfer this prompt to Codex B and return the resulting formal Codex Review Report to Codex A.
+This prompt MUST be executed by Codex B in a new Codex session explicitly created by the human user as a read-only Independent Review. The human user must manually transfer this prompt and return the formal Codex Review Report to Codex A. Codex A MUST stop after producing this prompt. Self-review and internal, sub-agent, or delegated reviewers do not consume Review Attempt count and cannot approve the change. Other eligibility, review-method, and verdict rules are defined by `.ai/AI_HANDOFF_PROTOCOL.md`; Git target rules are defined by `.ai/GIT_WORKFLOW.md`.
 
-Codex A MUST stop after producing this prompt. Self-review, same-session role switching, and internal, sub-agent, delegated, hidden, or automatically spawned reviewers are informational only: they do not satisfy the Independent Review Gate, do not consume Review Attempt count, and cannot produce a qualifying `APPROVED`.
+## Inherited Authoritative Task Core
 
-Independently review the complete Task change set and repository state. This is a read-only review: Codex B MUST NOT modify repository artifacts or the implementation under review.
+Paste the Codex Task Prompt's complete `Authoritative Task Core` here verbatim. Do not reference a persisted Task artifact and do not summarize or reconstruct the core from Git history.
 
-## Original Task
+<!-- BEGIN VERBATIM AUTHORITATIVE TASK CORE -->
 
-Reference the Codex Task Prompt:
+<!-- END VERBATIM AUTHORITATIVE TASK CORE -->
+
+## Codex A-Produced Review Context
+
+Everything below this heading is engineering information newly produced or recorded by Codex A. It supplements but does not modify the inherited Authoritative Task Core.
+
+The authoritative In Scope and Out of Scope boundaries remain in the inherited core above.
+
+### Original Task
+
+- Task Prompt Revision:
+- Original Task reference for transfer/audit only (the Task artifact is transient and need not be repository-accessible):
 
 ## Git Review Target
 
@@ -43,19 +54,31 @@ Confirm that the workspace Review Commit records each exact child Review Commit.
 
 For re-review after contract- or decision-only resolution with unchanged tracked repository state, reference the updated Task Contract revision and Previous Review Report above; the Review Commit may remain unchanged.
 
-## Authoritative References
+## Authoritative References / Repository References
 
-## In Scope
+List only references useful to review; durable workflow rules should be referenced, not restated.
 
-## Out of Scope
+## Implementation Outcome and Decisions
+
+- Material behavior or structure changed:
+- Material implementation decisions and interpretations:
+- Important invariants preserved:
+- Deviations from the Authoritative Task Core: `NONE | <details>`
 
 ## Changed Areas
 
 Navigation hints only; the implementation narrative is not evidence of correctness.
 
-## Verification
+## Codex A Verification Evidence
 
-Inspect or run the checks necessary to validate the acceptance criteria and record what was performed.
+- Checks performed and results:
+- Important checks not performed and reasons:
+
+Codex B must independently inspect the actual committed change and use the repository plus its own checks as evidence; Codex A's narrative is orientation, not correctness evidence.
+
+## Previous-Review State
+
+For Review Attempt 1 use `NOT_APPLICABLE`. For re-review, summarize prior Findings, their reported resolution, and whether tracked state changed; the full Previous Review reference remains in Review Identity.
 
 ## Required Output
 

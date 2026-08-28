@@ -34,9 +34,13 @@ Exactly four formal cross-role artifacts are used:
 3. Codex B → Codex A: Codex Review Report (`CODEX_REVIEW_REPORT_TEMPLATE.md`)
 4. Codex A → ChatGPT: Engineering Result Report (`ENGINEERING_RESULT_TEMPLATE.md`)
 
-Conversation is transient. Artifact plus repository state is the handoff contract.
+Conversation and formal artifact instances are transient; Task, Review Prompt, Review Report, and Engineering Result Report instances are not persisted in the repository. The repository remains the durable source for governance, architecture, and implementation state. During a handoff, the receiving artifact plus the repository state available to that role is the operative contract.
 
-Each artifact is a standalone, easily copyable Markdown document. Keep it concise: include identity, objective or verdict, relevant commit identities, changed-area navigation, verification evidence, authoritative repository references, and the required next action. Refer to repository governance instead of duplicating it. Implementation narrative is context, not correctness evidence.
+Each artifact is a standalone, easily copyable Markdown document. Include decision-relevant identity, intent or verdict, commit identities, changed-area navigation, evidence, authoritative repository references, and the required next action. Refer to durable repository governance instead of substantially restating it, while retaining short action-critical instructions needed by a fresh receiving session. Optimize for information quality and self-sufficient handoff rather than minimum length. Implementation narrative is context, not correctness evidence.
+
+The Codex Task Prompt contains an Authoritative Task Core: Goal, Scope, Out of Scope, Requirements, material Constraints / Decisions, and Acceptance Criteria, with related task-specific context as the template defines. It carries transient engineering intent that cannot reliably be recovered from repository state. When Codex A prepares the Codex Review Prompt, it MUST transfer that core verbatim and MUST NOT reinterpret, summarize, weaken, replace, or otherwise rewrite it. Formatting-only transformations may be used when the medium requires them without changing the authoritative content. Codex A records any implementation interpretation, clarification, deviation, implementation evidence, verification evidence, navigation, and previous-review state separately as Codex A-produced context.
+
+The Review Prompt visibly separates the inherited Authoritative Task Core from Codex A-produced engineering information. It supplies a fresh Codex B session with the unchanged Task Core, exact Git review targets, the material implementation delta and decisions, Codex A verification evidence, useful navigation, deviations, and previous-review state when applicable. The Task artifact need not be persisted, and Codex B must not reconstruct transient task intent from Git history.
 
 ## Task Granularity
 
@@ -90,7 +94,15 @@ Approval is bound to the exact Approved Commit. Any later repository modificatio
 
 ## Engineering Result and Post-ERR Decision
 
-After `APPROVED`, Codex A produces the Engineering Result Report before integration. It records the reviewed state, verification, approval, relevant commits, limitations, and decision-relevant notes. It may identify a concrete recurring deterministic procedure as an Automation Opportunity, including likely ownership, but this does not authorize implementation.
+After `APPROVED`, Codex A produces the Engineering Result Report before integration. ChatGPT / Design Owner is its primary consumer. The normal flow is `Codex A → ERR → ChatGPT judgment/recommendation → Human disposition`; optional human code review may supplement it.
+
+Together with the original Task and pre-Task repository context, ERR is the self-contained execution-to-design evidence boundary for the normal Design Owner judgment. ChatGPT is not expected to access Codex A's temporary task branch, task commits, changed files, complete diff, or other post-Task repository state. ERR therefore returns decision-relevant facts produced or discovered during execution that ChatGPT cannot otherwise observe, without repeating original Task content or durable pre-Task governance unnecessarily and without becoming a repository mirror.
+
+ERR reports the material implementation outcome and decisions, preserved invariants, changed-area consequences, deviations, criterion-linked acceptance evidence, checks performed and results, important verification omissions, Independent Review target and attempt history, material Findings and resolutions, unresolved Findings, final verdict, relevant reviewer verification and confirmed material properties, residual risks, and Final Version Impact when applicable. It also reports enough repository identities and relationships to assess whether the reviewed and approved implementation is the implementation presented for disposition, including material working-tree or child-repository state. Every material mismatch or uncertainty is explicit.
+
+Evidence is preferred over unsupported status assertions. The ERR must allow ChatGPT to assess reported acceptance, verification proportionality, Independent Review evidence, and commit-identity consistency, but the resulting judgment is not equivalent to direct implementation inspection and does not replace Codex B's Independent Review of the actual committed change. It may identify a concrete recurring deterministic procedure as an Automation Opportunity, including likely ownership, but this does not authorize implementation.
+
+Codex A may add a plain-language engineering recommendation grounded in the reported evidence. It is distinct from ChatGPT / Design Owner's independent engineering judgment and from the human's final `INTEGRATE | REVISE | ABORT` disposition; it introduces no new formal status.
 
 The report is decision input, not integration authorization. Codex A then stops. ChatGPT / Design Owner interprets it with the human decision and supplies a new explicit disposition prompt:
 

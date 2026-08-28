@@ -263,6 +263,47 @@ def main():
     )
     require_tokens(
         errors,
+        "root",
+        LAYERS["root"] / "CODEX_TASK_TEMPLATE.md",
+        (
+            "## Authoritative Task Core",
+            "transfer this core verbatim",
+            "MUST NOT reinterpret, summarize, weaken, replace",
+            "## End Authoritative Task Core",
+        ),
+    )
+    require_tokens(
+        errors,
+        "root",
+        LAYERS["root"] / "CODEX_REVIEW_PROMPT_TEMPLATE.md",
+        (
+            "Inherited Authoritative Task Core",
+            "BEGIN VERBATIM AUTHORITATIVE TASK CORE",
+            "Codex A-Produced Review Context",
+            "Implementation Outcome and Decisions",
+            "Codex A Verification Evidence",
+            "Previous-Review State",
+        ),
+    )
+    require_tokens(
+        errors,
+        "root",
+        LAYERS["root"] / "ENGINEERING_RESULT_TEMPLATE.md",
+        (
+            "Primary Consumer and Evidence Boundary",
+            "Implementation Outcome",
+            "Presented Task HEAD",
+            "Identity Consistency",
+            "Criterion | Evidence | Status",
+            "Important Checks Not Performed",
+            "Material Findings and Resolutions",
+            "Reviewer-Confirmed Material Properties",
+            "Residual Risks and Limitations",
+            "Codex A Engineering Recommendation",
+        ),
+    )
+    require_tokens(
+        errors,
         "template",
         LAYERS["template"] / "GIT_WORKFLOW.md",
         ("The template default is `main`", "may configure another"),
