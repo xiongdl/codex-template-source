@@ -74,8 +74,9 @@ The root project dogfoods the complete workflow defined in `.ai/WORKFLOW.md`, `.
 ChatGPT / Design Owner
 → Codex A / Implementation Owner
 → Codex B / read-only Review Owner
-→ Codex A / ff-only integration
-→ ChatGPT / Engineering Result
+→ Codex A / Engineering Result
+→ ChatGPT + Human disposition
+→ Codex A / explicit integration, revision, or abort action
 ```
 
 The four cross-role artifact templates live under root `.ai/`. Their project-agnostic counterparts are distributed under `template/.ai/`.

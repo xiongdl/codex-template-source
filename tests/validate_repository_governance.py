@@ -23,6 +23,7 @@ REQUIRED = [
     "docs/TEMPLATE_ARCHITECTURE.md",
     "docs/CHANGE_POLICY.md",
     "docs/VERSIONING.md",
+    "docs/decisions/004-engineering-environment-documentation-and-disposition.md",
     "scripts/check",
     "tests/validate_ai_workflow.py",
 ]

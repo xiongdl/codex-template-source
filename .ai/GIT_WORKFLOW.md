@@ -45,9 +45,10 @@ After `CHANGES_REQUESTED`, a new Review Commit is required only when Finding res
 
 ## Integration Gate
 
-Codex A owns local integration. Integrate a `CHANGE` task only when:
+Codex A owns local integration after the post-ERR decision. Integrate a `CHANGE` task only when:
 
 - Independent Review is `APPROVED`;
+- the Engineering Result Report has been returned and a new explicit `INTEGRATE` prompt has been received;
 - task `HEAD` equals the Approved Commit;
 - the tracked working tree is clean;
 - the Task Branch is based on the current Base Branch;
@@ -75,7 +76,7 @@ Create the workspace Task Branch first. Each changed child uses at most one Task
 
 Prepare review child-first and workspace-last: commit each child Review Commit, record its exact gitlink or composition identity in the workspace, then create the workspace Review Commit. The single Review Prompt and Review Attempt cover the complete repository change set and cross-repository consistency. If a child Review Commit changes during re-review, update and recommit the workspace composition.
 
-After exact-commit approval, integrate changed children first and the workspace last using each repository's ff-only Base Branch. For every changed repository, `Reviewed Commit == Approved Commit == Integrated Commit`. An interrupted local sequence is resumed until the approved composition is consistent; database-style rollback is not required.
+After exact-commit approval and the explicit post-ERR `INTEGRATE` prompt, integrate changed children first and the workspace last using each repository's ff-only Base Branch. For every changed repository, `Reviewed Commit == Approved Commit == Integrated Commit`. An interrupted local sequence is resumed until the approved composition is consistent; database-style rollback is not required.
 
 Local completion does not require publication. With separate Human REMOTE authorization, publish changed child commits first, verify they are reachable from configured official remotes, and publish the referencing workspace last.
 

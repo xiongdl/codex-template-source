@@ -60,6 +60,12 @@ HANDOFF_TOKENS = (
     "concrete material problem",
     "Re-review is incremental-first",
     "more than noticing no obvious bug",
+    "Engineering Result Report before integration",
+    "Automation Opportunity",
+    "INTEGRATE",
+    "REVISE",
+    "ABORT",
+    "MUST NOT infer a disposition",
 )
 
 GIT_TOKENS = (
@@ -77,6 +83,7 @@ GIT_TOKENS = (
     "workspace is the composition anchor",
     "child-first and workspace-last",
     "publish changed child commits first",
+    "new explicit `INTEGRATE` prompt",
 )
 
 WORKFLOW_TOKENS = (
@@ -84,10 +91,15 @@ WORKFLOW_TOKENS = (
     "human user owns creation of the new Codex B session",
     "manual transfer of the formal review artifacts",
     "HARD STOP",
+    "Engineering Result Report",
+    "INTEGRATE | REVISE | ABORT",
+    "decision input and precedes integration",
 )
 
 WORKFLOW_FORBIDDEN_TOKENS = (
     "review orchestration",
+    "ff-only local integration ←",
+    "Engineering Result Report to ChatGPT",
 )
 
 TASK_SECTIONS = (
@@ -156,7 +168,8 @@ RESULT_TOKENS = (
     "Revision",
     "Task Type",
     "Original Task",
-    "COMPLETED | BLOCKED",
+    "COMPLETED | AWAITING_DISPOSITION | BLOCKED",
+    "Terminal Engineering Status remains `COMPLETED | BLOCKED`",
     "Result Summary",
     "Repository State",
     "Base Branch",
@@ -166,12 +179,15 @@ RESULT_TOKENS = (
     "Blocked",
     "Deviations",
     "Remaining Notes",
-    "Recommended Next Step",
+    "Required Disposition",
     "INPUT_REQUIRED | DECISION_REQUIRED | REVIEW_LIMIT_REACHED",
     "Repository Changes = `NO`",
     "Independent Review = `NOT_APPLICABLE`",
     "Independent Review = `APPROVED`",
-    "Reviewed Commit == Approved Commit == Integrated Commit",
+    "Reviewed Commit == Approved Commit",
+    "PENDING_EXPLICIT_INTEGRATE",
+    "Automation Opportunities",
+    "INTEGRATE | REVISE | ABORT",
     "Performed in human-created Codex B session: `NOT_APPLICABLE | YES`",
     "Review Prompt and Review Report manually transferred by human user: `NOT_APPLICABLE | YES`",
     "Remote Publication",

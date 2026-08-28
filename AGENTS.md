@@ -40,7 +40,9 @@ Read `.ai/AI_HANDOFF_PROTOCOL.md` and `.ai/GIT_WORKFLOW.md` for every Engineerin
 
 Task Type is immutable and limited to `READ_ONLY` and `CHANGE`. A `CHANGE` requires one `task/*` branch, committed-state Independent Review, approval, and ff-only local integration before `COMPLETED`.
 
-At review-ready state, Codex A creates the Review Commit and formal Codex Review Prompt, then stops. The human user creates the new Codex B session, transfers the prompt, and returns the formal Codex Review Report to Codex A.
+Begin with task-relevant context and targeted inspection, expanding only when correctness, uncertainty, impact, or regression risk requires it. Use verification and reporting sufficient for correctness and proportionate to risk; repository-required checks still run before a Review Commit.
+
+At review-ready state, Codex A creates the Review Commit and formal Codex Review Prompt, then stops. The human user creates the new Codex B session, transfers the prompt, and returns the formal Codex Review Report to Codex A. After approval, Codex A produces the Engineering Result Report and stops for a new explicit `INTEGRATE`, `REVISE`, or `ABORT` prompt reflecting the ChatGPT / Design Owner and human decision.
 
 Engineering Task decomposition belongs to ChatGPT / Design Owner. Do not delegate implementation ownership or create child Engineering Tasks.
 

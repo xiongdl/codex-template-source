@@ -73,10 +73,22 @@ Maximum Review Attempts = 3 per Task ID. The count survives Task Contract revisi
 
 Approval is bound to the exact Approved Commit. Any modification after approval or rebase invalidates approval and requires re-verification and new Independent Review.
 
+## Engineering Result and Post-ERR Decision
+
+After `APPROVED`, Codex A produces the Engineering Result Report before integration. The report records the reviewed state, verification, approval, relevant commits, limitations, and decision-relevant notes. It may identify a concrete recurring deterministic procedure as an Automation Opportunity, including likely ownership, but this does not authorize implementation.
+
+The report is decision input, not integration authorization. Codex A then stops. ChatGPT / Design Owner interprets it with the human decision and supplies a new explicit disposition prompt:
+
+- `INTEGRATE`: authorize exact-approved-commit integration under `.ai/GIT_WORKFLOW.md`;
+- `REVISE`: authorize the stated revision; any changed intended integrated state returns through verification and Independent Review;
+- `ABORT`: end normal integration without implying reset, deletion, rollback, or other destructive cleanup.
+
+Codex A MUST NOT infer a disposition from technical approval or from the report.
+
 ## Engineering Status
 
 Terminal status is limited to `COMPLETED` and `BLOCKED`. Failures during execution are intermediate conditions. Engineering-task Blocked Reason is limited to `INPUT_REQUIRED`, `DECISION_REQUIRED`, and `REVIEW_LIMIT_REACHED`.
 
 ## Human Boundary
 
-Human authority is concentrated in `INPUT`, `DECISION`, `REVIEW_SESSION`, `REMOTE`, and `RELEASE`. Independent Review requires the human user to create the new Codex B session and manually transfer the formal review artifacts. Normal implementation and approved local integration need no step-by-step confirmation. Remote writes and release publication require explicit authority.
+Human authority is concentrated in `INPUT`, `DECISION`, `REVIEW_SESSION`, `REMOTE`, and `RELEASE`. Independent Review requires the human user to create the new Codex B session and manually transfer the formal review artifacts. Normal implementation needs no step-by-step confirmation; approved local integration requires the explicit post-ERR `INTEGRATE` decision, not additional command-by-command confirmation. Remote writes and release publication require explicit authority.

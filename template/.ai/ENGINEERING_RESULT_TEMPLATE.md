@@ -7,9 +7,11 @@
 - Task Type: `READ_ONLY | CHANGE`
 - Original Task:
 
-## Status
+## Engineering State
 
-`COMPLETED | BLOCKED`
+`COMPLETED | AWAITING_DISPOSITION | BLOCKED`
+
+For an approved `CHANGE`, use `AWAITING_DISPOSITION`: this report precedes integration and is not a terminal Engineering Status. Terminal Engineering Status remains `COMPLETED | BLOCKED`.
 
 ## Result Summary
 
@@ -23,13 +25,13 @@ For a multi-repository Task, repeat these identity fields for the workspace and 
 - Base Commit: `NOT_APPLICABLE | <commit>`
 - Reviewed Commit: `NOT_APPLICABLE | <commit>`
 - Approved Commit: `NOT_APPLICABLE | <commit>`
-- Integrated Commit: `NOT_APPLICABLE | <commit>`
+- Integrated Commit: `NOT_APPLICABLE | PENDING_EXPLICIT_INTEGRATE | <commit>`
 - Working Tree:
 - Remote Publication: `NOT_AUTHORIZED | NOT_PUBLISHED | PUBLISHED`
 
 For `READ_ONLY + COMPLETED`, Repository Changes = `NO` and Independent Review = `NOT_APPLICABLE`.
 
-For `CHANGE + COMPLETED`, Independent Review = `APPROVED` and was performed by Codex B in a new Codex session explicitly created by the human user, the approved repository state is integrated successfully, and Reviewed Commit == Approved Commit == Integrated Commit.
+For `CHANGE + AWAITING_DISPOSITION`, Independent Review = `APPROVED` and was performed by Codex B in a new Codex session explicitly created by the human user, Reviewed Commit == Approved Commit, and Integrated Commit = `PENDING_EXPLICIT_INTEGRATE`.
 
 ## Verification
 
@@ -52,8 +54,12 @@ For `CHANGE + COMPLETED`, Independent Review = `APPROVED` and was performed by C
 
 ## Remaining Notes
 
+Optional: add an `Automation Opportunities` section only when a concrete recurring deterministic procedure was discovered. A suggestion is not authorization to implement it.
+
 ## Final Version Impact
 
 `NONE | PATCH | MINOR | MAJOR | UNKNOWN`
 
-## Recommended Next Step
+## Required Disposition
+
+ChatGPT / Design Owner and the human select `INTEGRATE | REVISE | ABORT` and return a new explicit prompt to Codex A.

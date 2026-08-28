@@ -37,6 +37,8 @@ The payload provides:
 - lean workspace and child-repository composition,
 - honest incremental lifecycle inspection and verification,
 - automation entry-point convention,
+- workspace-owned Environment Modules composition introduced only for validated needs,
+- lightweight formal-document and reproducible-figure conventions,
 - traceability guidance.
 
 ## Governance Responsibilities
@@ -139,5 +141,7 @@ Both layers use the same core model:
 The distributable payload treats the workspace as the composition anchor for governance, project documentation, orchestration, and managed child repositories. It does not prescribe generic `components/`, `tests/`, or `integration/` directories and does not inject workspace governance into child repositories.
 
 The human user is the explicit Independent Review handoff boundary: Codex A stops after producing the formal Review Prompt, the human creates Codex B's session and transfers the prompt, and the human returns Codex B's formal Review Report. Internal or sub-agent review is informational and cannot satisfy the gate.
+
+Technical approval and final Task disposition are separate boundaries. After approval, Codex A returns an Engineering Result Report before integration. ChatGPT / Design Owner and the human select `INTEGRATE`, `REVISE`, or `ABORT`, then provide a new explicit prompt. Environment composition remains workspace-owned; automation remains with the engineering responsibility it performs.
 
 Root `.ai/` policies govern maintenance of `codex-template`. `template/.ai/` contains the project-agnostic contract copied to instantiated projects. The files intentionally have layer-specific surrounding guidance while preserving these invariants.

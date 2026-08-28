@@ -53,3 +53,7 @@ Tests should live at the narrowest project-appropriate level that fully validate
 ## 13. Real-Project Feedback Drives Evolution
 
 Template capabilities should preferably be added because repeated real-world use demonstrated a need.
+
+## 14. Proportionate Engineering Effort
+
+Begin with relevant context and expand inspection, verification, output, and reporting when correctness, uncertainty, or risk requires it.

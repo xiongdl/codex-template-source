@@ -144,6 +144,20 @@ def main():
             if token not in project_init:
                 errors.append(f"PROJECT_INIT.md missing Bootstrap concept '{token}'")
 
+    reproducibility_path = TEMPLATE / "docs/REPRODUCIBILITY.md"
+    if reproducibility_path.is_file():
+        reproducibility = reproducibility_path.read_text(encoding="utf-8")
+        for token in (
+            "Environment Modules", "workspace-owned", "env/<name>.csh",
+            "env/modulefiles/", "Conda", "pip", "AsciiDoc", "Asciidoctor PDF",
+            ".drawio", "draw.io Desktop 31.3.2", "--svg-theme light",
+        ):
+            if token not in reproducibility:
+                errors.append(f"docs/REPRODUCIBILITY.md missing engineering infrastructure concept '{token}'")
+
+    if (TEMPLATE / "env").exists():
+        errors.append("template must not pre-create placeholder environment combinations")
+
     # Task readiness invariant vocabulary and behavior.
     readiness_path = TEMPLATE / ".ai/TASK_READINESS.md"
     if readiness_path.is_file():

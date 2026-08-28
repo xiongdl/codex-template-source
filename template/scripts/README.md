@@ -9,3 +9,7 @@ Executable lifecycle commands are `setup`, `build`, `test`, and `clean`. Enable 
 The instantiated project defines what these operations mean.
 
 Human, Codex, and CI should prefer the same entry points where practical.
+
+Keep this entry point as a thin workspace orchestrator. Child-repository-native build, test, and generation implementations remain in the child repository; workspace composition and cross-repository checks belong here when needed.
+
+Do not add a command merely because a deterministic procedure could be automated. Codex may surface the opportunity, but a repository change requires explicit Engineering Task scope.

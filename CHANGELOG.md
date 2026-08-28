@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.10.0
+
+- Added progressive context acquisition, proportionate verification/reporting, and explicit boundaries for deterministic automation opportunities and ownership.
+- Established workspace-owned Environment Modules composition, Conda/pip responsibility boundaries, and no-placeholder environment guidance.
+- Added lightweight AsciiDoc-to-PDF formal documentation and reproducible data/conceptual figure policies, including the validated draw.io 31.3.2 SVG invocation.
+- Moved the Engineering Result Report before integration and added an explicit post-ERR human `INTEGRATE` / `REVISE` / `ABORT` decision gate.
+- Added ADR-004 and extended workflow/template validation while retaining `template/VERSION` at `0.1.0`.
+
 ## 1.9.0
 
 - Added automatic no-valid-HEAD Bootstrap routing that produces one coherent Initial Commit without treating Bootstrap as a third Engineering Task Type.

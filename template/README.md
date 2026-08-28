@@ -35,6 +35,8 @@ Where practical:
 
 Human users, Codex, and CI should prefer the same project entry points.
 
+Workspace engineering environments are composed with Environment Modules when actual project needs justify a validated combination. Formal engineering documents use AsciiDoc source and PDF delivery; repository guidance remains Markdown. See `docs/REPRODUCIBILITY.md`.
+
 ## Verification
 
 Preserve child repositories' native build and test structures. Verification should run at the narrowest project-appropriate level and must distinguish supported, unavailable, and not-yet-implemented capabilities.
