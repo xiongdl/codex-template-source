@@ -13,6 +13,7 @@ LAYERS = {
 
 REQUIRED_FILES = (
     "WORKFLOW.md",
+    "DESIGN_CONVERSATION_PROTOCOL.md",
     "TASK_READINESS.md",
     "AI_HANDOFF_PROTOCOL.md",
     "GIT_WORKFLOW.md",
@@ -100,6 +101,38 @@ WORKFLOW_FORBIDDEN_TOKENS = (
     "review orchestration",
     "ff-only local integration ←",
     "Engineering Result Report to ChatGPT",
+)
+
+DESIGN_CONVERSATION_TOKENS = (
+    "EXPLORE",
+    "CONVERGE",
+    "PRE-FREEZE",
+    "FREEZE",
+    "COMPILE",
+    "Explore for coverage",
+    "Converge for closure",
+    "Internal structured, external natural",
+    "Scan before asking. Resolve before asking.",
+    "Objective Reframing",
+    "New Scope",
+    "Behavior, Boundary, Interface, Default, Failure, Compatibility, Lifecycle, and Verification",
+    "Checkpoint",
+    "Frozen Design State",
+    "Reopen Snapshot",
+    "MUST every 10 user turns",
+    "Coverage, Leakage, and Redundancy",
+    "Design Decision → Observable Obligation → Acceptance Criterion → Verification",
+    "Authoritative Task Core",
+)
+
+MAINTAINER_DESIGN_CONVERSATION_TOKENS = (
+    "template/.ai/DESIGN_CONVERSATION_PROTOCOL.md",
+    "canonical shared behavior",
+    "governance",
+    "payload",
+    "project-agnostic",
+    "Authoritative Task Core",
+    "Independent Review",
 )
 
 TASK_SECTIONS = (
@@ -229,6 +262,17 @@ def main():
         require_tokens(errors, label, ai_dir / "AI_HANDOFF_PROTOCOL.md", HANDOFF_TOKENS)
         require_tokens(errors, label, ai_dir / "GIT_WORKFLOW.md", GIT_TOKENS)
         require_tokens(errors, label, ai_dir / "WORKFLOW.md", WORKFLOW_TOKENS)
+        protocol_tokens = (
+            MAINTAINER_DESIGN_CONVERSATION_TOKENS
+            if label == "root"
+            else DESIGN_CONVERSATION_TOKENS
+        )
+        require_tokens(
+            errors,
+            label,
+            ai_dir / "DESIGN_CONVERSATION_PROTOCOL.md",
+            protocol_tokens,
+        )
         reject_tokens(
             errors,
             label,
@@ -307,6 +351,30 @@ def main():
         "template",
         LAYERS["template"] / "GIT_WORKFLOW.md",
         ("The template default is `main`", "may configure another"),
+    )
+    require_tokens(
+        errors,
+        "template",
+        LAYERS["template"] / "CODEX_TASK_TEMPLATE.md",
+        (
+            "## Authoritative Task Core",
+            "transfer this core verbatim",
+            "MUST NOT reinterpret, summarize, weaken, replace",
+            "## End Authoritative Task Core",
+        ),
+    )
+    require_tokens(
+        errors,
+        "template",
+        LAYERS["template"] / "CODEX_REVIEW_PROMPT_TEMPLATE.md",
+        (
+            "Inherited Authoritative Task Core",
+            "BEGIN VERBATIM AUTHORITATIVE TASK CORE",
+            "Codex A-Produced Review Context",
+            "Implementation Outcome and Decisions",
+            "Codex A Verification Evidence",
+            "Previous-Review State",
+        ),
     )
 
     if errors:

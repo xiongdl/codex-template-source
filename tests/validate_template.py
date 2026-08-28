@@ -15,6 +15,7 @@ REQUIRED = [
     "VERSION",
     "CHANGELOG.md",
     ".ai/WORKFLOW.md",
+    ".ai/DESIGN_CONVERSATION_PROTOCOL.md",
     ".ai/PROJECT_INIT.md",
     ".ai/TASK_READINESS.md",
     ".ai/CODEX_TASK_TEMPLATE.md",
@@ -112,6 +113,7 @@ def main():
             "VERSION",
             ".ai/TASK_READINESS.md",
             ".ai/WORKFLOW.md",
+            ".ai/DESIGN_CONVERSATION_PROTOCOL.md",
             "docs/PROJECT_STATUS.md",
         ):
             if ref not in chatgpt:

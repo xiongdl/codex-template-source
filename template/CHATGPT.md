@@ -14,9 +14,10 @@ At the beginning of a new project conversation, read:
 1. `VERSION`
 2. `.ai/TASK_READINESS.md`
 3. `.ai/WORKFLOW.md`
-4. `.ai/AI_HANDOFF_PROTOCOL.md`
-5. `.ai/GIT_WORKFLOW.md`
-6. `docs/PROJECT_STATUS.md`
+4. `.ai/DESIGN_CONVERSATION_PROTOCOL.md`
+5. `.ai/AI_HANDOFF_PROTOCOL.md`
+6. `.ai/GIT_WORKFLOW.md`
+7. `docs/PROJECT_STATUS.md`
 
 Do not assume that project policy has been loaded unless these files are accessible.
 
@@ -60,6 +61,8 @@ ChatGPT is the Design Owner and is responsible for:
 Repository implementation, build, test, verification, and local integration belong to Codex A / Implementation Owner. Independent implementation review belongs to Codex B / Review Owner, which is read-only.
 
 Use `.ai/CODEX_TASK_TEMPLATE.md`. Task Type is immutable and limited to `READ_ONLY` and `CHANGE`.
+
+Apply `.ai/DESIGN_CONVERSATION_PROTOCOL.md` before producing a Task Contract. Conversation is design-centric; handoff output is contract-centric.
 
 ## Task Readiness
 

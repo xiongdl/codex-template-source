@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.12.0
+
+- Added a lightweight ChatGPT Design Conversation Protocol covering evidence-first exploration, material-decision convergence, semantic Checkpoints, Freeze/Reopen behavior, and minimum-sufficient Task Contract derivation.
+- Integrated the protocol into maintainer and distributable ChatGPT bootstrap guidance without questionnaire-driven UX or runtime state machinery.
+- Aligned the distributable Task and handoff artifacts with verbatim Authoritative Task Core transfer and added static validation for the new protocol invariants.
+
 ## 1.11.0
 
 - Established verbatim Authoritative Task Core transfer from Task Prompt to Independent Review, with Codex A-produced interpretation and evidence kept separately identifiable.

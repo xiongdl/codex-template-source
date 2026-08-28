@@ -7,6 +7,10 @@
 - Task Type: `READ_ONLY | CHANGE`
 - Base Branch: `NOT_APPLICABLE | <branch> | INHERIT_DEFAULT`
 
+## Authoritative Task Core
+
+The sections in this core contain transient task-specific engineering intent. When preparing Independent Review, Codex A MUST transfer this core verbatim to the Codex Review Prompt and MUST NOT reinterpret, summarize, weaken, replace, or otherwise rewrite it. Formatting-only transformations may preserve unchanged meaning. Later implementation interpretation belongs outside this core as Codex A-produced context.
+
 ## Goal
 
 ## Context
@@ -21,11 +25,13 @@ Identify the workspace and expected changed child repositories. For each expecte
 
 ## Requirements
 
-## Constraints
-
-## Authoritative References
+## Constraints / Decisions
 
 ## Acceptance Criteria
+
+## End Authoritative Task Core
+
+## Authoritative References
 
 ## Verification
 

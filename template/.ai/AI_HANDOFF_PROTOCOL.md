@@ -32,6 +32,8 @@ Conversation is transient. Artifact plus repository state is the handoff contrac
 
 Each artifact is a standalone, easily copyable Markdown document. Keep it concise: include identity, objective or verdict, relevant commit identities, changed-area navigation, verification evidence, authoritative repository references, and the required next action. Refer to repository governance instead of duplicating it. Implementation narrative is context, not correctness evidence.
 
+The Codex Task Prompt contains an Authoritative Task Core carrying transient task-specific engineering intent. Codex A MUST transfer that core verbatim into the Review Prompt and MUST NOT reinterpret, summarize, weaken, replace, or reconstruct it from Git history. The Review Prompt visibly separates the inherited Core from Codex A-produced implementation interpretation, evidence, deviations, navigation, and previous-review state.
+
 ## Task Granularity
 
 An Engineering Task SHOULD represent one coherent engineering objective, not one command, file, repository, or implementation step. Related activities may share a Task when they form a reviewable scope and meaningful acceptance boundary. Separate genuinely independent objectives when dependencies, risks, review context, acceptance boundaries, or failure independence materially differ. Governance should reduce engineering risk without unnecessary Task administration.

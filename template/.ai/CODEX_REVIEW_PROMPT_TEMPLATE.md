@@ -14,9 +14,29 @@ Codex A MUST stop after producing this prompt. Self-review, same-session role sw
 
 Independently review the complete Task change set and repository state. This is read-only: Codex B MUST NOT modify repository artifacts or the implementation under review.
 
+## Inherited Authoritative Task Core
+
+Paste the Codex Task Prompt's complete Authoritative Task Core here verbatim. Do not reference a persisted Task artifact and do not summarize or reconstruct the Core from Git history.
+
+```text
+BEGIN VERBATIM AUTHORITATIVE TASK CORE
+
+END VERBATIM AUTHORITATIVE TASK CORE
+```
+
+## Codex A-Produced Review Context
+
+Everything below is engineering information produced or recorded by Codex A. It supplements but does not modify the inherited Core.
+
 ## Original Task
 
-Reference the Codex Task Prompt:
+- Task Contract Revision:
+
+## Implementation Outcome and Decisions
+
+- Outcome:
+- Implementation decisions left to Codex A:
+- Deviations from the Authoritative Task Core: `NONE | <details>`
 
 ## Git Review Target
 
@@ -53,7 +73,17 @@ For re-review after contract- or decision-only resolution with unchanged tracked
 
 Navigation hints only; Codex A's implementation narrative is not evidence of correctness.
 
-## Verification
+## Codex A Verification Evidence
+
+- Commands and results:
+- Important checks not performed:
+
+## Previous-Review State
+
+- Previous Findings: `NOT_APPLICABLE | <details>`
+- Resolution evidence: `NOT_APPLICABLE | <details>`
+
+## Codex B Verification
 
 Inspect or run the checks needed to validate acceptance and record what was performed.
 

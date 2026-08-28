@@ -32,6 +32,7 @@ It must not leak into instantiated projects.
 The payload provides:
 
 - AI collaboration rules,
+- a lightweight design-conversation protocol that freezes design before deriving a minimum-sufficient Task Contract,
 - project initialization workflow,
 - automatic pre-Initial-Commit Bootstrap and project-specific documentation,
 - lean workspace and child-repository composition,
