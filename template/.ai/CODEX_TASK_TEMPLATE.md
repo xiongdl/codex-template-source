@@ -9,7 +9,7 @@
 
 ## Authoritative Task Core
 
-The sections in this core contain transient task-specific engineering intent. When preparing Independent Review, Codex A MUST transfer this core verbatim to the Codex Review Prompt and MUST NOT reinterpret, summarize, weaken, replace, or otherwise rewrite it. Formatting-only transformations may preserve unchanged meaning. Later implementation interpretation belongs outside this core as Codex A-produced context.
+The sections in this core contain transient task-specific engineering intent. The canonical Original Core operand is all raw text after the newline terminating the `## Authoritative Task Core` boundary line and before the `## End Authoritative Task Core` boundary line. The boundary lines are framing and are not part of the operand. When preparing Independent Review, Codex A MUST copy this entire operand exactly into the Codex Review Prompt. Copying is textual equality, not semantic equivalence: Codex A MUST NOT rewrite, summarize, normalize, reformat, correct, reorder, abbreviate, expand, translate, or otherwise modify it, including its wording, punctuation, Markdown, whitespace, ordering, or content. Extraction and comparison perform no preprocessing, including no trim, dedent, newline normalization, or Markdown normalization. If the handoff medium cannot preserve the Core exactly, use a representation or transfer mechanism that can. Later implementation interpretation belongs outside this core as Codex A-produced context.
 
 ## Goal
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.0.0
+
+- Required Authoritative Task Core transfer to use canonical raw boundaries and exact textual equality with no normalization, formatting exception, or semantic-equivalence substitute.
+- Required Formal Codex Review Prompts to embed the complete Core and added Codex A's pre-handoff validation gate for boundaries, non-substitute content, and exact copying.
+- Clarified post-ERR ownership as human disposition input returned to ChatGPT / Design Owner for compilation of a complete prompt, with `INTEGRATE` bound to the current authoritative Git Integration Gate.
+- Extended the existing AI workflow validator with positive contract assertions, forbidden weakening checks, and canonical-boundary structure checks across root governance and the distributable payload.
+
 ## 2.0.0
 
 - Replaced implicit design-conversation state with user-authorized, current `已确认` / `未确认` state addressed by field and Decision ID.

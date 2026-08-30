@@ -143,6 +143,6 @@ The distributable payload treats the workspace as the composition anchor for gov
 
 The human user is the explicit Independent Review handoff boundary: Codex A stops after producing the formal Review Prompt, the human creates Codex B's session and transfers the prompt, and the human returns Codex B's formal Review Report. Internal or sub-agent review is informational and cannot satisfy the gate.
 
-Technical approval and final Task disposition are separate boundaries. After approval, Codex A returns an Engineering Result Report before integration. ChatGPT / Design Owner and the human select `INTEGRATE`, `REVISE`, or `ABORT`, then provide a new explicit prompt. Environment composition remains workspace-owned; automation remains with the engineering responsibility it performs.
+Technical approval and final Task disposition are separate boundaries. After approval, Codex A returns an Engineering Result Report before integration. ChatGPT / Design Owner advises the human, the human selects `INTEGRATE`, `REVISE`, or `ABORT` and returns that decision input to the Design Owner, then the Design Owner compiles a complete explicit prompt for human transfer to Codex A. Environment composition remains workspace-owned; automation remains with the engineering responsibility it performs.
 
 Root `.ai/` policies govern maintenance of `codex-template`. `template/.ai/` contains the project-agnostic contract copied to instantiated projects. The files intentionally have layer-specific surrounding guidance while preserving these invariants.

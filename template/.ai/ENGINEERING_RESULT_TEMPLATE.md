@@ -62,4 +62,4 @@ Optional: add an `Automation Opportunities` section only when a concrete recurri
 
 ## Required Disposition
 
-ChatGPT / Design Owner and the human select `INTEGRATE | REVISE | ABORT` and return a new explicit prompt to Codex A.
+ChatGPT / Design Owner evaluates this ERR and advises the human. The human selects `INTEGRATE | REVISE | ABORT` and returns that decision input to ChatGPT / Design Owner. The Design Owner compiles the complete explicit post-ERR Codex A prompt required by `.ai/AI_HANDOFF_PROTOCOL.md`, and the human transfers that complete prompt to Codex A. A bare disposition token is not sufficient downstream execution authorization.

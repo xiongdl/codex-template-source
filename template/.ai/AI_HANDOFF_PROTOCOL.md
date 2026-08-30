@@ -32,7 +32,11 @@ Conversation is transient. Artifact plus repository state is the handoff contrac
 
 Each artifact is a standalone, easily copyable Markdown document. Keep it concise: include identity, objective or verdict, relevant commit identities, changed-area navigation, verification evidence, authoritative repository references, and the required next action. Refer to repository governance instead of duplicating it. Implementation narrative is context, not correctness evidence.
 
-The Codex Task Prompt contains an Authoritative Task Core carrying transient task-specific engineering intent. Codex A MUST transfer that core verbatim into the Review Prompt and MUST NOT reinterpret, summarize, weaken, replace, or reconstruct it from Git history. The Review Prompt visibly separates the inherited Core from Codex A-produced implementation interpretation, evidence, deviations, navigation, and previous-review state.
+The Codex Task Prompt contains an Authoritative Task Core carrying transient task-specific engineering intent. Transfer into the Review Prompt is copying, not regeneration. Codex A MUST copy the entire Core exactly and MUST NOT rewrite, summarize, normalize, reformat, correct, reorder, abbreviate, expand, translate, or otherwise modify its wording, punctuation, Markdown, whitespace, ordering, or content. Exact textual equality, not semantic equivalence, is required even when the original contains an error. If the medium cannot preserve the Core exactly, use a representation or transfer mechanism that can.
+
+The Task and Review Prompt templates define canonical Original and Embedded Core boundaries. Equality operands are all raw text inside them; boundary markers are framing. Extraction and comparison perform no trim, dedent, newline normalization, Markdown normalization, or other preprocessing. The Review Prompt MUST actually embed the complete Core. Empty content, placeholders, TODOs, copy instructions, Original Task Prompt references, repository paths, attachments, links, summaries, excerpts, and any other external dependency are not substitutes. It must be self-sufficient for authoritative task intent.
+
+The Review Prompt visibly separates the inherited Core from Codex A-produced implementation interpretation, evidence, deviations, navigation, and previous-review state. Before presenting it to the human, Codex A MUST perform a runtime pre-handoff validation of both canonical boundaries, complete actual non-substitute embedding, and exact raw textual equality with the Original Core. A failure MUST be corrected or regenerated; Codex A MUST NOT present a failing prompt as the formal handoff. This runtime gate creates no additional formal artifact.
 
 ## Task Granularity
 
@@ -79,11 +83,15 @@ Approval is bound to the exact Approved Commit. Any modification after approval 
 
 After `APPROVED`, Codex A produces the Engineering Result Report before integration. The report records the reviewed state, verification, approval, relevant commits, limitations, and decision-relevant notes. It may identify a concrete recurring deterministic procedure as an Automation Opportunity, including likely ownership, but this does not authorize implementation.
 
-The report is decision input, not integration authorization. Codex A then stops. ChatGPT / Design Owner interprets it with the human decision and supplies a new explicit disposition prompt:
+The report is decision input, not integration authorization. Codex A then stops. ChatGPT / Design Owner evaluates the ERR and provides judgment or recommendation to the human. The human selects the final `INTEGRATE | REVISE | ABORT` disposition and returns that decision input to ChatGPT / Design Owner. The Design Owner then combines the original Codex A Task, relevant pre-Task context, the ERR, the human disposition, applicable authorization boundaries, and current authoritative workflow gates into a new, complete, explicit post-ERR Codex A prompt, which the human transfers to Codex A. A bare disposition token is not a complete Design Owner → Codex A execution handoff and is not sufficient downstream execution authorization.
 
-- `INTEGRATE`: authorize exact-approved-commit integration under `.ai/GIT_WORKFLOW.md`;
+The compiled prompt applies the selected existing disposition semantics:
+
+- `INTEGRATE`: authorize exact-approved-commit integration and require Codex A to re-apply the currently authoritative applicable Integration Gate under `.ai/GIT_WORKFLOW.md`, including all applicable review, identity, working-tree, Base Branch, verification, rebase/re-review, ff-only, and authorization constraints;
 - `REVISE`: authorize the stated revision; any changed intended integrated state returns through verification and Independent Review;
 - `ABORT`: end normal integration without implying reset, deletion, rollback, or other destructive cleanup.
+
+No compiled prompt authorizes remote, release, deployment, destructive, or other operations outside its disposition and applicable authorization boundaries. Concrete Git Integration Gate semantics remain owned only by `.ai/GIT_WORKFLOW.md`.
 
 Codex A MUST NOT infer a disposition from technical approval or from the report.
 

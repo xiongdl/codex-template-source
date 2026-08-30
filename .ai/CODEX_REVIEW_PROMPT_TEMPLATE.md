@@ -12,7 +12,9 @@ This prompt MUST be executed by Codex B in a new Codex session explicitly create
 
 ## Inherited Authoritative Task Core
 
-Paste the Codex Task Prompt's complete `Authoritative Task Core` here verbatim. Do not reference a persisted Task artifact and do not summarize or reconstruct the core from Git history.
+The formal prompt instance MUST contain the complete actual Authoritative Task Core copied exactly from the Original Codex A Task Prompt between the canonical boundary lines below. Empty content, placeholders, TODOs, copy instructions, references to the Original Task Prompt, repository paths, attachments, links, summaries, excerpts, or other external dependencies are not substitutes. Codex B must be able to obtain the complete authoritative intent from this prompt alone.
+
+The canonical Embedded Core operand is all raw text after the newline terminating `<!-- BEGIN VERBATIM AUTHORITATIVE TASK CORE -->` and before `<!-- END VERBATIM AUTHORITATIVE TASK CORE -->`. Boundary lines are framing, not operands. Before presenting the prompt to the human, Codex A MUST extract the Original and Embedded operands without trim, dedent, newline normalization, Markdown normalization, or any other preprocessing; verify that both expected boundaries exist, that the Embedded operand is complete actual non-substitute content, and that `Original Authoritative Task Core == Embedded Authoritative Task Core` by exact textual equality. If any check fails, Codex A MUST correct or regenerate the prompt and MUST NOT present it as the formal Independent Review handoff.
 
 <!-- BEGIN VERBATIM AUTHORITATIVE TASK CORE -->
 

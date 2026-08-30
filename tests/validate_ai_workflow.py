@@ -245,6 +245,39 @@ RESULT_TOKENS = (
     "Remote Publication",
 )
 
+EXACT_COPY_TOKENS = (
+    "copy the entire Core exactly",
+    "Exact textual equality, not semantic equivalence",
+    "no trim, dedent, newline normalization, Markdown normalization",
+    "MUST actually embed the complete Core",
+    "external dependency",
+    "runtime pre-handoff",
+    "MUST NOT present a failing prompt",
+    "no additional formal artifact",
+)
+
+POST_ERR_TOKENS = (
+    "provides judgment or recommendation to the human",
+    "returns that decision input to ChatGPT / Design Owner",
+    "new, complete, explicit post-ERR Codex A prompt",
+    "which the human transfers to Codex A",
+    "A bare disposition token is not a complete",
+    "re-apply the currently authoritative applicable Integration Gate",
+    "Concrete Git Integration Gate semantics remain owned only by `.ai/GIT_WORKFLOW.md`",
+)
+
+CORE_TRANSFER_FORBIDDEN_TOKENS = (
+    "Formatting-only transformations are allowed",
+    "Formatting-only transformations may preserve",
+    "meaning-preserving transformation",
+    "semantic equivalence is sufficient",
+)
+
+ERR_FORBIDDEN_TOKENS = (
+    "returns it in a new explicit prompt to Codex A",
+    "select `INTEGRATE | REVISE | ABORT` and return a new explicit prompt to Codex A",
+)
+
 
 def require_tokens(errors, label, path, tokens):
     if not path.is_file():
@@ -267,6 +300,24 @@ def reject_tokens(errors, label, path, tokens):
             errors.append(
                 f"{label}: {path.relative_to(ROOT)} contains forbidden literal '{token}'"
             )
+
+
+def require_ordered_unique_boundaries(errors, label, path, begin, end):
+    if not path.is_file():
+        return
+    text = path.read_text(encoding="utf-8")
+    lines = text.splitlines()
+    begin_lines = [index for index, line in enumerate(lines) if line == begin]
+    end_lines = [index for index, line in enumerate(lines) if line == end]
+    if len(begin_lines) != 1 or len(end_lines) != 1:
+        errors.append(
+            f"{label}: {path.relative_to(ROOT)} must contain exactly one canonical "
+            "begin boundary and one canonical end boundary"
+        )
+    elif begin_lines[0] >= end_lines[0]:
+        errors.append(
+            f"{label}: {path.relative_to(ROOT)} canonical Core boundaries are out of order"
+        )
 
 
 def main():
@@ -317,6 +368,89 @@ def main():
             ai_dir / "ENGINEERING_RESULT_TEMPLATE.md",
             RESULT_TOKENS,
         )
+        require_tokens(
+            errors,
+            label,
+            ai_dir / "AI_HANDOFF_PROTOCOL.md",
+            EXACT_COPY_TOKENS + POST_ERR_TOKENS,
+        )
+        reject_tokens(
+            errors,
+            label,
+            ai_dir / "AI_HANDOFF_PROTOCOL.md",
+            CORE_TRANSFER_FORBIDDEN_TOKENS,
+        )
+        reject_tokens(
+            errors,
+            label,
+            ai_dir / "CODEX_TASK_TEMPLATE.md",
+            CORE_TRANSFER_FORBIDDEN_TOKENS,
+        )
+        reject_tokens(
+            errors,
+            label,
+            ai_dir / "ENGINEERING_RESULT_TEMPLATE.md",
+            ERR_FORBIDDEN_TOKENS,
+        )
+        require_tokens(
+            errors,
+            label,
+            ai_dir / "CODEX_TASK_TEMPLATE.md",
+            (
+                "canonical Original Core operand",
+                "all raw text after the newline",
+                "before the `## End Authoritative Task Core` boundary line",
+                "no trim, dedent, newline normalization, or Markdown normalization",
+            ),
+        )
+        require_tokens(
+            errors,
+            label,
+            ai_dir / "CODEX_REVIEW_PROMPT_TEMPLATE.md",
+            (
+                "complete actual Authoritative Task Core copied exactly",
+                "canonical Embedded Core operand",
+                "Empty content, placeholders, TODOs, copy instructions",
+                "Original Authoritative Task Core == Embedded Authoritative Task Core",
+                "MUST NOT present it as the formal Independent Review handoff",
+            ),
+        )
+        require_tokens(
+            errors,
+            label,
+            ai_dir / "ENGINEERING_RESULT_TEMPLATE.md",
+            (
+                "returns that decision input to ChatGPT / Design Owner",
+                "Design Owner compiles the complete explicit post-ERR Codex A prompt",
+                "human transfers that complete prompt to Codex A",
+                "bare disposition token is not sufficient downstream execution authorization",
+            ),
+        )
+
+        task_path = ai_dir / "CODEX_TASK_TEMPLATE.md"
+        require_ordered_unique_boundaries(
+            errors,
+            label,
+            task_path,
+            "## Authoritative Task Core",
+            "## End Authoritative Task Core",
+        )
+        review_path = ai_dir / "CODEX_REVIEW_PROMPT_TEMPLATE.md"
+        require_ordered_unique_boundaries(
+            errors,
+            label,
+            review_path,
+            (
+                "<!-- BEGIN VERBATIM AUTHORITATIVE TASK CORE -->"
+                if label == "root"
+                else "BEGIN VERBATIM AUTHORITATIVE TASK CORE"
+            ),
+            (
+                "<!-- END VERBATIM AUTHORITATIVE TASK CORE -->"
+                if label == "root"
+                else "END VERBATIM AUTHORITATIVE TASK CORE"
+            ),
+        )
 
     require_tokens(
         errors,
@@ -330,8 +464,8 @@ def main():
         LAYERS["root"] / "CODEX_TASK_TEMPLATE.md",
         (
             "## Authoritative Task Core",
-            "transfer this core verbatim",
-            "MUST NOT reinterpret, summarize, weaken, replace",
+            "copy this entire operand exactly",
+            "MUST NOT rewrite, summarize, normalize, reformat, correct",
             "## End Authoritative Task Core",
         ),
     )
@@ -377,8 +511,8 @@ def main():
         LAYERS["template"] / "CODEX_TASK_TEMPLATE.md",
         (
             "## Authoritative Task Core",
-            "transfer this core verbatim",
-            "MUST NOT reinterpret, summarize, weaken, replace",
+            "copy this entire operand exactly",
+            "MUST NOT rewrite, summarize, normalize, reformat, correct",
             "## End Authoritative Task Core",
         ),
     )
