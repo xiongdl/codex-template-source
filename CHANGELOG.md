@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.0
+
+- Replaced implicit design-conversation state with user-authorized, current `已确认` / `未确认` state addressed by field and Decision ID.
+- Added formal `接受 / 待定 / 拒绝` decision units with pre-displayed exact operations, immediate-reply token validity, and deterministic expiry and ambiguity handling.
+- Defined complete four-field Checkpoints as current-state and interval-change audit surfaces, distinct from blocker calculation, conversation recovery, and execution planning.
+- Added ADR-005 and focused validation for the breaking protocol contract while preserving the existing design lifecycle and role/handoff ownership model.
+
 ## 1.12.0
 
 - Added a lightweight ChatGPT Design Conversation Protocol covering evidence-first exploration, material-decision convergence, semantic Checkpoints, Freeze/Reopen behavior, and minimum-sufficient Task Contract derivation.

@@ -1,59 +1,158 @@
-# Design Conversation Protocol
+# 设计对话协议
 
-## Operating Model
+## 运行模型
 
-ChatGPT turns one Engineering Objective into a clarified, frozen design, then derives a minimum-sufficient Codex A Task Contract:
+ChatGPT 将一个工程目标澄清并冻结为设计，再从冻结设计派生最小充分的 Codex A 任务合同：
 
 ```text
 User Intent → EXPLORE → CONVERGE → PRE-FREEZE → FREEZE → COMPILE → Codex A Task Prompt
 ```
 
-Explore for coverage. Converge for closure. Freeze design before delegation. Compile the minimum sufficient contract. Internal structured, external natural. The lifecycle constrains ChatGPT, not the user. Keep discussion natural; do not use a questionnaire, mandatory state dump, or ask the user to populate `.ai/CODEX_TASK_TEMPLATE.md`. One conversation serves one Engineering Objective.
+EXPLORE 用于覆盖，CONVERGE 用于闭合，先冻结设计再委派，最后编译最小充分合同。生命周期约束 ChatGPT，不约束用户；外部对话保持自然，不采用问卷，不要求用户填写 `.ai/CODEX_TASK_TEMPLATE.md`。一次对话只处理一个工程目标。
 
-## Bootstrap and Decision Routing
+## 启动、下一动作与最小阻塞集
 
-Infer the narrowest useful provisional Objective. Do not silently infer material decisions. `Scan before asking. Resolve before asking.` Investigate repository or authoritative evidence first; ask the smallest bounded clarification only when no useful provisional Objective can be inferred.
+先推断最窄且有用的暂定目标，不静默推断实质性决定。`先扫描，再提问；先解决，再提问。` 优先检查仓库与权威证据；只有无法推断出有用目标时，才提出最小的有界澄清。
 
-Conceptually maintain current engineering semantics, not conversation history: Objective; Constraints; Confirmed, Proposed, and Open Decisions; and design-relevant Evidence.
+每一轮先确定当前下一动作，再计算该动作的最小阻塞集。`未确认` 是所有经用户授权且当前仍未解决的内容，不等同于当前最小阻塞集。
 
-For each relevant unknown: `INVESTIGATE` when evidence can resolve it; `ASK / PROPOSE` for a Design Owner decision; leave legitimate implementation discretion to Codex A; discard irrelevant or unsupported future hypotheticals. Prefer bounded alternatives, trade-offs, and a recommendation. Cheap replies such as `同意`, `按你的建议`, and `选 B` should suffice.
+对当前最小阻塞集，ChatGPT 必须依次：
 
-A decision is material when Codex A alternatives could materially change behavior, interface or contract, compatibility, persistent architecture, scope, failure semantics, acceptance, or verification. If two implementations satisfy current Acceptance Criteria, would the Design Owner still care which is chosen? If yes, resolve it; if no, leave it to Codex A. Never silently delegate a material decision.
+1. 尝试从当前上下文解决；
+2. 尝试在授权边界内自主解决；
+3. 移除已解决项；
+4. 若结果为空，则不提问并执行下一动作；
+5. 若结果非空，只询问剩余项。
 
-Internally scan relevant gaps in Behavior, Boundary, Interface, Default, Failure, Compatibility, Lifecycle, and Verification. This is not a mandatory user-facing checklist, and not every dimension applies. Prefer upstream decisions that resolve multiple gaps.
+不属于当前最小阻塞集的问题可以暂缓。兼容的问题应合并，优先采用低成本回复机制。调查可以解决的未知项先调查；必须由 Design Owner 决定的事项通过正式决策单元处理；多个实现都满足冻结的可观察合同时，由 Codex A 自主实现。不得把实质性决定静默委派给 Codex A。
 
-## EXPLORE and CONVERGE
+内部检查行为、边界、接口、默认值、失败、兼容性、生命周期与验证等相关缺口，但不把它们变成强制的用户问卷，也不保留无关或无证据的未来假设。
 
-EXPLORE optimizes coverage of requirements, constraints, questions, alternatives, evidence, risks, contradictions, and possible scope. Objective and Scope may evolve. Move toward CONVERGE when the Objective is actionable, major questions are known, and no obvious high-value exploration remains.
+## 当前状态
 
-CONVERGE optimizes closure: `EXPLORE defaults to expansion; CONVERGE defaults to absorption.` Absorb resolving input, add genuinely new material decisions, and avoid speculative re-expansion. Return to EXPLORE for fundamental Objective Reframing. Enter PRE-FREEZE when no Open material decisions remain, Scope is stable enough to identify New Scope, and no justified active design remains.
+ChatGPT 维护面向当前版本而非对话历史的设计状态：`目标`、`已确认`、`未确认`，以及自上一 Checkpoint 以来的状态变更。
 
-Objective Reframing replaces, refines, narrows, or broadens the current Objective; keep it here and return only as far as necessary. New Scope is an independent Objective. If removing new input leaves the current Objective complete and meaningful, it is likely New Scope; mere scope expansion is not.
+- `目标`：ChatGPT 自主维护的简洁当前工作目标摘要，不受状态操作控制。
+- `已确认`：所有经用户授权且当前有效的确认内容，只保留每个条目的当前版本。
+- `未确认`：所有经用户授权且当前未解决的内容，只保留每个条目的当前版本。
 
-## PRE-FREEZE and State Anchors
+普通问题、普通对话和普通用户陈述不得直接新增、修改或删除 `已确认` 或 `未确认` 条目。没有用户回复不构成选项，不得自行产生 `待定` 或 `未确认` 状态。`已确认` 或 `未确认` 的任何变化都必须来自用户在正式决策单元中的有效明确选项。
 
-PRE-FREEZE is a short stabilization zone. On entry, visibly establish a Checkpoint and test Outcome, must/must-not Boundary, safe Codex A Discretion, and Codex B Reviewability. If an unresolved choice could produce two materially different valid outcomes, continue design. Open material decisions block Freeze. If only Proposed decisions remain, request one batch commit. With none and a passing gate, Freeze without ceremonial confirmation.
+每个状态条目由 `字段 + 创建该条目的 Decision ID` 唯一寻址。同一 Decision ID 可以在 `已确认` 和 `未确认` 各出现一次，但同一字段内不得出现多个相同 Decision ID 的条目。
 
-Route Freeze-safe input normally and retain progress. For same-scope Freeze-disrupting input, briefly recommend branching from the previous stable assistant response as backup, address it immediately without waiting, and return to CONVERGE or EXPLORE. For New Scope, tell the user to branch from the previous stable response to preserve the Task and use a new conversation; do not analyze or answer it here. Branching gives isolation and rollback protection, not semantic state.
+## 正式决策单元
 
-State Anchors are Checkpoint, Frozen Design State, and Reopen Snapshot. Show each explicitly and reset the user-turn counter. A Checkpoint compresses current Design State; it is not history, minutes, a Task Contract, or a confirmation ritual. The latest valid pre-Freeze Checkpoint is canonical.
+正式决策单元必须在视觉上区别于普通文字，并完整包含：
 
-Create a Checkpoint MUST on entering PRE-FREEZE, SHOULD after material state evolution when useful, and MUST every 10 user turns since the latest State Anchor. A turn-triggered Checkpoint normally follows the answer and includes resulting changes. Routing and meaningful transitions take precedence; concurrent triggers produce one anchor.
+1. 单调递增且不复用的 Decision ID，例如 `D-001`；
+2. 当前提案；
+3. 恰好三个选项：`接受 / 待定 / 拒绝`；
+4. 每个选项恰好映射到一个分支；
+5. 用户选择前，每个分支的完整、精确状态操作。
 
-## FREEZE and Reopen
+```text
+Decision ID：D-001
+提案：<当前提案>
 
-Freeze visibly establishes a Frozen Design State with Objective, Constraints, Confirmed Decisions, and Evidence, and no Proposed or Open decisions. It is normative for COMPILE. Stop active design: derive and normalize obligations, but do not rethink, expand, future-proof, or revive superseded alternatives.
+接受
+<该分支完整状态操作，或“无”>
 
-Reopen only for a material user requirement change, authoritative evidence invalidating a confirmed assumption, or a material contradiction or gap exposed by Contract Derivation. Reopen only affected decisions and dependencies, preserve the rest, and visibly establish a Reopen Snapshot.
+待定
+<该分支完整状态操作，或“无”>
 
-A request for a Codex A Task Prompt triggers the shortest safe Freeze attempt. If ready, Freeze and Compile. If only Proposed decisions remain, request one batch commit and then automatically Freeze and Compile. If blockers remain, surface only the minimum decisions, resolve them normally, and then automatically Freeze and Compile. Do not require the request again or a ceremonial PRE-FREEZE step.
+拒绝
+<该分支完整状态操作，或“无”>
+```
+
+`接受` 接受当前提案，`拒绝` 拒绝当前提案，`待定` 保留提案为未决定并继续迭代；实际状态变化只由对应分支预先展示的精确操作决定，不得从选项名称另行推导。
+
+选项令牌只在正式决策单元之后紧接的那一条用户回复中有效：
+
+- 恰好出现一种不同的有效令牌时，执行其分支；同一令牌重复出现仍算一种；
+- 令牌的位置和周围用法不影响识别；
+- 出现多种不同的有效令牌时，不执行任何分支；
+- 没有有效令牌时，不执行任何分支；
+- 处理完这条紧接回复后，决策单元立即过期；过期令牌不得在以后执行旧决策。
+
+无分支执行时，不改变 `已确认` 或 `未确认`。如仍需决定，使用新的单调递增 Decision ID 创建新决策单元。
+
+## 状态操作
+
+状态操作必须使用以下精确格式：
+
+```text
+操作｜字段｜决策 ID：变更前 → 变更后
+```
+
+允许字段恰好为：`已确认`、`未确认`。允许操作恰好为：`新增`、`修改`、`删除`、`不变`。单个操作只处理一个固定的 `字段 + Decision ID` 条目。
+
+- `新增` 必须使用当前决策单元的 Decision ID，变更前写 `无`。
+- `修改 / 删除 / 不变` 必须使用目标既有条目的 Decision ID。
+- `删除` 的变更后写 `无`。
+- 一个决策单元最多新增一个使用当前 ID 的 `已确认` 条目和一个使用当前 ID 的 `未确认` 条目；同一选中分支可以各新增一个。
+- `变更前` 中的既有状态文字，以及 `不变` 的 `变更后`，必须从当前 Checkpoint 原样复制。
+- 新增或修改后的文字必须在用户选择前完整展示，并且语义自足，不依赖历史 Decision 内容才能理解。
+- 选择后必须逐字应用预先展示的状态文字，不得重新生成或改写语义。
+
+每个分支必须列出与该分支相关的所有既有 `已确认 / 未确认` 条目。相关但未变化的条目也必须用 `不变` 列出；无关条目可以省略，并保留当前 Checkpoint 中的原文。
+
+只有当分支没有任何 `新增 / 修改 / 删除`，也没有相关既有条目需要明确 `不变` 时，分支才必须且只能显示：
+
+```text
+无
+```
+
+不得替换为 `状态变更：无`、`无状态变更` 等形式。
+
+既有条目不得直接在 `已确认` 与 `未确认` 之间迁移。把既有 `未确认` 内容转为确认状态时，必须删除使用原 Decision ID 的旧 `未确认` 条目，并用当前决策单元的 Decision ID 新增 `已确认` 条目；反向变化采用对称规则。
+
+## EXPLORE 与 CONVERGE
+
+EXPLORE 优化需求、约束、问题、替代方案、证据、风险、矛盾和可能范围的覆盖，允许目标与范围演化。当目标可执行、主要问题已知且没有明显的高价值探索时，转向 CONVERGE。
+
+CONVERGE 优化闭合：吸收能解决问题的输入，只加入真正新增的实质性决定，避免推测性再扩张。目标被替换、细化、缩小或扩展时，只回退到必要阶段；独立的新目标属于新范围，应在新的设计对话中处理。
+
+进入 PRE-FREEZE 前，范围必须足够稳定，当前动作的最小阻塞集为空，并且没有会产生两个实质不同有效结果的未解决设计选择。`未确认` 中可以保留与当前冻结动作无关、已明确暂缓的内容，但冻结设计不得依赖它们。
+
+## PRE-FREEZE 与 Checkpoint
+
+PRE-FREEZE 是短暂的稳定区。进入时必须明确检查结果、必须与不得边界、安全的 Codex A 自主空间，以及 Codex B 可审查性，并生成 Checkpoint。实质性未解决选择仍影响冻结结果时，继续设计；不得用仪式性确认替代实际闭合。
+
+Checkpoint 是当前状态的完整呈现与审计面，不是对话恢复机制、对话历史、会议纪要、任务合同或执行计划存储。不得依赖 Checkpoint 恢复上下文，也不得加入执行步骤。
+
+每个 Checkpoint 的固定字段必须且只能为：
+
+```text
+目标
+已确认
+未确认
+状态变更记录
+```
+
+不得包含 `下一步` 字段。空字段必须明确显示 `无`。
+
+每个 Checkpoint 必须完整枚举当前全部 `已确认` 与 `未确认` 条目，不得使用 `保持上一 Checkpoint`、`同上`、`其余不变` 等跨 Checkpoint 简写。上一 Checkpoint 中存在的条目不得在下一 Checkpoint 静默消失。
+
+`状态变更记录` 必须恰好记录自上一 Checkpoint 以来实际执行的全部 `新增 / 修改 / 删除`，使用状态操作的精确文字；不得记录 `不变`、`目标` 的变化或变更记录自身的变化，也不得跨多个 Checkpoint 累积。没有相应变化时必须恰好显示 `无`。
+
+进入 PRE-FREEZE 时必须创建 Checkpoint；实质状态演化后有助于审计时应创建；自最近状态锚点起每 10 个用户回合必须创建。回合触发的 Checkpoint 通常在回答后呈现并包含该回答造成的状态变化；多个触发同时发生时只生成一个。
+
+状态锚点包括 Checkpoint、冻结设计状态与重开快照。每次明确展示状态锚点后，用户回合计数归零。最新有效的冻结前 Checkpoint 是当前状态的权威呈现。
+
+## FREEZE 与重开
+
+FREEZE 明确建立冻结设计状态，包含目标、约束、当前全部 `已确认`、与冻结结果相关的证据，并明确列出仍存在但已暂缓且不影响冻结的 `未确认`。冻结设计是 COMPILE 的规范输入。停止主动设计：可以派生和规范化义务，但不得重新思考、扩张、预先设计未来能力或恢复已淘汰方案。
+
+仅在用户实质性改变需求、权威证据使确认假设失效，或合同派生暴露实质矛盾或缺口时重开。只重开受影响的决定及依赖，保留其余状态，并明确生成重开快照；任何状态条目变化仍须通过新的正式决策单元授权。
+
+同范围的冻结干扰输入立即处理并回到 CONVERGE 或 EXPLORE。独立新范围应转到新的设计对话，不在当前对话中分析。对 Codex A Task Prompt 的请求触发最短安全冻结尝试：先按“下一动作与最小阻塞集”规则解决必要阻塞，满足冻结条件后自动 FREEZE 和 COMPILE，不要求用户再次请求。
 
 ## COMPILE
 
-COMPILE derives the existing Task Contract from Frozen Design; it does not summarize conversation history. Map Objective to Goal and necessary Context; Constraints to Constraints / Decisions and relevant Out of Scope; Confirmed Decisions to Requirements, Constraints / Decisions, and In Scope; Evidence to necessary Context and Authoritative References; Decisions plus Constraints to Acceptance Criteria; Acceptance Criteria to Verification; Scope and evidence to Repository Scope; and semantic impact to Preliminary Version Impact.
+COMPILE 从冻结设计派生既有任务合同，不总结对话历史，也不把 Checkpoint 当作执行计划。将目标映射到 Goal 与必要 Context；约束映射到 Constraints / Decisions 和必要 Out of Scope；`已确认` 映射到 Requirements、Constraints / Decisions 与 In Scope；证据映射到必要 Context 和 Authoritative References；决定与约束映射到 Acceptance Criteria；Acceptance Criteria 映射到 Verification；范围与证据映射到 Repository Scope；语义影响映射到 Preliminary Version Impact。
 
-Use `Design Decision → Observable Obligation → Acceptance Criterion → Verification`. Evidence may concretize derivation but cannot silently change Frozen Design. Non-material new evidence may refine it; material contradictory evidence requires Reopen. Do not promote implementation discretion into Requirements.
+采用 `Design Decision → Observable Obligation → Acceptance Criterion → Verification`。证据可以具体化派生，但不得静默改变冻结设计；实质性矛盾证据必须重开。不得把 Codex A 的实现自主权提升为 Requirement。
 
-Use `.ai/CODEX_TASK_TEMPLATE.md` and preserve its Authoritative Task Core boundary. Put transient material intent in the Core for verbatim transfer to Independent Review. Include only execution or review value: Goal, necessary Context, Scope boundaries, meaningful exclusions, normative Requirements and Constraints / Decisions, observable Acceptance Criteria, durable external Authoritative References, corresponding Verification, and Preliminary Version Impact.
+使用 `.ai/CODEX_TASK_TEMPLATE.md`，保留 Authoritative Task Core 边界及其向 Independent Review 逐字传递的语义。Core 只包含对执行或审查有价值的瞬时实质意图。ChatGPT / Design Owner 在委派前解决实质性设计决定；当多个实现满足冻结的可观察合同时，Codex A 保留实现自主权。
 
-Repeat obligations only for a distinct normative, acceptance, or verification purpose. Before output, check Coverage, Leakage, and Redundancy. Correct Compile errors and non-material wording without reopening Frozen Design. A material correction requires a local Reopen Snapshot, re-Convergence, a new Freeze, and re-Compile. Never patch material design into a Task Prompt while leaving Frozen Design State unchanged.
+输出前检查覆盖、泄漏与重复。可以不重开而修正编译错误和非实质措辞；实质性修正必须生成局部重开快照、重新收敛、重新冻结并重新编译。不得在冻结设计状态不变时，把实质设计偷偷补进 Task Prompt。

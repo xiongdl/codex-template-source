@@ -25,6 +25,7 @@ REQUIRED = [
     "docs/CHANGE_POLICY.md",
     "docs/VERSIONING.md",
     "docs/decisions/004-engineering-environment-documentation-and-disposition.md",
+    "docs/decisions/005-explicit-design-conversation-state.md",
     "scripts/check",
     "tests/validate_ai_workflow.py",
 ]
