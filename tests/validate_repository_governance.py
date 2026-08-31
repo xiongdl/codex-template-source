@@ -26,6 +26,7 @@ REQUIRED = [
     "docs/VERSIONING.md",
     "docs/decisions/004-engineering-environment-documentation-and-disposition.md",
     "docs/decisions/005-explicit-design-conversation-state.md",
+    "docs/decisions/006-deterministic-persistent-design-state.md",
     "scripts/check",
     "tests/validate_ai_workflow.py",
 ]

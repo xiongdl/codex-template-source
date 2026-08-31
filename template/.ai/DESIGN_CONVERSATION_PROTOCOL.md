@@ -1,158 +1,166 @@
-# 设计对话协议
+# Design Conversation Protocol
 
-## 运行模型
+## Purpose and Scope
 
-ChatGPT 将一个工程目标澄清并冻结为设计，再从冻结设计派生最小充分的 Codex A 任务合同：
+This document defines a self-contained, project-agnostic Human–ChatGPT protocol for managing persistent design state during a design conversation. It defines only generic design-conversation and persistent-state-management concepts and remains independently usable across design domains.
 
-```text
-User Intent → EXPLORE → CONVERGE → PRE-FREEZE → FREEZE → COMPILE → Codex A Task Prompt
-```
+Consumer-specific workflows MAY use this protocol, but this protocol MUST NOT depend on them. It does not generate or verify a Design Specification, and it does not manage a Specification Structure.
 
-EXPLORE 用于覆盖，CONVERGE 用于闭合，先冻结设计再委派，最后编译最小充分合同。生命周期约束 ChatGPT，不约束用户；外部对话保持自然，不采用问卷，不要求用户填写 `.ai/CODEX_TASK_TEMPLATE.md`。一次对话只处理一个工程目标。
+## Normative Language
 
-## 启动、下一动作与最小阻塞集
+The canonical normative keywords are exactly `MUST`, `MUST NOT`, and `MAY`.
 
-先推断最窄且有用的暂定目标，不静默推断实质性决定。`先扫描，再提问；先解决，再提问。` 优先检查仓库与权威证据；只有无法推断出有用目标时，才提出最小的有界澄清。
+- `MUST` expresses a requirement.
+- `MUST NOT` expresses a prohibition.
+- `MAY` expresses permission without requirement.
 
-每一轮先确定当前下一动作，再计算该动作的最小阻塞集。`未确认` 是所有经用户授权且当前仍未解决的内容，不等同于当前最小阻塞集。
+`SHALL`, `SHALL NOT`, `SHOULD`, and `SHOULD NOT` MUST NOT be used as normative keywords. Ordinary explanatory language MUST NOT establish independent normative strength.
 
-对当前最小阻塞集，ChatGPT 必须依次：
+All content within a Decision Unit or Checkpoint MUST be English. Content outside Decision Units and Checkpoints MAY use any language.
 
-1. 尝试从当前上下文解决；
-2. 尝试在授权边界内自主解决；
-3. 移除已解决项；
-4. 若结果为空，则不提问并执行下一动作；
-5. 若结果非空，只询问剩余项。
+## Concepts
 
-不属于当前最小阻塞集的问题可以暂缓。兼容的问题应合并，优先采用低成本回复机制。调查可以解决的未知项先调查；必须由 Design Owner 决定的事项通过正式决策单元处理；多个实现都满足冻结的可观察合同时，由 Codex A 自主实现。不得把实质性决定静默委派给 Codex A。
+### Conversation
 
-内部检查行为、边界、接口、默认值、失败、兼容性、生命周期与验证等相关缺口，但不把它们变成强制的用户问卷，也不保留无关或无证据的未来假设。
+The conversation is the interaction between the Human and ChatGPT. Conversation MUST NOT have a protocol-defined lifecycle, phase, mode, completion state, or readiness state. The Human MAY continue or redirect the conversation at any time. Ordinary conversation MUST NOT directly mutate persistent design state.
 
-## 当前状态
+### Persistent Design State and Maturity
 
-ChatGPT 维护面向当前版本而非对话历史的设计状态：`目标`、`已确认`、`未确认`，以及自上一 Checkpoint 以来的状态变更。
+Persistent design state MUST consist only of persistent entries whose Maturity is `Stable` or `Draft`.
 
-- `目标`：ChatGPT 自主维护的简洁当前工作目标摘要，不受状态操作控制。
-- `已确认`：所有经用户授权且当前有效的确认内容，只保留每个条目的当前版本。
-- `未确认`：所有经用户授权且当前未解决的内容，只保留每个条目的当前版本。
+- `Stable` represents an authoritative current design resolution.
+- `Draft` represents material design content intentionally retained for further design but not yet Stable.
 
-普通问题、普通对话和普通用户陈述不得直接新增、修改或删除 `已确认` 或 `未确认` 条目。没有用户回复不构成选项，不得自行产生 `待定` 或 `未确认` 状态。`已确认` 或 `未确认` 的任何变化都必须来自用户在正式决策单元中的有效明确选项。
+Persistent Decision Maturity MUST be exactly `Stable` or `Draft`. Maturity is represented by Checkpoint section membership and MUST NOT be repeated as entry metadata.
 
-每个状态条目由 `字段 + 创建该条目的 Decision ID` 唯一寻址。同一 Decision ID 可以在 `已确认` 和 `未确认` 各出现一次，但同一字段内不得出现多个相同 Decision ID 的条目。
+Persistent design state MUST change only through an explicit Human Decision Action and the State Operations predeclared for that action. Human Decision Actions, State Operations, and Maturity are distinct protocol concepts. The execution semantics of Human Decision Actions MUST NOT be defined by Maturity rules.
 
-## 正式决策单元
+### Exact Copy
 
-正式决策单元必须在视觉上区别于普通文字，并完整包含：
+Exact Copy means transformation-free copying of content. An Exact Copy MUST be textually identical to its source, including wording, spelling, punctuation, ordering, whitespace, and line breaks. Any transformation of source content MUST NOT satisfy Exact Copy. Semantic equivalence MUST NOT satisfy Exact Copy.
 
-1. 单调递增且不复用的 Decision ID，例如 `D-001`；
-2. 当前提案；
-3. 恰好三个选项：`接受 / 待定 / 拒绝`；
-4. 每个选项恰好映射到一个分支；
-5. 用户选择前，每个分支的完整、精确状态操作。
+### Goal
 
-```text
-Decision ID：D-001
-提案：<当前提案>
+Goal describes the overall intended outcome of the design conversation. Goal MUST NOT describe current conversational activity, progress, candidate solutions, or persistent design content. Goal MUST NOT summarize or enumerate Stable or Draft entries. Goal MUST NOT be persistent design state.
 
-接受
-<该分支完整状态操作，或“无”>
+ChatGPT MUST maintain Goal automatically as the overall intended outcome evolves. A Checkpoint MUST contain exactly one Goal.
 
-待定
-<该分支完整状态操作，或“无”>
+### Decision IDs
 
-拒绝
-<该分支完整状态操作，或“无”>
-```
+Each Decision Unit MUST receive a Decision ID in the canonical form `D-NNN`, beginning with `D-001`. ChatGPT MUST assign Decision IDs monotonically in increasing numeric order.
 
-`接受` 接受当前提案，`拒绝` 拒绝当前提案，`待定` 保留提案为未决定并继续迭代；实际状态变化只由对应分支预先展示的精确操作决定，不得从选项名称另行推导。
+Every new Decision Unit MUST receive the next Decision ID, including a revised Decision Unit concerning the same design matter. A Decision ID MUST NOT be reused, regardless of whether its Decision Unit causes persistent-state mutation.
 
-选项令牌只在正式决策单元之后紧接的那一条用户回复中有效：
+A Decision ID MUST identify at most one current persistent entry, regardless of Maturity.
 
-- 恰好出现一种不同的有效令牌时，执行其分支；同一令牌重复出现仍算一种；
-- 令牌的位置和周围用法不影响识别；
-- 出现多种不同的有效令牌时，不执行任何分支；
-- 没有有效令牌时，不执行任何分支；
-- 处理完这条紧接回复后，决策单元立即过期；过期令牌不得在以后执行旧决策。
+## Decision Units
 
-无分支执行时，不改变 `已确认` 或 `未确认`。如仍需决定，使用新的单调递增 Decision ID 创建新决策单元。
+A Decision Unit presents complete canonical design content for an immediate Human decision and predeclares the mechanical state effects of either available action.
 
-## 状态操作
-
-状态操作必须使用以下精确格式：
+A Decision Unit MUST contain exactly these fields in this order:
 
 ```text
-操作｜字段｜决策 ID：变更前 → 变更后
+Decision Unit: D-NNN
+Proposal
+<complete canonical design content>
+Accept
+<one or more State Operations>
+Retain
+<one or more State Operations>
 ```
 
-允许字段恰好为：`已确认`、`未确认`。允许操作恰好为：`新增`、`修改`、`删除`、`不变`。单个操作只处理一个固定的 `字段 + Decision ID` 条目。
+`Decision Unit: D-NNN` MUST identify the Decision Unit using its assigned Decision ID. A Decision Unit MUST define exactly one `Proposal`. Proposal MUST contain the complete canonical design content presented to the Human for decision. Supporting discussion MAY appear outside the Decision Unit.
 
-- `新增` 必须使用当前决策单元的 Decision ID，变更前写 `无`。
-- `修改 / 删除 / 不变` 必须使用目标既有条目的 Decision ID。
-- `删除` 的变更后写 `无`。
-- 一个决策单元最多新增一个使用当前 ID 的 `已确认` 条目和一个使用当前 ID 的 `未确认` 条目；同一选中分支可以各新增一个。
-- `变更前` 中的既有状态文字，以及 `不变` 的 `变更后`，必须从当前 Checkpoint 原样复制。
-- 新增或修改后的文字必须在用户选择前完整展示，并且语义自足，不依赖历史 Decision 内容才能理解。
-- 选择后必须逐字应用预先展示的状态文字，不得重新生成或改写语义。
+`Accept` and `Retain` are the only Human Decision Actions. Each action MUST contain a complete ordered sequence of one or more predeclared State Operations. Every State Operation executed by an action MUST be completely predeclared under that action in the Decision Unit.
 
-每个分支必须列出与该分支相关的所有既有 `已确认 / 未确认` 条目。相关但未变化的条目也必须用 `不变` 列出；无关条目可以省略，并保留当前 Checkpoint 中的原文。
+Every persistent entry created or changed by `Accept` MUST have its complete resulting canonical content displayed directly in Proposal. The State Operation sequence under `Accept` MUST completely realize every persistent-state change specified by Proposal and MUST NOT realize any persistent-state change not specified by Proposal.
 
-只有当分支没有任何 `新增 / 修改 / 删除`，也没有相关既有条目需要明确 `不变` 时，分支才必须且只能显示：
+The State Operation sequence under `Accept` MUST contain one or more State Operations consisting of zero or more `Delete` operations, zero or more `Modify` operations, and zero or one `Add` operation. If a design decision requires more than one new persistent entry, each independently added entry MUST be presented through a separate Decision Unit.
+
+The State Operation sequences under `Accept` and `Retain` MAY differ completely.
+
+## Selection and Expiration
+
+A Decision Unit MUST be selectable only by the immediately following Human reply. That reply MUST select a Human Decision Action only when its first non-whitespace token is exactly the case-sensitive canonical token `Accept` or `Retain`. Any other first non-whitespace token MUST NOT select a Human Decision Action.
+
+A Human Decision Action MUST NOT be inferred from synonyms, translations, semantic intent, or a selection token appearing later in the reply. Content following a valid selection token MAY be handled as ordinary conversation.
+
+After the immediately following Human reply, the Decision Unit MUST cease to be selectable. A Decision Unit that ceases to be selectable MUST NOT cause any later persistent-state mutation. If the design matter still requires a Human Decision Action, ChatGPT MUST create a new Decision Unit with the next Decision ID.
+
+## Human Decision Actions
+
+### Accept
+
+`Accept` MUST realize Proposal through the State Operation sequence predeclared under `Accept`.
+
+### Retain
+
+`Retain` MUST preserve the complete Proposal as exactly one Draft entry without realizing the persistent-state transformation predeclared under `Accept`. The retained Draft content MUST be an Exact Copy of the complete Proposal.
+
+If `Retain` creates a new Draft entry, it MUST use exactly one `Add` operation with the current Decision Unit ID. If `Retain` replaces an existing Draft entry, it MUST use exactly one `Modify` operation and MUST preserve that entry's Decision ID.
+
+## State Operations
+
+The canonical State Operation representation MUST be:
 
 ```text
-无
+Operation | Maturity | Decision ID: Before → After
 ```
 
-不得替换为 `状态变更：无`、`无状态变更` 等形式。
+State Operations MUST be exactly `Add`, `Modify`, and `Delete`. Each State Operation MUST operate on exactly one persistent entry and MUST identify its target by Decision ID. The Maturity in a State Operation MUST specify the required Maturity of the identified entry and MUST NOT form part of persistent-entry identity.
 
-既有条目不得直接在 `已确认` 与 `未确认` 之间迁移。把既有 `未确认` 内容转为确认状态时，必须删除使用原 Decision ID 的旧 `未确认` 条目，并用当前决策单元的 Decision ID 新增 `已确认` 条目；反向变化采用对称规则。
+`Before` and `After` MUST use Exact Copy when they contain persistent design content. Every State Operation MUST be executed mechanically without transformation.
 
-## EXPLORE 与 CONVERGE
+### Add
 
-EXPLORE 优化需求、约束、问题、替代方案、证据、风险、矛盾和可能范围的覆盖，允许目标与范围演化。当目标可执行、主要问题已知且没有明显的高价值探索时，转向 CONVERGE。
+`Add` MUST operate on exactly one new persistent entry. It MUST use the current Decision Unit ID as the new entry's Decision ID. `Before` MUST be `None`. `After` MUST be an Exact Copy of the complete resulting canonical content displayed directly in Proposal.
 
-CONVERGE 优化闭合：吸收能解决问题的输入，只加入真正新增的实质性决定，避免推测性再扩张。目标被替换、细化、缩小或扩展时，只回退到必要阶段；独立的新目标属于新范围，应在新的设计对话中处理。
+Immediately before execution, no persistent entry with that Decision ID MUST exist. Otherwise, `Add` MUST NOT execute.
 
-进入 PRE-FREEZE 前，范围必须足够稳定，当前动作的最小阻塞集为空，并且没有会产生两个实质不同有效结果的未解决设计选择。`未确认` 中可以保留与当前冻结动作无关、已明确暂缓的内容，但冻结设计不得依赖它们。
+### Modify
 
-## PRE-FREEZE 与 Checkpoint
+`Modify` MUST operate on exactly one existing persistent entry and MUST preserve its Decision ID and Maturity. The addressed entry MUST have the specified Maturity.
 
-PRE-FREEZE 是短暂的稳定区。进入时必须明确检查结果、必须与不得边界、安全的 Codex A 自主空间，以及 Codex B 可审查性，并生成 Checkpoint。实质性未解决选择仍影响冻结结果时，继续设计；不得用仪式性确认替代实际闭合。
+`Before` MUST be an Exact Copy of the complete current content of the addressed entry. `After` MUST be an Exact Copy of the complete resulting canonical content displayed directly in Proposal.
 
-Checkpoint 是当前状态的完整呈现与审计面，不是对话恢复机制、对话历史、会议纪要、任务合同或执行计划存储。不得依赖 Checkpoint 恢复上下文，也不得加入执行步骤。
+Immediately before execution, the addressed entry MUST have the Maturity specified by the State Operation and MUST still match `Before` using Exact Copy semantics. Otherwise, `Modify` MUST NOT execute.
 
-每个 Checkpoint 的固定字段必须且只能为：
+A Maturity change MUST NOT use `Modify` and MUST use `Delete` followed by `Add`.
+
+### Delete
+
+`Delete` MUST operate on exactly one existing persistent entry. The addressed entry MUST have the specified Maturity.
+
+`Before` MUST be an Exact Copy of the complete current content of the addressed entry. `After` MUST be `None`.
+
+Immediately before execution, the addressed entry MUST have the Maturity specified by the State Operation and MUST still match `Before` using Exact Copy semantics. Otherwise, `Delete` MUST NOT execute.
+
+### Draft Resolution
+
+A Draft entry MUST be resolved only when Proposal explicitly specifies its resolution. When `Accept` resolves a Draft entry, the State Operation sequence MUST delete that Draft entry.
+
+If the resolution creates a Stable entry, `Accept` MUST delete the Draft entry and add the resulting Stable entry under the current Decision Unit ID. If the resolution creates no persistent entry, `Accept` MAY delete the Draft entry without an `Add`.
+
+## Checkpoints
+
+A Checkpoint represents the complete current persistent design state, not conversation history or state-change history. It MUST contain exactly these sections in this order:
 
 ```text
-目标
-已确认
-未确认
-状态变更记录
+Goal
+<the single current Goal>
+Stable
+<all current Stable entries, or None>
+Draft
+<all current Draft entries, or None>
 ```
 
-不得包含 `下一步` 字段。空字段必须明确显示 `无`。
+`Stable` and `Draft` MUST contain all current persistent entries of their respective Maturities. An empty `Stable` or `Draft` section MUST contain exactly `None`.
 
-每个 Checkpoint 必须完整枚举当前全部 `已确认` 与 `未确认` 条目，不得使用 `保持上一 Checkpoint`、`同上`、`其余不变` 等跨 Checkpoint 简写。上一 Checkpoint 中存在的条目不得在下一 Checkpoint 静默消失。
+Each persistent entry MUST use exactly this representation:
 
-`状态变更记录` 必须恰好记录自上一 Checkpoint 以来实际执行的全部 `新增 / 修改 / 删除`，使用状态操作的精确文字；不得记录 `不变`、`目标` 的变化或变更记录自身的变化，也不得跨多个 Checkpoint 累积。没有相应变化时必须恰好显示 `无`。
+```text
+D-NNN
+<Exact Copy of the complete canonical content>
+```
 
-进入 PRE-FREEZE 时必须创建 Checkpoint；实质状态演化后有助于审计时应创建；自最近状态锚点起每 10 个用户回合必须创建。回合触发的 Checkpoint 通常在回答后呈现并包含该回答造成的状态变化；多个触发同时发生时只生成一个。
-
-状态锚点包括 Checkpoint、冻结设计状态与重开快照。每次明确展示状态锚点后，用户回合计数归零。最新有效的冻结前 Checkpoint 是当前状态的权威呈现。
-
-## FREEZE 与重开
-
-FREEZE 明确建立冻结设计状态，包含目标、约束、当前全部 `已确认`、与冻结结果相关的证据，并明确列出仍存在但已暂缓且不影响冻结的 `未确认`。冻结设计是 COMPILE 的规范输入。停止主动设计：可以派生和规范化义务，但不得重新思考、扩张、预先设计未来能力或恢复已淘汰方案。
-
-仅在用户实质性改变需求、权威证据使确认假设失效，或合同派生暴露实质矛盾或缺口时重开。只重开受影响的决定及依赖，保留其余状态，并明确生成重开快照；任何状态条目变化仍须通过新的正式决策单元授权。
-
-同范围的冻结干扰输入立即处理并回到 CONVERGE 或 EXPLORE。独立新范围应转到新的设计对话，不在当前对话中分析。对 Codex A Task Prompt 的请求触发最短安全冻结尝试：先按“下一动作与最小阻塞集”规则解决必要阻塞，满足冻结条件后自动 FREEZE 和 COMPILE，不要求用户再次请求。
-
-## COMPILE
-
-COMPILE 从冻结设计派生既有任务合同，不总结对话历史，也不把 Checkpoint 当作执行计划。将目标映射到 Goal 与必要 Context；约束映射到 Constraints / Decisions 和必要 Out of Scope；`已确认` 映射到 Requirements、Constraints / Decisions 与 In Scope；证据映射到必要 Context 和 Authoritative References；决定与约束映射到 Acceptance Criteria；Acceptance Criteria 映射到 Verification；范围与证据映射到 Repository Scope；语义影响映射到 Preliminary Version Impact。
-
-采用 `Design Decision → Observable Obligation → Acceptance Criterion → Verification`。证据可以具体化派生，但不得静默改变冻结设计；实质性矛盾证据必须重开。不得把 Codex A 的实现自主权提升为 Requirement。
-
-使用 `.ai/CODEX_TASK_TEMPLATE.md`，保留 Authoritative Task Core 边界及其向 Independent Review 逐字传递的语义。Core 只包含对执行或审查有价值的瞬时实质意图。ChatGPT / Design Owner 在委派前解决实质性设计决定；当多个实现满足冻结的可观察合同时，Codex A 保留实现自主权。
-
-输出前检查覆盖、泄漏与重复。可以不重开而修正编译错误和非实质措辞；实质性修正必须生成局部重开快照、重新收敛、重新冻结并重新编译。不得在冻结设计状态不变时，把实质设计偷偷补进 Task Prompt。
+Persistent entries within each Maturity section MUST be ordered by Decision ID in ascending numeric order.

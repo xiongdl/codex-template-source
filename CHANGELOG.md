@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.0.0
+
+- Replaced the phase-based Design Conversation Protocol with a self-contained, project-agnostic protocol that manages only Human-authorized Stable and Draft persistent design entries.
+- Defined deterministic Decision Units using immediate-reply `Accept` / `Retain` selection, monotonic Decision IDs, exact-copy content, and mechanically predeclared `Add` / `Modify` / `Delete` State Operations.
+- Reduced Checkpoints to the complete current `Goal / Stable / Draft` state and removed conversation lifecycle, Freeze/Compile, blocker-set, and state-change-history semantics.
+- Added ADR-006, updated the canonical payload and maintainer entry point relationship, and replaced focused workflow validation with assertions for the new protocol contract.
+
 ## 3.0.0
 
 - Required Authoritative Task Core transfer to use canonical raw boundaries and exact textual equality with no normalization, formatting exception, or semantic-equivalence substitute.
