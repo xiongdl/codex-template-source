@@ -143,9 +143,10 @@ If the resolution creates a Stable entry, `Accept` MUST delete the Draft entry a
 
 ## Checkpoints
 
-A Checkpoint represents the complete current persistent design state, not conversation history or state-change history. It MUST contain exactly these sections in this order:
+A Checkpoint represents the complete current persistent design state, not conversation history or state-change history. It MUST contain exactly these fields in this order:
 
 ```text
+Checkpoint
 Goal
 <the single current Goal>
 Stable
