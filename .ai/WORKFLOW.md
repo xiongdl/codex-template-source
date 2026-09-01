@@ -1,8 +1,8 @@
-# codex-template AI Engineering Workflow
+# codex-template-source AI Engineering Workflow
 
 ## Purpose
 
-`codex-template` dogfoods the same core AI engineering workflow it provides to instantiated projects while retaining its maintainer responsibilities.
+`codex-template-source` is the source, governance, validation, and release workspace for the independent distributable `codex-template` repository. It dogfoods the same core AI engineering workflow while retaining its source-workspace responsibilities.
 
 ## Ownership
 
@@ -47,13 +47,13 @@ Codex A uses the smallest inspection and verification that provides reasonable c
 
 ## Maintainer Responsibilities
 
-For changes to `codex-template`, Codex A also validates the governance/payload boundary, project-agnostic compatibility, relevant evidence and ADR constraints, repository consistency, Final Version Impact, changelog, and release preparation. Run `./scripts/check`.
+For source-workspace changes, Codex A also validates the governance/distributable-repository boundary, project-agnostic compatibility, relevant evidence and ADR constraints, repository consistency, Final Version Impact, changelog, and release preparation. Run `./scripts/check`.
 
 Reference-driven changes still require an approved `Change Proposed`; a new reference never directly authorizes `template/` modification.
 
 ## Dogfooding Principle
 
-Root governance and `template/` share the core ownership, Task Contract, review, Git, and artifact model. Their surrounding policy differs because root files maintain the product while payload files guide an instantiated project.
+Root files govern the source workspace. `template/` is a Git submodule checkout of the independent `codex-template` repository; its project-agnostic files guide instantiated projects. Every modified repository follows the repository-local lifecycle in `.ai/GIT_WORKFLOW.md`, while multi-repository Tasks compose those lifecycles according to Task dependencies.
 
 ## Task Completion vs Release
 

@@ -31,20 +31,9 @@ The authoritative In Scope and Out of Scope boundaries remain in the inherited c
 - Task Prompt Revision:
 - Original Task reference for transfer/audit only (the Task artifact is transient and need not be repository-accessible):
 
-## Git Review Target
+## Task Review Target
 
-### Workspace
-
-- Base Branch:
-- Base Commit:
-- Task Branch:
-- Review Commit:
-
-The Review Commit must be the task branch `HEAD`. Review `Base Commit..Review Commit`, not only the last commit.
-
-### Changed Child Repository Review Targets
-
-Repeat for each changed child; use `NONE` for a workspace-only Task.
+Repeat the following repository-specific target for every modified repository. Together these exact targets form the complete Task Review Target. Do not require a workspace target when the workspace is not modified.
 
 - Repository Path:
 - Base Branch:
@@ -52,9 +41,16 @@ Repeat for each changed child; use `NONE` for a workspace-only Task.
 - Task Branch:
 - Review Commit:
 
-Confirm that the workspace Review Commit records each exact child Review Commit. One verdict covers the complete repository change set.
+Each Review Commit must be its repository's Task Branch `HEAD`. Review every complete `Base Commit..Review Commit` range, not only the last commit. One Task-level verdict covers the complete repository change set and relevant cross-repository consistency.
 
-For re-review after contract- or decision-only resolution with unchanged tracked repository state, reference the updated Task Contract revision and Previous Review Report above; the Review Commit may remain unchanged.
+### Affected but Unmodified Repositories
+
+Record any repository that contributes material inspection or verification evidence without tracked changes. Use `NONE` when not applicable. These repositories do not contribute Review Commits.
+
+- Repository Path:
+- Evidence / State:
+
+For re-review after contract- or decision-only resolution with unchanged tracked repository state, reference the updated Task Contract revision and Previous Review Report above; each repository's Review Commit may remain unchanged.
 
 ## Authoritative References / Repository References
 

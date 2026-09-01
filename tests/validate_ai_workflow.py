@@ -81,9 +81,6 @@ GIT_TOKENS = (
     "Reviewed Commit == Approved Commit == Integrated Commit",
     "invalidates prior approval",
     "Multi-Repository Tasks",
-    "workspace is the composition anchor",
-    "child-first and workspace-last",
-    "publish changed child commits first",
     "new explicit `INTEGRATE` prompt",
 )
 
@@ -209,7 +206,6 @@ REVIEW_PROMPT_TOKENS = (
     "do not consume Review Attempt count",
     "Task Branch",
     "Review Commit may remain unchanged",
-    "Changed Child Repository Review Targets",
     "complete repository change set",
 )
 
@@ -291,6 +287,18 @@ CORE_TRANSFER_FORBIDDEN_TOKENS = (
 ERR_FORBIDDEN_TOKENS = (
     "returns it in a new explicit prompt to Codex A",
     "select `INTEGRATE | REVISE | ABORT` and return a new explicit prompt to Codex A",
+)
+
+ROOT_WORKSPACE_MANDATORY_TOKENS = (
+    "Every `CHANGE` Task resolves one immutable workspace Base Branch",
+    "exactly one dedicated workspace `task/*` branch is required",
+    "identifying the Base Branch, Base Commit, Task Branch, and Review Commit.",
+    "Identify the workspace and expected changed child repositories",
+    "Use `WORKSPACE_ONLY` when applicable",
+    "### Changed Child Repository Review Targets",
+    "Confirm that the workspace Review Commit records each exact child Review Commit",
+    "Record the workspace target and every changed child repository target",
+    "repeat these identity fields for the workspace and every modified child",
 )
 
 
@@ -478,7 +486,79 @@ def main():
         errors,
         "root",
         LAYERS["root"] / "GIT_WORKFLOW.md",
-        ("For `codex-template`, the Default Base Branch is `main`.",),
+        (
+            "repository-specific governance or configuration",
+            "affected but unmodified repository",
+            "Repository Scope",
+            "Repository Dependencies",
+            "dependency-consistent order",
+            "complete Task Review Target",
+            "single Task-level Formal Independent Review",
+            "Workspace Recording a Managed-Repository Commit",
+            "create the workspace Task Branch",
+            "establish the managed-repository Review Commit",
+            "integrate the managed repository first",
+            "integrate the workspace last",
+        ),
+    )
+    require_tokens(
+        errors,
+        "root",
+        LAYERS["root"] / "AI_HANDOFF_PROTOCOL.md",
+        (
+            "Each modified repository resolves one immutable Base Branch",
+            "Affected but unmodified repositories",
+            "complete Task Review Target",
+            "one Task-level review",
+            "relevant cross-repository consistency",
+        ),
+    )
+    require_tokens(
+        errors,
+        "root",
+        LAYERS["root"] / "CODEX_TASK_TEMPLATE.md",
+        ("`MODIFIED` or `AFFECTED_UNMODIFIED`", "single-repository Task"),
+    )
+    require_tokens(
+        errors,
+        "root",
+        LAYERS["root"] / "CODEX_REVIEW_PROMPT_TEMPLATE.md",
+        ("Task Review Target", "Affected but Unmodified Repositories"),
+    )
+    require_tokens(
+        errors,
+        "root",
+        LAYERS["root"] / "CODEX_REVIEW_REPORT_TEMPLATE.md",
+        ("complete Task Review Target", "one Task-level"),
+    )
+    require_tokens(
+        errors,
+        "root",
+        LAYERS["root"] / "ENGINEERING_RESULT_TEMPLATE.md",
+        ("every modified repository", "Affected but Unmodified Repositories"),
+    )
+    for filename in (
+        "AI_HANDOFF_PROTOCOL.md",
+        "CODEX_TASK_TEMPLATE.md",
+        "CODEX_REVIEW_PROMPT_TEMPLATE.md",
+        "CODEX_REVIEW_REPORT_TEMPLATE.md",
+        "ENGINEERING_RESULT_TEMPLATE.md",
+    ):
+        reject_tokens(
+            errors,
+            "root",
+            LAYERS["root"] / filename,
+            ROOT_WORKSPACE_MANDATORY_TOKENS,
+        )
+    reject_tokens(
+        errors,
+        "root",
+        LAYERS["root"] / "GIT_WORKFLOW.md",
+        (
+            "For `codex-template`, the Default Base Branch is `main`.",
+            "workspace is the composition anchor and always",
+            "workspace branch",
+        ),
     )
     require_tokens(
         errors,
@@ -525,7 +605,74 @@ def main():
         errors,
         "template",
         LAYERS["template"] / "GIT_WORKFLOW.md",
-        ("The template default is `main`", "may configure another"),
+        (
+            "The template default is `main`",
+            "may configure another",
+            "affected but unmodified repository",
+            "Repository Scope",
+            "Repository Dependencies",
+            "complete Task Review Target",
+            "single Task-level Formal Independent Review",
+            "Workspace Recording a Managed-Repository Commit",
+        ),
+    )
+    require_tokens(
+        errors,
+        "template",
+        LAYERS["template"] / "AI_HANDOFF_PROTOCOL.md",
+        (
+            "Each modified repository resolves one immutable Base Branch",
+            "Affected but unmodified repositories",
+            "complete Task Review Target",
+            "one Task-level review",
+            "relevant cross-repository consistency",
+        ),
+    )
+    require_tokens(
+        errors,
+        "template",
+        LAYERS["template"] / "CODEX_TASK_TEMPLATE.md",
+        ("`MODIFIED` or `AFFECTED_UNMODIFIED`", "single-repository Task"),
+    )
+    require_tokens(
+        errors,
+        "template",
+        LAYERS["template"] / "CODEX_REVIEW_PROMPT_TEMPLATE.md",
+        ("Task Review Target", "Affected but Unmodified Repositories"),
+    )
+    require_tokens(
+        errors,
+        "template",
+        LAYERS["template"] / "CODEX_REVIEW_REPORT_TEMPLATE.md",
+        ("complete Task Review Target", "one Task-level"),
+    )
+    require_tokens(
+        errors,
+        "template",
+        LAYERS["template"] / "ENGINEERING_RESULT_TEMPLATE.md",
+        ("every modified repository", "Affected but Unmodified Repositories"),
+    )
+    for filename in (
+        "AI_HANDOFF_PROTOCOL.md",
+        "CODEX_TASK_TEMPLATE.md",
+        "CODEX_REVIEW_PROMPT_TEMPLATE.md",
+        "CODEX_REVIEW_REPORT_TEMPLATE.md",
+        "ENGINEERING_RESULT_TEMPLATE.md",
+    ):
+        reject_tokens(
+            errors,
+            "template",
+            LAYERS["template"] / filename,
+            ROOT_WORKSPACE_MANDATORY_TOKENS,
+        )
+    reject_tokens(
+        errors,
+        "template",
+        LAYERS["template"] / "GIT_WORKFLOW.md",
+        (
+            "workspace is the composition anchor and always",
+            "workspace Task Branch. Multi-repository child branches",
+        ),
     )
     require_tokens(
         errors,

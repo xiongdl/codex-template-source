@@ -29,7 +29,7 @@ ChatGPT evaluates this reported evidence without needing the temporary task bran
 
 ## Repository State
 
-For a multi-repository Task, repeat these identity fields for the workspace and every modified child. Local completion does not require remote publication.
+Repeat these identity fields for every modified repository. Do not require a workspace entry when the workspace is not modified. Local completion does not require remote publication.
 
 - Repository Changes: `YES | NO`
 - Task Branch: `NOT_APPLICABLE | task/...`
@@ -41,7 +41,11 @@ For a multi-repository Task, repeat these identity fields for the workspace and 
 - Integrated Commit: `NOT_APPLICABLE | PENDING_EXPLICIT_INTEGRATE | <commit>`
 - Working Tree:
 - Remote Publication: `NOT_AUTHORIZED | NOT_PUBLISHED | PUBLISHED`
-- Identity Consistency: `<state whether Reviewed Commit == Approved Commit == Presented Task HEAD; explain every mismatch, uncertainty, child-repository relationship, or material working-tree effect>`
+- Identity Consistency: `<state whether Reviewed Commit == Approved Commit == Presented Task HEAD in every modified repository; explain every mismatch, uncertainty, repository dependency, or material working-tree effect>`
+
+### Affected but Unmodified Repositories
+
+Record any affected but unmodified repository whose inspection, verification evidence, or working-tree state matters to disposition. Use `NONE` when not applicable. These repositories have no Task Branch, Review Commit, Approved Commit, or integration operation solely due to Task participation.
 
 For `READ_ONLY + COMPLETED`, Repository Changes = `NO` and Independent Review = `NOT_APPLICABLE`.
 
@@ -69,8 +73,8 @@ Use `NONE` or identify the omitted check, why it was omitted, and the resulting 
 
 ## Independent Review
 
-- Final Review Target: `NOT_APPLICABLE | <Base Commit>..<Review Commit>`
-- Final Verdict: `NOT_APPLICABLE | APPROVED | CHANGES_REQUESTED`
+- Final Task Review Target: `NOT_APPLICABLE | <repository-specific Base Commit..Review Commit pairs>`
+- Final Task-level Verdict: `NOT_APPLICABLE | APPROVED | CHANGES_REQUESTED`
 - Performed in human-created Codex B session: `NOT_APPLICABLE | YES`
 - Review Prompt and Review Report manually transferred by human user: `NOT_APPLICABLE | YES`
 - Review Attempts: `<count>`

@@ -1,148 +1,81 @@
 # Template Architecture
 
-## Two-Layer Repository
+## Independent Repositories
 
-The repository is intentionally split into two layers.
-
-### Layer A — Distributable Template
+The maintenance architecture contains two independent Git repositories:
 
 ```text
-template/
+codex-template-source          source, governance, validation, release workspace
+└── template/                  Git submodule checkout of codex-template
+
+codex-template                 independent distributable template repository
 ```
 
-This content is copied into instantiated engineering projects.
+`codex-template-source` develops, governs, validates, and prepares releases of `codex-template`; it is not itself the distributable template repository. `codex-template` remains independently usable as the upstream repository from which downstream projects inherit Git history.
 
-It contains only project-agnostic engineering bootstrap material.
+The source workspace does not depend on a particular permitted downstream instantiation method. Downstream project instantiation and upstream synchronization are consumer-facing concerns, separate from this internal maintainer architecture. Downstream projects do not inherit the source workspace's submodule relationship.
 
-### Layer B — Template Governance
+## Submodule Registration and Baseline
+
+Git submodules are the canonical repository-registration and baseline mechanism for repositories managed by the source workspace:
+
+- `.gitmodules` records the managed repository's path and remote URL;
+- the source workspace gitlink records the exact accepted `codex-template` baseline revision;
+- `template/` provides a checkout of that independent repository for development and validation.
+
+No separate manifest duplicates submodule path, URL, or revision information. A managed-repository checkout may advance beyond or otherwise diverge from the recorded gitlink during normal authorized development. That checkout state is not inherently an error; the source workspace's gitlink continues to identify its accepted baseline until deliberately updated by a reviewed Task.
+
+## Repository Responsibilities
+
+The source workspace owns:
+
+- design principles and architecture decisions;
+- evidence and change policy;
+- cross-repository validation and release preparation;
+- source-workspace AI and Git governance;
+- source-workspace versioning and release history.
+
+The independent distributable repository owns the project-agnostic bootstrap material inherited by downstream projects, including its own documentation, AI collaboration contract, scripts, version, changelog, and Git history.
+
+Source-workspace governance is not copied into downstream projects. Distributable content is not duplicated outside the `template/` submodule.
+
+## Repository-Local Engineering Lifecycle
+
+Every repository modified by an Engineering Task follows the same project-agnostic repository-local Git lifecycle: it resolves its own Base Branch and Base Commit, creates its own Task Branch, establishes a verified Review Commit, satisfies its Integration Gate, and integrates ff-only after approval and explicit authorization.
+
+Multi-repository behavior is Task-level composition of those repository-local lifecycles, not a separate workspace-versus-managed-repository workflow. The Task records repository scope and dependencies, distinguishes modified repositories from affected but unmodified repositories, assembles the exact Base Commit / Review Commit pair from every modified repository into one Task Review Target, and receives one Task-level Independent Review conclusion. Coordination and authorized publication preserve dependency consistency.
+
+When the source workspace records the exact commit of a modified managed repository, the managed repository establishes its Review Commit before the workspace records it and establishes its own Review Commit. After approval, the managed repository integrates before the referencing workspace. These are dependency-specific orchestration rules, not distinct local lifecycles.
+
+## Validation and Release Flow
 
 ```text
-docs/
-tests/
-VERSION
-CHANGELOG.md
+Evidence or real-project feedback
+→ Design decision
+→ Repository-scoped implementation
+→ Repository-required and cross-repository validation
+→ Task-level Independent Review
+→ Explicit dependency-consistent integration
+→ Authorized release preparation and publication
+→ Downstream observation
 ```
 
-This layer exists only to design, validate, version, and evolve `codex-template`.
+The source workspace validates the `codex-template` revision recorded by its gitlink for baseline and release preparation. During an authorized multi-repository Task, validation may also inspect the managed checkout's intended Review Commit as specified by that Task.
 
-It must not leak into instantiated projects.
+## Evidence Boundary
 
-## Distributable Template Responsibilities
-
-The payload provides:
-
-- AI collaboration rules,
-- a deterministic design-conversation protocol with Human-authorized persistent Stable and Draft state, exact mechanical State Operations, and complete current-state Checkpoints,
-- project initialization workflow,
-- automatic pre-Initial-Commit Bootstrap and project-specific documentation,
-- lean workspace and child-repository composition,
-- honest incremental lifecycle inspection and verification,
-- automation entry-point convention,
-- workspace-owned Environment Modules composition introduced only for validated needs,
-- lightweight formal-document and reproducible-figure conventions,
-- traceability guidance.
-
-## Governance Responsibilities
-
-The governance layer provides:
-
-- design principles,
-- template architecture,
-- change policy,
-- template ADRs,
-- validation,
-- versioning,
-- release history.
-
-## Lifecycle
-
-```text
-Design
-  ↓
-Modify template/
-  ↓
-Validate
-  ↓
-Version
-  ↓
-Release
-  ↓
-Instantiate
-  ↓
-Observe real-project use
-  ↓
-Feed improvements back
-```
-
-## Upstream Evidence Layer
-
-```text
-references/
-```
-
-contains curated external evidence used to evaluate template evolution.
-
-```text
-scripts/
-```
-
-contains maintenance automation for the `codex-template` repository itself.
-
-Neither directory is part of the distributable `template/` payload.
-
-The evidence flow is:
-
-```text
-Upstream Source
-→ Reference Registry
-→ Change Detection
-→ Human/ChatGPT Review
-→ ADR when material
-→ Template Change
-→ Validation
-→ Versioned Release
-```
-
-## Snapshot Evidence Boundary
-
-Human-curated upstream evidence is stored under:
-
-```text
-references/openai/snapshots/
-```
-
-This is primary evidence.
-
-`SOURCES.md` and `notes/` are derived reference-maintenance artifacts.
-They are not the human-maintained source of truth.
-
-Snapshot format is enforced by repository validation.
-
-## Dogfooding Architecture
-
-`codex-template` itself is governed as an AI-assisted engineering project through root `CHATGPT.md`, `AGENTS.md`, `.ai/WORKFLOW.md`, and `.ai/TASK_READINESS.md`.
-
-The root project and distributable `template/` share role separation, readiness semantics, version-impact concepts, and verification discipline, but their policy contents differ because their responsibilities differ.
+Human-curated upstream evidence is stored under `references/openai/snapshots/`. `SOURCES.md` and `notes/` are derived reference-maintenance artifacts, not the human-maintained source of truth. Snapshot format is mechanically validated before evidence informs an approved design decision.
 
 ## Shared AI Engineering Contract
 
-Both layers use the same core model:
+The source workspace and distributable repository use the same core ownership model:
 
-- ChatGPT as Design Owner;
-- Codex A as Implementation Owner;
-- Codex B as read-only Review Owner in a new Codex session explicitly created by the human user;
-- immutable `READ_ONLY` / `CHANGE` Task Types;
-- committed-state Independent Review for `CHANGE`;
-- one repository Default Base Branch, with `main` as the template default;
-- one immutable workspace Base Branch and one short-lived workspace `task/*` Task Branch per `CHANGE` Task;
-- at most one associated Task Branch per modified child repository, with each repository's Task Branch creation and final integration against its own stable Base Branch;
-- ff-only integration of the exact approved commit;
-- four standardized cross-role artifacts.
+- ChatGPT is Design Owner;
+- Codex A is Implementation Owner;
+- Codex B is read-only Review Owner in a new human-created session;
+- Task Type is immutable and limited to `READ_ONLY` and `CHANGE`;
+- every `CHANGE` uses committed repository-specific Review Targets and one Task-level conclusion;
+- exact approved commits integrate ff-only;
+- standardized cross-role artifacts carry transient task and review intent.
 
-The distributable payload treats the workspace as the composition anchor for governance, project documentation, orchestration, and managed child repositories. It does not prescribe generic `components/`, `tests/`, or `integration/` directories and does not inject workspace governance into child repositories.
-
-The human user is the explicit Independent Review handoff boundary: Codex A stops after producing the formal Review Prompt, the human creates Codex B's session and transfers the prompt, and the human returns Codex B's formal Review Report. Internal or sub-agent review is informational and cannot satisfy the gate.
-
-Technical approval and final Task disposition are separate boundaries. After approval, Codex A returns an Engineering Result Report before integration. ChatGPT / Design Owner advises the human, the human selects `INTEGRATE`, `REVISE`, or `ABORT` and returns that decision input to the Design Owner, then the Design Owner compiles a complete explicit prompt for human transfer to Codex A. Environment composition remains workspace-owned; automation remains with the engineering responsibility it performs.
-
-Root `.ai/` policies govern maintenance of `codex-template`. `template/.ai/` contains the project-agnostic contract copied to instantiated projects. The files intentionally have layer-specific surrounding guidance while preserving these invariants.
+Root `.ai/` policies govern `codex-template-source`. Files under the independent repository's `template/.ai/` checkout govern instantiated-project behavior. Detailed Git rules remain authoritative in root `.ai/GIT_WORKFLOW.md` for source-workspace maintenance and in the managed repository's own governance for its local tasks.

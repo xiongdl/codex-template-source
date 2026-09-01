@@ -4,15 +4,14 @@
 
 - Task ID:
 - Review Attempt: `N / 3`
-- Base Commit:
-- Reviewed Commit:
+- Task Review Target: `<repository-specific Base Commit / Reviewed Commit pairs>`
 - Human-created Codex B session: `YES`
 - Review Prompt supplied by human user: `YES`
 - Result: `APPROVED | CHANGES_REQUESTED`
 
 ## Repository Change Set Reviewed
 
-Record the workspace target and every changed child repository target. Confirm cross-repository consistency and exact child Review Commits. Use `WORKSPACE_ONLY` when applicable.
+Record every modified repository's path, Base Branch, Base Commit, Task Branch, and Reviewed Commit. Together these repository-specific targets are the complete Task Review Target. Record affected but unmodified repositories when their state or evidence matters. Confirm relevant cross-repository consistency and return one Task-level `APPROVED | CHANGES_REQUESTED` conclusion; do not create repository-specific final conclusions.
 
 ## Findings
 

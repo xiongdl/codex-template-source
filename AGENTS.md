@@ -1,8 +1,8 @@
 # AGENTS.md — codex-template Maintainer Instructions
 
-This repository develops and maintains the distributable project template under `template/`.
+This repository is the source, governance, validation, and release workspace for the independent distributable `codex-template` repository. `template/` is its Git submodule checkout at the revision recorded by this source workspace.
 
-Codex must treat `codex-template` itself as a governed engineering project.
+Codex must treat `codex-template-source` itself as a governed engineering project and respect the independent Git lifecycle of every modified repository.
 
 ## Before Substantive Work
 
@@ -38,7 +38,7 @@ Do not implement a change that violates the project-agnostic design principle, c
 
 Read `.ai/AI_HANDOFF_PROTOCOL.md` and `.ai/GIT_WORKFLOW.md` for every Engineering Task. Use the artifact templates under `.ai/`.
 
-Task Type is immutable and limited to `READ_ONLY` and `CHANGE`. A `CHANGE` requires one `task/*` branch, committed-state Independent Review, approval, and ff-only local integration before `COMPLETED`.
+Task Type is immutable and limited to `READ_ONLY` and `CHANGE`. A `CHANGE` requires one `task/*` branch in each modified repository, a committed Task-level Review Target, approval, and dependency-consistent ff-only local integration before `COMPLETED`. Affected but unmodified repositories require no Task Branch or integration operation.
 
 Begin with task-relevant context and targeted inspection, expanding only when correctness, uncertainty, impact, or regression risk requires it. Use verification and reporting sufficient for correctness and proportionate to risk; repository-required checks still run before a Review Commit.
 
@@ -48,9 +48,9 @@ Engineering Task decomposition belongs to ChatGPT / Design Owner. Do not delegat
 
 ## Repository Boundary
 
-`template/` is the distributable product.
+`template/` is a Git submodule referencing the exact `codex-template` revision used by source-workspace validation and release preparation. It is not an ordinary directory owned by the source-workspace repository.
 
-Root-level `docs/`, `references/`, `scripts/`, `tests/`, `VERSION`, and `CHANGELOG.md` govern and validate `codex-template` itself.
+Root-level `docs/`, `references/`, `scripts/`, `tests/`, `VERSION`, and `CHANGELOG.md` govern and validate the source workspace and its preparation of `codex-template` releases.
 
 ## After Implementation
 
