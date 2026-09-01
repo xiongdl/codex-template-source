@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.1.0
+
+- Added lightweight native, offline verification of the distributable template's project-agnostic baseline through `./scripts/project verify`.
+- Required normally merged local Task Branches to be deleted and their absence verified after exact-commit integration and before final Engineering Task completion.
+- Extended existing source-workspace validation to protect native verification capability and common local branch-cleanup semantics.
+
 ## 4.0.0
 
 - Replaced the phase-based Design Conversation Protocol with a self-contained, project-agnostic protocol that manages only Human-authorized Stable and Draft persistent design entries.

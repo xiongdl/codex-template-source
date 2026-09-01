@@ -67,6 +67,10 @@ Do not squash the reviewed commits by default. In every modified repository, the
 Reviewed Commit == Approved Commit == Integrated Commit
 ```
 
+After ff-only integration, Codex A MUST verify that the Base Branch identifies the exact Approved Commit and then delete that repository's normally merged local Task Branch. Final Engineering Task `COMPLETED` status requires successful local Task Branch deletion and proof that the branch no longer exists. This cleanup applies only to the local Task Branch; remote branch deletion remains a separately authorized remote operation.
+
+If multi-repository integration is interrupted, a Task Branch may be deleted only for a repository whose integration and exact-commit identity verification succeeded. Preserve Task Branches for repositories not yet integrated. Cleanup failure does not invalidate an already integrated Approved Commit, but the Engineering Task MUST NOT be reported as `COMPLETED` until required cleanup succeeds or an explicit blocking state is reported.
+
 If a resolved Base Branch advances before integration, rebase the corresponding Task Branch onto the current Base Branch, re-verify, identify the new Base and Review Commit identities, update dependent exact-commit references when required, obtain a new Independent Review of the complete Task Review Target, and retry. Base Branch advancement alone is not a blocked condition.
 
 ## Multi-Repository Tasks

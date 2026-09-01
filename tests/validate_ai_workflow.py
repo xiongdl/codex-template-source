@@ -80,6 +80,11 @@ GIT_TOKENS = (
     "git merge --ff-only",
     "Reviewed Commit == Approved Commit == Integrated Commit",
     "invalidates prior approval",
+    "delete that repository's normally merged local Task Branch",
+    "proof that the branch no longer exists",
+    "remote branch deletion remains a separately authorized remote operation",
+    "Preserve Task Branches for repositories not yet integrated",
+    "MUST NOT be reported as `COMPLETED`",
     "Multi-Repository Tasks",
     "new explicit `INTEGRATE` prompt",
 )

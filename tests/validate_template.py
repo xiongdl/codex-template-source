@@ -85,6 +85,13 @@ def main():
         )
         if status_result.returncode != 0 or "NOT_IMPLEMENTED" not in status_result.stdout:
             errors.append("scripts/project status must report capability state successfully")
+        if "verify: AVAILABLE" not in status_result.stdout:
+            errors.append("scripts/project status must report native verify as AVAILABLE")
+        verify_result = subprocess.run(
+            [str(script), "verify"], capture_output=True, text=True, check=False
+        )
+        if verify_result.returncode != 0 or "verify: PASS" not in verify_result.stdout:
+            errors.append("scripts/project verify must validate the distributable baseline")
 
     # Project VERSION and CHANGELOG consistency.
     version_path = TEMPLATE / "VERSION"
